@@ -12,21 +12,19 @@
   font-display: swap
 }
 html {
--webkit-animation: fadeThis 1.3s
-
-font-family: font, sans-serif;
-color: rgb(18, 20, 23);
-line-height: 1.53;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
-letter-spacing: -0.03em;
--webkit-box-sizing: border-box;
-box-sizing: border-box;
-text-rendering: optimizeLegibility;
--webkit-text-size-adjust: 100%;
--moz-text-size-adjust: 100%;
--ms-text-size-adjust: 100%;
-text-size-adjust: 100%;
--webkit-tap-highlight-color: transparent;
+  font-family: font, sans-serif;
+  color: rgb(18, 20, 23);
+  line-height: 1.53;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.03em;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
-body {
+
