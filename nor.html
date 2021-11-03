@@ -1,0 +1,182 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,minimum-scale=1,initial-scale=1" name="viewport">
+    <title>Ai, lope-lope se-universe! // Dista</title>
+    <style>
+      * {
+      box-sizing: border-box;
+      }
+      :root {
+      font-size: 3vw;
+      }
+      body {
+      background: #2B2D42;
+      color: #eee;
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100vh;
+      font-size: 3rem;
+      }
+      ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      /* transition: animation 1s; */
+      /* animation: 2.8s linear 0s roullete; */
+      }
+      #cover {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      }
+      .re-star {
+      display: flex;
+      flex-direction: row;
+      }
+      .suffix {
+      height: 1em;
+      overflow: hidden;
+      padding: 0 0.5em 0 .2em;
+      color: #D90429;
+      font-weight: bold
+      }
+      @keyframes roullete {
+      from {
+      transform: translateY(-5.8em);
+      }
+      to {
+      transform: translateY(0);
+      }
+      }
+      @keyframes pulse {
+      0% {
+      transform: scale(1);
+      }
+      25% {
+      transform: scale(0.75);
+      }
+      50% {
+      transform: scale(1);
+      }
+      75% {
+      transform: scale(0.75);
+      }
+      100% {
+      transform: scale(1);
+      }
+      }
+      .pulse {
+      position: fixed;
+      bottom: 30px;
+      left: calc(50% - 20px);
+      /* animation: pulse 1s infinite; */
+      }
+      input[type="checkbox"] {
+      position: absolute;
+      visibility: hidden
+      }
+      .tap-love:checked~ul {
+      animation: 2.8s linear 0s roullete;
+      }
+      .tap-love:checked+label .pulse {
+      animation: pulse 1s infinite;
+      }
+      .tiny-heart {
+      position: absolute;
+      opacity: 0;
+      background-color: #D90429;
+      box-shadow: 0px 0px 25px 4px rgba(239, 35, 60, 0.2);
+      animation: animated-heart infinite ease-in;
+      }
+      .tiny-heart:before,
+      .tiny-heart:after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #D90429;
+      }
+      .tiny-heart:before {
+      transform: translateX(-50%);
+      }
+      .tiny-heart:after {
+      transform: translateY(-50%);
+      }
+      @keyframes animated-heart {
+      0% {
+      opacity: 0;
+      transform: translate(0, 0) rotate(45deg);
+      }
+      50% {
+      opacity: 1;
+      transform: translate(0, -40%) rotate(45deg);
+      }
+      100% {
+      opacity: 0;
+      transform: translate(0, -1000%) rotate(45deg);
+      }
+      }
+      .top-lope {
+      font-family: 'Pacifico', cursive;
+      font-weight: 800;
+      font-size: 70%;
+      }
+      .nadya {
+      position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cover">
+      <div class="top-lope"><span class="nadya">Nadya</span>, you're</div>
+      <div class="re-star">
+        <div class="prefRE">My </div>
+        <div class="suffix">
+          <input type="checkbox" name="my-checkbox" id="opt-in" class="tap-love">
+          <label for="opt-in">
+            <svg width="40" height="40" class="pulse" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
+            </svg>
+          </label>
+          <ul>
+            <li> EVERYTHING</li>
+            <li> LAKIK</li>
+            <li> SOUL</li>
+            <li> LOVE</li>
+            <li> LIFE</li>
+            <li> EVERYTHING</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+      $(function() {
+        // Get random number between 2 ranges
+        function randomNum(m, n) {
+          m = parseInt(m);
+          n = parseInt(n);
+          return Math.floor(Math.random() * (n - m + 1)) + m;
+        }
+        
+        function heartAnimation() {
+          $this = $('.nadya');
+          var heartCount = ($this.width()/40)*4;
+          for (var i = 0; i< heartCount; i++) {
+            var heartSize = (randomNum(40, 80) / 15);
+            $this.append('<span class="tiny-heart" style="top: '+ randomNum(40, 80) +'%; left: '+ randomNum(0, 100) +'%; width: '+ heartSize +'px; height: '+ heartSize +'px ; animation-delay: -'+ randomNum(0, 3) +'s; animation-duration: '+ randomNum(2, 5) +'s"></span>')
+          }
+        }
+        
+        heartAnimation();
+      })
+    </script>
+  </body>
+</html>
