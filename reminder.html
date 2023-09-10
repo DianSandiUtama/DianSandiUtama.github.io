@@ -43,13 +43,13 @@
       day: "numeric",
       month: "long",
       year: "numeric"
-    }) + ", berarti:<br/>» <u>" + day + "hari " + hours + "jam " + minutes + "menit</u> dari <b>" + h.toLocaleDateString("id-ID", {
+    }) + ", berarti sudah:<br/>» <u>" + day + "hari " + hours + "jam " + minutes + "menit</u> sejak <b>" + h.toLocaleDateString("id-ID", {
       hour: "numeric",
       minute: "numeric",
       day: "numeric",
       month: "long",
       year: "numeric"
-    }) + "</b>.<br/>» <u>" + Math.ceil((d.getTime() - now.getTime()) / -86400001 - 1) + "hari</u> dari <b>" + d.toLocaleDateString("id-ID", {
+    }) + "</b>.<br/>» <u>" + Math.ceil((d.getTime() - now.getTime()) / -86400001 - 1) + "hari</u> sejak <b>" + d.toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric"
