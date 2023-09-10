@@ -1,13 +1,59 @@
-<script>
-let start = new Date("9/8/2023");
-now = new Date;
-const days = (e, t) => {
-  let a = e.getTime() - t.getTime();
-  return Math.ceil(a / ~864e5 - 1)
-};
-alert(days(start, now) + " hari sejak " + start.toLocaleDateString("id-ID", {
-  day: "numeric",
-  month: "long",
-  year: "numeric"
-}));
-</script>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Alert</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  <p id="first"></p>
+
+  <script>
+    function a() {
+      var c = b,
+        d = 0;
+      return function() {
+        return d < c.length ? {
+          done: !1,
+          value: c[d++]
+        } : {
+          done: !0
+        };
+      };
+    }
+    var e = new Date("9/8/2023");
+    now = new Date();
+    diffTime = Math.abs(now.valueOf() - (new Date("2021-01-27T05:26:00")).valueOf());
+    day = diffTime / 864E5;
+    hours = day % 1 * 24;
+    minutes = hours % 1 * 60;
+    var f;
+    var b = [Math.floor(day), Math.floor(hours), Math.floor(minutes)],
+      g = "undefined" != typeof Symbol && Symbol.iterator && b[Symbol.iterator];
+    if (g) {
+      f = g.call(b);
+    } else {
+      if ("number" == typeof b.length) {
+        f = {
+          next: a()
+        };
+      } else {
+        throw Error(String(b) + " is not an iterable or ArrayLike");
+      }
+    }
+    day = f.next().value;
+    hours = f.next().value;
+    minutes = f.next().value;
+    document.getElementById("first").innerHTML = day + "hari " + hours + "jam " + minutes + "menit sejak pertama <i>match</i>.";
+    alert(Math.ceil((e.getTime() - now.getTime()) / -86400001 - 1) + " hari sejak " + e.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }));
+  </script>
+</body>
+
+</html>
