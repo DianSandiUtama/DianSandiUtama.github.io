@@ -10,49 +10,50 @@
 
 <body>
   <p id="first"></p>
-
   <script>
     function a() {
-      var c = b,
-        d = 0;
+      var c = 0;
       return function() {
-        return d < c.length ? {
+        return c < b.length ? {
           done: !1,
-          value: c[d++]
+          value: b[c++]
         } : {
           done: !0
-        };
-      };
+        }
+      }
     }
-    var e = new Date("9/8/2023");
-    now = new Date();
-    diffTime = Math.abs(now.valueOf() - (new Date("2021-01-27T05:26:00")).valueOf());
+    var d = new Date("9/8/2023");
+    h = new Date("2021-01-27T05:26:00");
+    now = new Date;
+    diffTime = Math.abs(now.valueOf() - h.valueOf());
     day = diffTime / 864E5;
     hours = day % 1 * 24;
     minutes = hours % 1 * 60;
-    var f;
-    var b = [Math.floor(day), Math.floor(hours), Math.floor(minutes)],
-      g = "undefined" != typeof Symbol && Symbol.iterator && b[Symbol.iterator];
-    if (g) {
-      f = g.call(b);
-    } else {
-      if ("number" == typeof b.length) {
-        f = {
-          next: a()
-        };
-      } else {
-        throw Error(String(b) + " is not an iterable or ArrayLike");
-      }
-    }
-    day = f.next().value;
-    hours = f.next().value;
-    minutes = f.next().value;
-    document.getElementById("first").innerHTML = day + "hari " + hours + "jam " + minutes + "menit sejak pertama <i>match</i>.";
-    alert(Math.ceil((e.getTime() - now.getTime()) / -86400001 - 1) + " hari sejak " + e.toLocaleDateString("id-ID", {
+    var e, b = [Math.floor(day), Math.floor(hours), Math.floor(minutes)],
+      f = "undefined" != typeof Symbol && Symbol.iterator && b[Symbol.iterator];
+    if (f) e = f.call(b);
+    else if ("number" == typeof b.length) e = {
+      next: a()
+    };
+    else throw Error(String(b) + " is not an iterable or ArrayLike");
+    day = e.next().value;
+    hours = e.next().value;
+    minutes = e.next().value;
+    document.getElementById("first").innerHTML = "Hari ini " + now.toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric"
-    }));
+    }) + ", berarti:<br/>» <u>" + day + "hari " + hours + "jam " + minutes + "menit</u> sejak <b>" + h.toLocaleDateString("id-ID", {
+      hour: "numeric",
+      minute: "numeric",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }) + "</b>.<br/>» <u>" + Math.ceil((d.getTime() - now.getTime()) / -86400001 - 1) + "hari</u> sejak <b>" + d.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }) + "</b>.";
   </script>
 </body>
 
