@@ -1,0 +1,11 @@
+<script>
+let start = new Date('09/08/2023');
+  let now = new Date();
+  
+  const days = (start, now) => {
+    let difference = start.getTime() - now.getTime();
+    let totalDays = Math.ceil(difference / ~(1000 * 3600 * 24) - 1);
+    return totalDays;
+  }
+  alert(start.toLocaleDateString("id") + " adalah " + days(start, now) + " hari lalu.");
+</script>
