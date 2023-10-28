@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SPACETRIP TICKET</title>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+   <script src="//cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script> 
 <meta name="description" content="Save this for ur Dispace Awesome Trip! 🛸">
   <style>
 
@@ -30,13 +32,13 @@ body {
 
 .card {
   display: flex;
-  transform: rotate(90deg);
 }
 .card .card-left {
   background-color: #ffffff;
   border-radius: 10px;
   width: 450px;
   padding: 20px 0 20px 40px;
+  position: relative;
 }
 .card .card-left main {
   display: flex;
@@ -106,21 +108,32 @@ body {
 .card .centered p:first-child {
   padding-left: 0;
 }
-
+#qrcode {
+  position: absolute;
+  display: block;
+  top: 35px;
+  right: 25px;
+}
+@media screen and (max-width:480px) {
+ .card {
+   transform: rotate(90deg);
+ } 
+}
   </style>
 </head>
 
 <body>
 <div class="card">
           <div class="card-left">
-            <header class="header">
-              <!--img src="https://logodownload.org/wp-content/uploads/2019/05/air-france-logo-1.png" /-->
+            <a target="_blank" href="intent://diansandiutama.github.io/nor/dispace#Intent;scheme=https;package=com.android.chrome;end"><span id="qrcode"></span></a>
+            <!--header class="header">
+              <img src="https://logodownload.org/wp-content/uploads/2019/05/air-france-logo-1.png" />
               <h5>FIRST CLASS</h5>
-            </header>
+            </header -->
             <main>
-              <div class="barcode">
+              <!-- div class="barcode">
                 <img src="https://www.freepnglogos.com/uploads/barcode-png/barcode-laser-code-vector-graphic-pixabay-3.png" />
-              </div>
+              </div -->
               <section class="main-details">
                 <p><span class="heading"> Passenger</span><br />Nanad</p>
                 <div class="centered">
@@ -130,18 +143,18 @@ body {
                 </div>
                 <div class="flight-details">
                   <p><span class="heading"> Flight</span><br />DSU88</p>
-                  <p><span class="heading"> Departure</span><br />23:50</p>
+                  <p><span class="heading"> Boarding</span><br />23:50</p>
                   <p><span class="heading"> Gate</span><br />G8</p>
                   <p><span class="heading"> Seat</span><br />08A</p>
                 </div>
-                <h5>Gate closes 20 mins before depature</h5>
+                <h5>Tap QR on 29th at 00:00 to validate your ticket. The plane will take off automatically if your ticket is valid!</h5>
               </section>
             </main>
           </div>
           <div class="card-right">
-            <header class="header">
-              <!--img src="https://logodownload.org/wp-content/uploads/2019/05/air-france-logo-1.png" /-->
-            </header>
+            <!--header class="header">
+              <img src="https://logodownload.org/wp-content/uploads/2019/05/air-france-logo-1.png" />
+            </header -->
             <main class="main">
               <div class="centered">
                 <p><span class="heading"> Passenger</span><br />Nanad</p>
@@ -158,6 +171,18 @@ body {
             </main>
           </div>
         </div>
+<script>
+var qrcode = new QRCode("qrcode", {
+            text: "https://diansandiutama.github.io/nor/dispace",
+            width: 80,
+            height: 80,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+          });
+          
+
+        </script>
 </body>
 
 </html>
