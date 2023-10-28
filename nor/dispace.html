@@ -1,1 +1,786 @@
-just wait...
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Lost in SPACE!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="theme-color" content="#333230">
+    <link rel="canonical" href="https://diansandiutama.github.io/nor/dispace" />
+    <meta name="description" content="But, I Found You!" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400italic,400,500,500italic,700,700italic' rel='stylesheet' type='text/css'/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+#main,
+.glitch-card {
+  height: 100vh;
+  display: flex
+}
+
+#main,
+.msg-notif,
+.overlay-card,
+.sender-img {
+  overflow: hidden
+}
+
+.glitch:after,
+.glitch:before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  clip: rect(0, 900px, 0, 0);
+  color: #fffaf0
+}
+
+#main,
+.glitch,
+.glitch-card,
+.iamlost,
+.planet,
+.saturn {
+  position: relative
+}
+
+.more,
+.read-msg:hover {
+  text-decoration: underline
+}
+
+* {
+  padding: 0;
+  margin: 0
+}
+
+.clear {
+  clear: both;
+  display: block;
+  content: ''
+}
+
+.glitch-card {
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #fffaf0;
+  color: #4d4b48
+}
+
+.glitch-parrent,
+.glitch:after,
+.glitch:before {
+  background: #333230;
+  overflow: hidden
+}
+
+.glitch-p p {
+  z-index: 2;
+  width: auto;
+  margin: 0;
+  font-size: 38px;
+  line-height: 1
+}
+
+.glitch-parrent {
+  z-index: 2;
+  color: #fffaf0;
+  font-size: 50px;
+  font-weight: bolder;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #fffefb;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 10px 15px -3px rgba(0, 0, 0, .1)
+}
+
+@keyframes noise-anim {
+  0% {
+    clip: rect(57px, 9999px, 91px, 0)
+  }
+
+  5% {
+    clip: rect(5px, 9999px, 90px, 0)
+  }
+
+  10% {
+    clip: rect(15px, 9999px, 74px, 0)
+  }
+
+  15%,
+  35% {
+    clip: rect(88px, 9999px, 73px, 0)
+  }
+
+  20% {
+    clip: rect(26px, 9999px, 26px, 0)
+  }
+
+  25% {
+    clip: rect(80px, 9999px, 46px, 0)
+  }
+
+  30% {
+    clip: rect(96px, 9999px, 44px, 0)
+  }
+
+  40% {
+    clip: rect(56px, 9999px, 72px, 0)
+  }
+
+  45% {
+    clip: rect(59px, 9999px, 32px, 0)
+  }
+
+  50% {
+    clip: rect(2px, 9999px, 40px, 0)
+  }
+
+  55% {
+    clip: rect(28px, 9999px, 74px, 0)
+  }
+
+  60% {
+    clip: rect(34px, 9999px, 54px, 0)
+  }
+
+  65% {
+    clip: rect(62px, 9999px, 46px, 0)
+  }
+
+  70% {
+    clip: rect(95px, 9999px, 100px, 0)
+  }
+
+  75% {
+    clip: rect(70px, 9999px, 60px, 0)
+  }
+
+  80% {
+    clip: rect(71px, 9999px, 96px, 0)
+  }
+
+  85% {
+    clip: rect(6px, 9999px, 70px, 0)
+  }
+
+  90% {
+    clip: rect(77px, 9999px, 75px, 0)
+  }
+
+  95% {
+    clip: rect(5px, 9999px, 62px, 0)
+  }
+
+  100% {
+    clip: rect(90px, 9999px, 75px, 0)
+  }
+}
+
+.glitch:after {
+  left: 2px;
+  text-shadow: -1px 0 #fff0f5;
+  animation: 15s linear 3s infinite alternate-reverse noise-anim
+}
+
+@keyframes noise-anim-2 {
+  0% {
+    clip: rect(63px, 9999px, 49px, 0)
+  }
+
+  5% {
+    clip: rect(44px, 9999px, 64px, 0)
+  }
+
+  10% {
+    clip: rect(87px, 9999px, 52px, 0)
+  }
+
+  15% {
+    clip: rect(25px, 9999px, 7px, 0)
+  }
+
+  20% {
+    clip: rect(64px, 9999px, 27px, 0)
+  }
+
+  25% {
+    clip: rect(66px, 9999px, 57px, 0)
+  }
+
+  30% {
+    clip: rect(34px, 9999px, 32px, 0)
+  }
+
+  35% {
+    clip: rect(45px, 9999px, 6px, 0)
+  }
+
+  40% {
+    clip: rect(44px, 9999px, 65px, 0)
+  }
+
+  45% {
+    clip: rect(43px, 9999px, 70px, 0)
+  }
+
+  50% {
+    clip: rect(12px, 9999px, 89px, 0)
+  }
+
+  55% {
+    clip: rect(63px, 9999px, 51px, 0)
+  }
+
+  60% {
+    clip: rect(29px, 9999px, 7px, 0)
+  }
+
+  65% {
+    clip: rect(12px, 9999px, 38px, 0)
+  }
+
+  70% {
+    clip: rect(26px, 9999px, 9px, 0)
+  }
+
+  75% {
+    clip: rect(19px, 9999px, 42px, 0)
+  }
+
+  80% {
+    clip: rect(34px, 9999px, 33px, 0)
+  }
+
+  85% {
+    clip: rect(97px, 9999px, 60px, 0)
+  }
+
+  90% {
+    clip: rect(68px, 9999px, 27px, 0)
+  }
+
+  95% {
+    clip: rect(59px, 9999px, 65px, 0)
+  }
+
+  100% {
+    clip: rect(29px, 9999px, 86px, 0)
+  }
+}
+
+.glitch:before {
+  left: -2px;
+  text-shadow: 1px 0 #f0fffa;
+  animation: 7s linear infinite alternate-reverse noise-anim-2
+}
+
+#main {
+  background: #212121;
+  align-items: center;
+  justify-content: center
+}
+
+.iamlost,
+.planet {
+  margin: 0;
+  width: auto;
+  height: 50vh;
+  z-index: 9
+}
+
+.iamlost {
+  opacity: .9;
+  width: 30%;
+  animation: 80s infinite alternate floating
+}
+
+@keyframes floating {
+
+  0%,
+  100% {
+    transform: translate(200px, 100px) rotate(60deg)
+  }
+
+  25% {
+    transform: translate(100px, 100px) rotate(0)
+  }
+
+  50% {
+    transform: translate(250px, -200px) rotate(-60deg)
+  }
+
+  75% {
+    transform: translate(100px, -100px) rotate(0)
+  }
+}
+
+.saturn {
+  margin-top: -55%;
+  width: 10em;
+  height: 10em;
+  font-size: 40px;
+  transform: rotateZ(-26.73deg)
+}
+
+.alone,
+.overlay-card,
+.rings,
+.stars {
+  position: absolute
+}
+
+.saturn::after,
+.saturn::before {
+  content: '';
+  position: absolute;
+  width: 4.5em;
+  height: 4.5em;
+  background: radial-gradient(circle at top, transparent 40%, #000), radial-gradient(transparent 62%, #000), linear-gradient(#d4cbae 0, #d4cbae 10%, #ddcb9d 15%, #ddcb9d 17%, #d5b58f 22%, #d5b58f 26%, #d0b49e 32%, #d0b49e 36%, #dabca2 37%, #dabca2 39%, #d3b89d 41%, #d3b89d 49%, #cdba9c 51%, #cdba9c 52%, #cab099 53%, #cab099 65%, #beb191 68%, #beb191 80%, #969082 91%, #969082 95%, #838175 97%, #838175 100%);
+  border-radius: 50%;
+  left: calc((20em - 9em)/ 4);
+  top: calc((20em - 9em)/ 4)
+}
+
+.saturn::before {
+  clip-path: inset(50% 0 0 0)
+}
+
+.saturn::after {
+  clip-path: inset(0 0 50% 0)
+}
+
+.rings {
+  width: inherit;
+  height: inherit;
+  background: radial-gradient(rgba(24, 19, 25, 0) 0, rgba(53, 52, 51, 0) 34%, #373634 36%, #383735 37%, #444342 38%, #383735 39%, #444342 40%, #383735 41%, #574d4c 42%, #574d4c 44%, #716e67 46%, #716e67 48%, #71625d 49%, #71625d 51%, #7a7369 52%, #71625d 53%, #71625d 54%, #7a7369 55%, #6a6359 56%, #6a6359 58%, rgba(79, 76, 76, 0) 60%, #414046 61%, #414046 62%, #5a5559 63%, #4e4a49 65%, #4e494a 67%, rgba(78, 73, 74, 0) 68%, #4e494b 69%, #4e494b 70%, rgba(78, 73, 76, 0) 71%, rgba(77, 72, 76, 0) 72%, rgba(24, 19, 25, 0) 100%);
+  animation: 5s infinite alternate spin
+}
+
+.alone {
+  width: 90%;
+  bottom: 50%;
+  z-index: 99;
+  text-align: center
+}
+
+.alone h2 {
+  font-size: 45px;
+  font-weight: 800;
+  color: #fafafa;
+  mix-blend-mode: difference;
+  margin: 0;
+  padding: 0
+}
+
+.gone {
+  color: #212121;
+  text-shadow: 0 0 20px rgba(255, 255, 255, .02)
+}
+
+.overlay-card {
+  border-radius: 7px;
+  backdrop-filter: blur(1px);
+  z-index: 10;
+  left: 5%;
+  right: 5%;
+  bottom: 5%;
+  background: rgba(0, 0, 0, .3);
+  box-shadow: 0 1px 1px rgba(3, 7, 18, .02), 0 5px 4px rgba(3, 7, 18, .03), 0 12px 9px rgba(3, 7, 18, .05);
+  color: #fffdff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', monospace;
+  border: 1px solid rgba(0, 0, 0, .3)
+}
+
+.overlay-card-head {
+  letter-spacing: 2px;
+  background: rgba(0, 0, 0, .35);
+  color: rgba(255, 253, 255, .5);
+  height: 30px;
+  font-size: 80%;
+  font-style: Helvetica;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px
+}
+
+.overlay-card-head span {
+  animation: 1s infinite alternate blink
+}
+
+.overlay-msg-wrap {
+  padding: 5px 10px 10px;
+  margin: 0;
+  opacity: .5;
+  font-style: monospace;
+  font-size: 75%
+}
+
+.main-msg,
+.open-msg {
+  width: 100%;
+  margin: 0 auto
+}
+
+.open-msg {
+  height: calc(65% - 30px)
+}
+
+.main-msg {
+  height: 35%;
+  padding: 0
+}
+
+.more {
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
+  background: 0 0;
+  border: none;
+  text-decoration-style: dashed;
+  color: inherit
+}
+
+.new-msg,
+.stars {
+  border-radius: 5px
+}
+
+@keyframes blink {
+  0% {
+    opacity: .2
+  }
+
+  100% {
+    opacity: .6
+  }
+}
+
+@keyframes spin {
+
+  0%,
+  100% {
+    transform: rotateX(75deg) scale(1)
+  }
+
+  25%,
+  75% {
+    transform: rotateX(75deg) scale(1.0085)
+  }
+
+  50% {
+    transform: rotateX(75deg) scale(1.0055)
+  }
+}
+
+.core {
+  font-size: 15px;
+  width: auto;
+  transition: .6s ease-in-out;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  color: #202124;
+  display: none
+}
+
+.showthis {
+  padding: 20px 20px 80px;
+  display: block;
+  transition: .7s ease-in-out
+}
+
+.core h2 {
+  font-size: 28px;
+  line-height: 40px;
+  font-family: Android Euclid, Roboto, sans-serif;
+  font-weight: 500;
+  margin: 20px 0 0
+}
+
+.ended,
+.started {
+  display: block;
+  text-align: center
+}
+
+.started {
+  margin: 20px 0 5px
+}
+
+.ended {
+  margin: 20px 0
+}
+
+.new-msg {
+  display: block;
+  font-size: 14px;
+  margin: 16px 0;
+  padding: 15px;
+  background: #eceff1;
+  border: 1px solid #f5f5f5
+}
+
+.read-msg {
+  color: inherit;
+  font-weight: 700
+}
+
+.msg-notif {
+  display: flex;
+  height: 0;
+  background: #eceff1;
+  margin: 0 auto;
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+  border: 1px solid #f5f5f5;
+  transform: translateY(-120px);
+  transition: .5s ease-in-out;
+  opacity: 0
+}
+
+.msg-notif.readed {
+  height: 100%;
+  transform: translateY(0);
+  opacity: 1
+}
+
+.msg-notif::before {
+  z-index: 0;
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .045;
+  background-image: url('https://theabbie.github.io/blog/assets/official-whatsapp-background-image.jpg');
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  background-size: cover
+}
+
+.profile-sender {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 65px;
+  padding: 10px 5px 10px 10px;
+  z-index: 1
+}
+
+.msg-summary {
+  z-index: 1;
+  width: calc(100% - 75px);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 10px 10px 10px 5px
+}
+
+.msg-summary h3 {
+  font-size: 16px;
+  display: block;
+  margin: 0 0 3px;
+  line-height: 1
+}
+
+.sender-img {
+  background: linear-gradient(to bottom, #0a2342, #283e51);
+  width: 55px;
+  height: 55px;
+  border: 2px solid #696969;
+  border-radius: 8%
+}
+
+.sender-img img {
+  transform: rotate(30.5deg) scale(1.1);
+  margin: 15px 0 0 2px
+}
+
+.timestamp {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 11px;
+  line-height: 1
+}
+
+.ucapan {
+  color: #ff4500
+}
+
+.credit {
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  position: fixed;
+  z-index: 999;
+  bottom: 20px;
+  right: 0;
+  opacity: .15;
+  padding: 10px 20px 10px 10px;
+  transition: .5s;
+  border-radius: 4px 0 0 4px
+}
+
+.credit:hover {
+  opacity: .48;
+  background: #eceff1
+}
+
+.blur {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: none
+}
+
+.blur.show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: .5s cubic-bezier(.01, .07, .02, .08) 5s
+}
+
+.glitch-parrent.show {
+  transition-delay: 6.5s
+}
+
+.i-text.show {
+  transition: .4s ease-in-out .8s
+}
+
+.want-text.show {
+  transition: .4s ease-in-out 1.3s
+}
+
+.u-text.show {
+  transition: .8s ease-in-out 1.8s
+}
+
+.i-text,
+.u-text,
+.want-text {
+  color: #333230
+}
+
+.j-text.show,
+.st-text.show,
+.text-t1.show,
+.text-t2.show,
+.to-text.show {
+  opacity: .8
+}
+    </style>
+    <script>
+    $(document).ready(function() {
+      $('.blur').addClass('show');
+    });
+          $(document).ready(function() {
+            $("a").on('click', function(event) {
+              if (this.hash !== "") {
+                event.preventDefault();
+                var hash = this.hash;
+                $('html, body').animate({
+                  scrollTop: $(hash).offset().top
+                }, 800, function() {
+                  window.location.hash = hash;
+                });
+              }
+            });
+          });
+
+    </script>
+  </head>
+  <body>
+    <div id="top"></div>
+<div id="container-one" class="bungkus">
+    <div class="glitch-card">
+      <div class="glitch-p">
+        <p><b class="i-text blur">I</b><span class="text-t1 blur">-</span><span class="j-text blur">j</span><span class="u-text blur">u</span><span class="st-text blur">st</span><br/>
+        <b class="want-text blur"><span class="want-text blur">WANT</spnza></b><span class="text-t2 blur">-</span><span class="to-text blur">to</span></p>
+        <div class="glitch-parrent blur"><span class="glitch" data-text="TALK">TYPE</span></div>
+      </div>
+    </div>
+    <div id="main">
+      <div class="planet">
+        <div class="saturn">
+          <span class="rings"></span>
+        </div>
+        <div class="iamlost">
+          <img src="https://diansandiutama.github.io/nor/img/astronaut.svg">
+        </div>
+      </div>
+      <div class="overlay-card">
+        <div class="overlay-card-head"><b>CON8</b><span>reconnecting...</span></div>
+        <pre class="overlay-msg-wrap"><code class="open-msg">• .. .-.. --- ...- . -.-- --- ..-
+•  _   _              _     _
+• (_) | |  ___   ___ | |_  (_) _ __
+  | | | | / _ \ / __|| __| | || '_ \
+• | | | || (_) |\__ \| |_  | || | | |
+— |_| |_| \___/ |___/ \__| |_||_| |_|
+      
+—                                    _             _
+   ___  _ __    __ _   ___   ___    | |__   _   _ | |_
+• / __|| '_ \  / _` | / __| / _ \   | '_ \ | | | || __|
+• \__ \| |_) || (_| || (__ |  __/ _ | |_) || |_| || |_
+— |___/| .__/  \__,_| \___| \___|( )|_.__/  \__,_| \__|
+       |_|                       |/
+• -. .- -.. .. .- --- -.- - .- ...- .. .- -. .. .-.
+—
+</code><code class="main-msg">• <span class="title-msg"><b>foundyou.</b></span>
+<span>  I feel like the mo...re-<a href="#core" class="more">words here!</a></span>
+</code>—<br/><code class="last-bar">• .-.. --- .--. . ... . ..- -. .. ...- . .-. ... .</code></pre>
+      </div>
+      <div class="alone">
+        <h2><span class="gone">LOST</span></h2>
+      </div>
+    </div>
+
+    <div id ="core" class="core">
+      <span class="started">••—</span>
+      <h2>st Luckiest Person in This Universe</h2>
+      Singkat aja, intinya aku ngerasa beruntung banget kenal kamu. Lihat Astronot di atas, sendirian, melayang-layang, begitulah kondisi <i>Ma_ .... ._ _. _._ ...</i>
+      <h2>Your Day, also The Universe</h2>
+      Bukan cuma spesial bagimu, semesta juga. Cukup panjang sih ini. <i>Kal._.. ___ ..._ .</i>
+      <span class="ended">••</span>
+      <div class="new-msg" id="new-msg"><b>MAS.</b> mengirimkan pesan, <a class="read-msg" href="#msg-box">baca sekarang!</a>
+      </div>
+      <div class="msg-notif" id="msg-box">
+        <div class="profile-sender">
+          <div class="sender-img">
+            <img src="https://diansandiutama.github.io/nor/img/astronaut.svg">
+          </div>
+        </div>
+        <div class="msg-summary" id="summary"><h3>mas yan.</h3>Assalamualaikum.<br/>Selamat malam.<br/>Nuwun sewuu..<br/>Punteeenn...
+        </div>
+        <span class="timestamp">00:00</span>
+
+        <div class="clear"></div>
+      </div>
+    </div>
+
+</div>
+    <span class="credit">BUILD WITH LOVE IN SPACE</span>
+    <script> 
+function typewriter() {
+  for (; iRow < iIndex;) {
+    a += aText[iRow++] + "<br/>";
+  }
+  b.innerHTML = a + aText[iIndex].substring(0, iTextPos);
+  iTextPos++ == iArrLength ? (iTextPos = 0, ++iIndex != aText.length && (iArrLength = aText[iIndex].length, setTimeout("typewriter()", 300))) : setTimeout("typewriter()", 30);
+}
+var show = document.querySelector(".more"), coreContent = document.getElementById("core"), readMsg = document.querySelector(".read-msg"), aText = "...;...;...;Ai-cekermen?;Hey WIBU Kroyaaaa!;Woyyyy!!! Pacar Jimin.;P;P;P;Ibu Menteri Kelautan?;HEH Nadya.;Aiii;Nanad;<i>stiker;stiker;stiker;stiker</i>;Eneng geulis,;Kadieuuu;Tingali, tingaliiii,;Aa punya nganuu....;Alah siah boy boyy,;Si paling Sunda!;ckck;<i>stiker;stiker</i>;huh;markispam;mari;ki;ta;s;p;a;m;<i>stiker</i>;dalah;baringuuuung;gatau;males;pen;beli;trek;<i>stiker</i>;<b><small><i><a href='/nor/distarium.html'>888+ more messages!</a></i></small></b>".split(";"), 
+iArrLength = aText.length, iIndex = 0, iScrollAt = 999, iTextPos = 0, a = "<h3>mas yan.</h3>Assalamualaikum.<br/>Selamat malam.<br/>Nuwun sewuu..<br/>Punteeenn...<br/>", b = document.getElementById("summary"), iRow = Math.max(0, iIndex - iScrollAt);
+show.addEventListener("click", function() {
+  coreContent.classList.toggle("showthis");
+});
+readMsg.addEventListener("click", function() {
+  document.getElementById("new-msg").style.display = "none";
+  document.getElementById("msg-box").classList.toggle("readed");
+  typewriter();
+});
+    </script>
+  </body>
+</html>
