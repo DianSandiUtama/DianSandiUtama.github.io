@@ -1,1 +1,1453 @@
-just wait.....
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171618">
+  <title>Nadi Angkasa</title>
+  <link rel="canonical" href="https://diansandiutama.github.io/nor/distarium" />
+<meta name="description" content="Welcome to Distarium. A digital star-planetarium special for you!">
+  <script defer src="https://unpkg.com/flickity@2.3.0/dist/flickity.pkgd.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+ 
+  <style>
+@media screen and (max-device-width:480px) and (orientation:portrait) {
+  html {
+    scroll-behavior: smooth
+  }
+  .meh b,
+  a {
+    text-decoration: none
+  }
+
+  .bulan,
+  .scorpio .dot,
+  .stars span {
+    border-radius: 50%
+  }
+
+  #mywish,
+  #mywish.ngumpet {
+    filter: blur(4px)
+  }
+
+  * {
+    box-sizing: border-box
+  }
+
+  :root {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+  }
+
+  body {
+    margin: 0 auto;
+    padding: 0;
+    color: #434a5d;
+    background: #f8f9fe;
+    font-size: 15px
+  }
+
+  .clear {
+    clear: both
+  }
+
+  a {
+    color: #0064c7
+  }
+
+  .msg-text {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+    font-family: system-ui, -apple-system, Arial, sans-serif;
+    min-height: 100%
+  }
+
+  .content {
+    position: relative;
+    z-index: 999
+  }
+
+  .scorpio,
+  .shoot,
+  .stars span {
+    position: fixed
+  }
+
+  .last-word h3,
+  .msg-text h2 {
+    margin: 15px 0 5px
+  }
+
+  .scorpio,
+  .shoot {
+    z-index: 1
+  }
+
+  .gallery,
+  .gallery-cell,
+  .guide {
+    z-index: 9999
+  }
+
+  .scorpio {
+    width: 313px;
+    height: 331px;
+    left: calc(50% - 156.5px);
+    top: calc(50% - 165.5px);
+    display: flex;
+    align-items: center;
+    justify-content: center
+  }
+
+  .scorpio .dot {
+    height: 3px;
+    position: absolute;
+    width: 3px
+  }
+
+  .fall::after,
+  .fall::before {
+    content: "";
+    top: calc(50% - 1px);
+    background: linear-gradient(-45deg, rgba(0, 0, 255, 0), #5f91ff, rgba(0, 0, 255, 0));
+    border-radius: 100%;
+    animation: 3s ease-in-out infinite shining
+  }
+
+  .scorpio .dot:first-of-type {
+    bottom: 85px;
+    left: 28px
+  }
+
+  .scorpio .dot:nth-of-type(2) {
+    bottom: 55px;
+    left: 10px;
+    width: 7px;
+    height: 7px
+  }
+
+  .scorpio .dot:nth-of-type(3) {
+    bottom: 35px;
+    left: 0
+  }
+
+  .guide.uknow,
+  .shoot {
+    bottom: 0
+  }
+
+  .scorpio .dot:nth-of-type(4) {
+    bottom: 0;
+    left: 25px
+  }
+
+  .scorpio .dot:nth-of-type(5) {
+    bottom: 3px;
+    left: 95px;
+    width: 5px;
+    height: 5px
+  }
+
+  .scorpio .dot:nth-of-type(6) {
+    bottom: 16px;
+    left: 141px
+  }
+
+  .scorpio .dot:nth-of-type(7) {
+    bottom: 80px;
+    left: 145px
+  }
+
+  .scorpio .dot:nth-of-type(8) {
+    left: 150px;
+    top: 195px
+  }
+
+  .scorpio .dot:nth-of-type(9) {
+    right: 112px;
+    top: 110px
+  }
+
+  .scorpio .dot:nth-of-type(10) {
+    right: 95px;
+    top: 90px
+  }
+
+  .scorpio .dot:nth-of-type(11) {
+    right: 67px;
+    top: 78px;
+    width: 8px;
+    height: 8px
+  }
+
+  .scorpio .dot:nth-of-type(12) {
+    right: 0;
+    top: 42px
+  }
+
+  .scorpio .dot:nth-of-type(13) {
+    right: 10px;
+    top: 0;
+    width: 5px;
+    height: 5px
+  }
+
+  .scorpio .dot:nth-of-type(14) {
+    right: 0;
+    top: 90px
+  }
+
+  .stars span {
+    width: 1.5px;
+    height: 1.5px
+  }
+
+  .stars.noisy span {
+    background: rgba(220, 227, 252, .8)
+  }
+
+  .shoot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -50px;
+    left: -50px;
+    right: 0;
+    margin-top: -50%
+  }
+
+  .shooting-star {
+    position: relative;
+    transform: rotateZ(45deg)
+  }
+
+  .fall,
+  .fall::after,
+  .fall::before {
+    position: absolute;
+    height: 2px
+  }
+
+  .fall {
+    left: 50%;
+    top: 50%;
+    background: linear-gradient(-45deg, #699bff, rgba(0, 0, 255, 0));
+    border-radius: 999px;
+    filter: drop-shadow(0 0 12px rgba(220, 227, 252, .6));
+    animation: 3s ease-in-out infinite tail, 3s ease-in-out infinite shooting
+  }
+
+  .fall::before {
+    right: 0;
+    transform: translateX(50%) rotateZ(45deg)
+  }
+
+  .fall::after {
+    right: 0;
+    transform: translateX(50%) rotateZ(-45deg)
+  }
+
+  .fall:first-child,
+  .fall:first-child::after,
+  .fall:first-child::before {
+    animation-delay: 7197ms
+  }
+
+  .fall:first-child {
+    top: calc(50% - 140px);
+    left: calc(50% - 251px)
+  }
+
+  .fall:nth-child(2),
+  .fall:nth-child(2)::after,
+  .fall:nth-child(2)::before {
+    animation-delay: 9536ms
+  }
+
+  .fall:nth-child(2) {
+    top: calc(50% - -123px);
+    left: calc(50% - 267px)
+  }
+
+  .fall:nth-child(3),
+  .fall:nth-child(3)::after,
+  .fall:nth-child(3)::before {
+    animation-delay: 5467ms
+  }
+
+  .fall:nth-child(3) {
+    top: calc(50% - -114px);
+    left: calc(50% - 183px)
+  }
+
+  .fall:nth-child(4),
+  .fall:nth-child(4)::after,
+  .fall:nth-child(4)::before {
+    animation-delay: 1088ms
+  }
+
+  .fall:nth-child(4) {
+    top: calc(50% - -178px);
+    left: calc(50% - 80px)
+  }
+
+  .fall:nth-child(5),
+  .fall:nth-child(5)::after,
+  .fall:nth-child(5)::before {
+    animation-delay: 346ms
+  }
+
+  .fall:nth-child(5) {
+    top: calc(50% - 99px);
+    left: calc(50% - 143px)
+  }
+
+  .fall:nth-child(6),
+  .fall:nth-child(6)::after,
+  .fall:nth-child(6)::before {
+    animation-delay: 9251ms
+  }
+
+  .fall:nth-child(6) {
+    top: calc(50% - -26px);
+    left: calc(50% - 111px)
+  }
+
+  .fall:nth-child(7),
+  .fall:nth-child(7)::after,
+  .fall:nth-child(7)::before {
+    animation-delay: 4434ms
+  }
+
+  .fall:nth-child(7) {
+    top: calc(50% - -32px);
+    left: calc(50% - 208px)
+  }
+
+  .fall:nth-child(8),
+  .fall:nth-child(8)::after,
+  .fall:nth-child(8)::before {
+    animation-delay: 1.76s
+  }
+
+  .fall:nth-child(8) {
+    top: calc(50% - -115px);
+    left: calc(50% - 190px)
+  }
+
+  #open-guide {
+    display: flex;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    height: 50px;
+    width: 40%;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #0064c7;
+    border-radius: 5px;
+    transition: .5s
+  }
+
+  #open-guide:hover {
+    background: #0064c7;
+    color: #fff
+  }
+
+  .guide {
+    position: fixed;
+    bottom: -1000%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    font-size: 14px;
+    background: #f8f9fe;
+    padding: 20px 10px 40px
+  }
+
+  .rotate {
+    display: inline-block;
+    transform: rotate(-90deg)
+  }
+
+  .gallery-cell {
+    position: relative;
+    width: 100%
+  }
+
+  .flickity-viewport {
+    transition: height .2s
+  }
+
+  .flickity-page-dots {
+    bottom: -25px
+  }
+
+  .flickity-page-dots .dot {
+    height: 4px;
+    width: 40px;
+    margin: 0;
+    border-radius: 0
+  }
+
+  #mywish {
+    margin: 10px 0;
+    transition: .3s;
+    padding: 10px;
+    border: 1px solid rgba(220, 227, 252, .03);
+    border-radius: 3px
+  }
+
+  #mywish.muncul {
+    filter: blur(0)
+  }
+
+  .opacity {
+    transition: .4s
+  }
+
+  .scorpio svg path,
+  .scorpio svg polyline {
+    opacity: 0;
+    stroke: rgba(220, 227, 252, .2);
+    stroke-width: 2px
+  }
+
+  .body.magic,
+  .body.magic .guide.uknow {
+    background: #171618;
+    /*color: #b8bcc2*/
+    color: #a9a9a9 ;
+  }
+
+  .body.magic .guide.uknow {
+    /*background: rgba(32, 32, 32, .4)*/
+    background: rgba(23,22,24,.4);
+  }
+
+  .body.magic .greet.hidethis,
+  .last-word,
+  .shoot {
+    opacity: 0
+  }
+
+  .body.magic .scorpio.sulap,
+  .body.magic .shoot.jatuh,
+  .shoot.jatuhhh {
+    margin-top: -35%;
+    opacity: 1
+  }
+
+  .body.magic .shoot.jatuh {
+    top: 0;
+    left: 0
+  }
+
+  .body.magic .shoot.jatuh,
+  .shoot.jatuhhh {
+    margin-top: -50%;
+  }  
+
+  .body.magic .scorpio.sulap .dot {
+    background: #dce3fc;
+    box-shadow: 0 0 8px rgba(173, 212, 241, .5)
+  }
+
+  .body.magic .last-word.akhirkata,
+  .body.magic .scorpio.sulap.sulapp svg path,
+  .body.magic .scorpio.sulap.sulapp svg polyline {
+    opacity: 1
+  }
+
+  .body.magic a,.fact {
+    color: #4c89f0
+  }
+
+  .body.magic a:hover {
+    text-decoration: underline
+  }
+
+  .space,
+  .space-wrap {
+    position: relative;
+    display: flex;
+    color: inherit
+  }
+
+  .space::after,
+  .space::before {
+    position: absolute;
+    white-space: pre;
+    z-index: 4
+  }
+
+  li,
+  ol,
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none
+  }
+
+  .space-wrap {
+    justify-content: space-between;
+    align-items: start;
+    margin: 15px auto
+  }
+
+  .space {
+    justify-content: center;
+    align-items: center;
+    width: 175px;
+    height: 200px;
+    border: 1px solid rgba(255, 255, 255, .25);
+    overflow: hidden;
+    transition: 1s ease-out
+  }
+
+  .space::before {
+    content: 'Bumi';
+    font-size: 5px;
+    bottom: 5px;
+    left: 5px;
+    z-index: 4
+  }
+
+  .space::after {
+    content: 'TAP ME!';
+    font-size: 7px;
+    text-align: center;
+    color: rgba(0, 0, 0, .5)
+  }
+
+  .bulan::after,
+  .space-wrap::after {
+    font-size: 5px;
+    white-space: pre;
+    text-align: right
+  }
+
+  .space-info {
+    width: calc(100% - 185px)
+  }
+
+  .bulan {
+    z-index: 1;
+    width: 140px;
+    height: 140px;
+    box-shadow: inset 0 0 70px rgba(0, 0, 0, .45), 0 0 15px #fafad2;
+    background: #f6f1d5;
+    border: .1px solid goldenrodyellow
+  }
+
+  .bumi,
+  .bumi::after {
+    width: 350px;
+    height: 350px;
+    position: absolute
+  }
+
+  .bulan::before {
+    content: 'Minggu\A 29 Oktober 2023';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 5px;
+    z-index: 4;
+    white-space: pre
+  }
+
+  .bulan::after {
+    content: '11/72\ASaros 146';
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    z-index: 4
+  }
+
+  .bumi {
+    z-index: 3;
+    filter: blur(5px) opacity(88%);
+    left: -185px;
+    bottom: -280px;
+    background: #000;
+    border-radius: 50%
+  }
+
+  .bumi::after {
+    z-index: 2;
+    left: 65px;
+    bottom: 115px;
+    content: '';
+    filter: blur(5px) opacity(12%);
+    background: #000;
+    border: 3px solid rgba(255, 255, 255, .18);
+    border-radius: 50%;
+    transition: .5s
+  }
+
+  .meh1::before,
+  .meh2::after {
+    position: absolute;
+    bottom: 22px
+  }
+
+  .space-wrap::after {
+    content: 'Pukul\A 03.14 WIB';
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 4
+  }
+
+  .space-wrap::before {
+    content: 'Ilustrasi Gerhana Bulan Parsial';
+    position: absolute;
+    top: 198px;
+    right: 0;
+    width: 169px;
+    height: 15px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 5px;
+    background: rgba(0, 0, 0, .25);
+    border: 1px solid rgba(255, 255, 255, .2)
+  }
+
+  .space:hover .bumi {
+    animation: 10s linear infinite eclipse
+  }
+
+  .space:hover::after {
+    content: 'THANKS'
+  }
+
+  .carousel-cell {
+    margin: 20px auto 10px;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative
+  }
+
+  .carousel-cell img {
+    display: block;
+    max-height: 100%
+  }
+
+  .flickity-button {
+    background: #333
+  }
+
+  .flickity-button:hover {
+    background: #4c89f0
+  }
+
+  .flickity-prev-next-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px
+  }
+
+  .flickity-button-icon {
+    fill: #b8bcc2
+  }
+
+  .pict-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 10px
+  }
+
+  .pict-info ol {
+    width: calc(50% - 5px)
+  }
+
+  .pict-info li {
+    font-size: 14px;
+    padding-left: 24px;
+    position: relative
+  }
+
+  .pict-info li::before {
+    position: absolute;
+    top: 0;
+    left: 0
+  }
+
+  .pict-info li:not(.special)::before {
+    content: '\01F5BC'
+  }
+
+  li.special::before {
+    content: '\01FA90'
+  }
+
+  .super-last {
+    margin: 15px 0 40px;
+    position: relative
+  }
+
+  .dispace sup {
+    font-size: 60%;
+    margin-right: 1px
+  }
+
+  .super-last li {
+    padding-left: 24px;
+    position: relative
+  }
+
+  .super-last li::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '\002705'
+  }
+
+  .meh b {
+    display: inline-block;
+    line-height: 0;
+    opacity: .5
+  }
+
+  .meh {
+    width: 100%;
+    margin: 0 auto;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    letter-spacing: -1px
+  }
+
+  .breath,
+  .meh1::before,
+  .meh2::after {
+    display: inline-block
+  }
+
+  .meh1 {
+    width: 49%;
+    text-align: left;
+  }
+
+  .meh1::before {
+    content: 'DSU';
+    left: 0;
+    font-weight: 700
+  }
+  .meh1::after {
+    position: absolute;
+    bottom: -3px;
+    content: '\01F468\200D\01F4BB';
+  }
+  
+  .running {
+    width: 100%;
+    display: flex;
+    white-space: nowrap;
+    margin-left: 20px;
+    overflow: hidden
+  }
+  .running .rtext {
+    opacity: 0.001960786;
+  }
+  .running:hover .rtext {
+    
+    animation: .15s iamstill linear;
+
+  }
+
+@keyframes iamstill {
+0% {
+      transform: translateX(100%);
+      opacity: 1;
+    }
+    10% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    30% {
+      opacity: 0;
+    }
+    40% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    60% {
+      opacity: 1
+    }
+    70% {
+      opacity: 0;
+    }
+    80% {
+
+      opacity: 1;
+    }
+    90%{
+      opacity: 0
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 0
+    }
+}
+  .meh2 {
+    width: 49%;
+    text-align: right
+  }
+
+  .meh2::after {
+    content: 'I JUST WANT TO TYPE';
+    right: 0;
+    font-style: bold
+  }
+
+  .last-hr {
+    margin-top: 10px
+  }
+
+
+
+  .breath {
+    animation: 1.2s infinite heartbeat
+  }
+
+  .blackhole {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px
+  }
+
+  .backearth a {
+    display: block;
+    width: 100%;
+    height: 100%
+  }
+
+  .backearth {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    animation: 3s linear infinite alternate gravity;
+    background: #000;
+    box-shadow: 0 0 25px 25px #000;
+    border: 2px solid #000;
+    transform: scale(1.3)
+  }
+  .yay {
+    opacity: .98;
+  }
+  .fact {
+    font-size: 70%;
+    position: relative;
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-style: wavy
+  }
+  .fact::after {
+    content: 'CHANGER';
+    display: block;
+    font-size: 95%;
+    font-family: system-ui, -apple-system, Arial, sans-serif;
+    padding: 2px 5px;
+    position: absolute;
+    top: -16px;
+    right: 3px;
+    background: #4c89f0;
+    color: white;
+    border-radius: 3px;
+    opacity: 0;
+    transition: all .4s 
+  }
+  .fact:hover::after {
+    opacity: 1;
+  }
+  @keyframes gravity {
+    to {
+      transform: rotate(360deg) scale(1.5)
+    }
+  }
+
+  @keyframes heartbeat {
+
+    0%,
+    100%,
+    20%,
+    40%,
+    50%,
+    60% {
+      transform: scale(.75)
+    }
+
+    10%,
+    30% {
+      transform: scale(1)
+    }
+  }
+
+
+  @keyframes tail {
+
+    0%,
+    100% {
+      width: 0
+    }
+
+    30% {
+      width: 100px
+    }
+  }
+
+  @keyframes shining {
+
+    0%,
+    100% {
+      width: 0
+    }
+
+    50% {
+      width: 30px
+    }
+  }
+
+  @keyframes shooting {
+    0% {
+      transform: translateX(0)
+    }
+
+    100% {
+      transform: translateX(300px)
+    }
+  }
+
+  @keyframes sky {
+    0% {
+      transform: rotate(45deg)
+    }
+
+    100% {
+      transform: rotate(405deg)
+    }
+  }
+
+  @keyframes shiningStar {
+
+    0%,
+    100% {
+      opacity: 1
+    }
+
+    20%,
+    60% {
+      opacity: .5
+    }
+
+    40% {
+      opacity: 0
+    }
+
+    80% {
+      opacity: .75
+    }
+  }
+
+  @keyframes eclipse {
+
+    0%,
+    100% {
+      left: -260px;
+      bottom: -450px
+    }
+
+    25% {
+      left: -185px;
+      bottom: -285px
+    }
+
+    50% {
+      left: -125px;
+      bottom: -310px
+    }
+
+    75% {
+      left: -160px;
+      bottom: -385px
+    }
+  }
+}
+
+@media (min-width:480px),
+screen and (orientation:landscape) {
+  html {
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 30%
+  }
+
+  html::before {
+    content: 'Use smartphone (potrait) for better experience!'
+  }
+  }
+
+  </style>
+</head>
+<body class="body">
+<main id="msg-text" class="msg-text">
+  <div id="shoot" class="shoot">
+    <div class="shooting-star">
+      <div class="fall"></div>
+      <div class="fall"></div>
+      <div class="fall"></div>
+      <div class="fall"></div>
+      <div class="fall"></div>
+      <div class="fall"></div>
+      <div class="fall"></div>
+      <div class="fall"></div>
+    </div>
+  </div>
+  <div id="scorpio" class="scorpio">
+    <svg width="313px" height="331px" viewBox="0 0 626 662" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g class="opacity" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path class="opacity"
+          d="M60.9743722,490.191285 C33.7856781,532.035204 20.191331,552.957164 20.191331,552.957164 C7.14877192,574.480178 0.627492364,585.241685 0.627492364,585.241685 C40.3003887,635.681015 60.1368369,660.90068 60.1368369,660.90068 C150.873109,654.124856 196.241246,650.736944 196.241246,650.736944 C257.256511,633.303072 287.764144,624.586136 287.764144,624.586136 C292.815632,543.699936 295.341375,503.256835 295.341375,503.256835 C301.723065,429.983994 304.913911,393.347574 304.913911,393.347574 C365.590878,282.480895 395.929362,227.047555 395.929362,227.047555 C421.495536,197.093353 434.278624,182.116251 434.278624,182.116251 C473.698617,166.462553 493.408614,158.635704 493.408614,158.635704 L624.847459,85.7602814">
+        </path>
+        <path class="opacity" d="M600.145095,0.706110991 C616.613337,57.4088912 624.847459,85.7602814 624.847459,85.7602814 L623.532035,183.791322"></path>
+      </g>
+    </svg>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  <div id="star" class="stars">
+  </div>
+  <div class="content">
+    <div id="greet" class="greet">
+      <i>Space</i> <small><b><sub>di</sub></b></small><b>Sta</b>tion, 29 Oktober
+      <hr/>
+      Hey, akhirnya sampai jugaa<br/>
+      Mas khawatir, soalnya ini ga sesuai rencanaa, telaaat<br/>
+      harusnya, sebelum <b>00:00</b> kamu udah ada di tempat inii<br/>
+      apalagi....<br/>
+      pesan Mas sebelumnya gada yang dibales satupun<br/>
+      tpi yaudalaya, lupakann<br/>
+      yang penting skrng udah sampe!
+      <h2>Harimu</h2>
+      Hari ini spesial, Ai! Tapi, apa kamu tau bahwa sebenarnya jauh lebih spesial dari apa yang kamu pikirkan? <i>more and moree</i>.<br/><br/>
+      Mas gk pandai nyusun kalimat, berisi kata manis, romatis, puitis atau apapun itu. Ayo! Mending ikut aja, biar Mas kasih liat.<br/><br/>
+      Ini akan berbeda, tidak seperti konsep perayaan pada umumnya. Tapi Mas yakin, ini akan berkesan, yuuukk jalaan
+      <a href="#guide" id="open-guide">SINI CANTIIK!</a>
+    </div>
+    <div id="lword" class="last-word">
+      <h2>&#127774;—&#127759;—&#127765;</h2>
+      <div class="space-wrap">
+        <div class="space-info">
+          Sinar Matahari terhalang Bumi sehingga Bulan tidak bisa memantulkan cahaya dengan sempurna.<br /><br />
+          Sebagian permukaan bulan tertutup bayangan inti (<i>umbra</i>) Bumi. Bulan akan terlihat sedikit lebih redup karena terkena bayangan kabur (<i>penumbra</i>) dari Bumi.
+        </div>
+        <div class="space">
+          <div class="bulan"></div>
+          <div class="bumi"></div>
+        </div>
+      </div>
+      <div class="fun-fact">
+        <h2>&#127756; Siklus</h2>
+        Kalo penasaran pas <i>share search history</i>, mungkin kamu udah cari tau tentang 2 hal ini. Tapi tolong, ijinkan aku <i>sharing</i> <b>sesuatu</b> tentang kedua hal ini.<br/><br/>
+        Sebelummya, ada baiknya kita tulis dulu apa itu <b>siklus</b>. Menurut <abbr title="Kamus Besar Bahasa Indonesia">KBBI</abbr>, siklus adalah putaran waktu yang di dalamnya terdapat rangkaian kejadian yang berulang-ulang secara tetap dan teratur; daur.
+        <h3>&#9329; Saros</h3>
+        Saros digunakan untuk memprediksi secara kotor suatu Gerhana (Bulan/Matahati). Pertama kali digunakan oleh <b>Edmond Halley</b>  pada tahun <b>1691</b>, <b>Saros</b> adalah siklus Gerhana yang terjadi setiap ±18 tahun 11⅓ hari (6585,3213 hari). Kemudian pada tahun 1955, <b>G. van den Bergh</b> membuat sistem penomoran (deret) pada <b>Saros</b>.<br/><br/>
+        Pada setiap siklus, Matahari, Bumi, dan Bulan akan berada dalam bidang geometri yang relatif sama, dan Gerhana yang terjadi saat itu juga hampir identik.<br/><br/>
+        Sebagai contoh, Gerhana Bulan Parsial yang terjadi hari ini merupakan deret ke-11 dari total 72 Gerhana Bulan yang ada pada <b>Siklus Saros 146</b>. Pada deret sebelumnya di Saros 146, Gerhana Bulan Parsial juga terjadi pada tanggal <b>17 Oktober 2005 pukul 19.02 WIB.</b> 
+        <h3>&#9330; Metonik</h3>
+        Tau ga, ada yang gak kalah menarik dari <b>Saros</b>! Sama-sama berhubungan dengan waktu, juga bulan. Tapi ini jauh lebih menarik sii, karna berhubungan dengan kamu juga, Ai!<br/><br/>
+        <b>Siklus Metonik</b> (bahasa Yunani: <i>enneadecaeteris</i>) adalah sebuah periode sekitar 19 tahun bagi Bulan untuk berada di fase yang sama pada waktu tertentu.<br/><br/>Siklus Metonik berlangsung selama 6.939 hari 16,5 jam, sedangkan 19 tahun matahari adalah 6.939 hari 14,5 jam. Namun, Meton dari Athena, pada abad ke-5, menganggap bahwa siklus ini tepat selama 6.940 hari.<br/><br/>
+        <h2><span class="breath">&#128153;</span>Nadi Angkasa</h2>
+        Mari kita mundur jauh kebelakang, menuju hari dimana sesuai dengan periode Siklus Metonik dari hari ini. Kamis, 28 Oktober 2004. Biasa aja ya, kyk gada yang spesial..<br/><br/>Tapi tau ga, apa yang terjadi sehari sebelum waktu lahir? Bayi juga ikut berjuang untuk membuka jalan lahirnya, berputar-putar, turun ke bawah, saat itu juga pendengarannya semakin peka dengan kondisi sekitar. Itu artinya, selain bertambahnya usia, sekarang juga memperingati 1 siklus metonik perjuangan hidupmu.<br/><br/>
+        Lagi, hal yang membuat hari ini jadi semakin spesial. 28/10/04 - 29/10/23, 1 series Metonik. Dibuka dengan Gerhana Bulan Total, ditutup dengan Gerhana Bulan Parsial dan momen pentingmu ada juga dipembukaan dan penutupan siklus. Bahkan, beberapa tahun kedepan, terjadinya Gerhana akan berdekatan dengan tanggal lahirmu.<br/><br/>Bagi orang lain, kamu juga, mungkin hal seperti ini dianggep b aja. GA! serius, ini unik banget!!! Ai, kamu adalah salah satu orang paling beruntung! Ga semua orang bisa dapet momen begini.<i>Youre im<b>part</b>ant of this universe!</i>.<br/><br/><b>Nadi A</b>ngkasa, Layaknya Nadi yang membawa sumber kehidupan dari Jantung ke seluruh tubuh. Seakan-akan, Tuhan memang menciptakanmu untuk itu, menghidupkan.<br/><br/>Aku, ya! Kau telah menghidupkan kembali hidupku yang mati. Sebelumnya biasa saja, <i>flat</i>, gada yang spesial.<br/>Kamu datang, semua berubah, duniaku menjadi lebih<br/>berwarna<sup class="fact">fact#10</sup>. <i>Thanks for all, Ai.</i> :)
+        <h2 id="love">&#128105;&#127995;&#8205;&#128640; New Started Now</h2>
+        Kalo kata kamu Ai, sekarang perayaan <b>E19</b>, 19 episode berlalu, banyak manis pait hidup yang udah kau rasakan, kamu hebat. Tegar, kuat dan terus maju. Aku bener-bener kagum banget, kamu harus gini terus ya, bahkan lebih. <i>aku pens kamu</i> :)<br/><br/>
+        Sekarang, <b>S1</b> selesai, <b>Season 2 (baru)</b> akan dimulai, buka buku baru. Aku percaya, versi baru tingkat lanjut dirimu (<i>3N, The New & Next Nadya</i>) sudah siap untuk itu semua. SEMANGAAT!!!
+      </div>
+      <div class="carousel" data-flickity='{ "pageDots": false, "lazyLoad": 1 }'>
+        <div class="carousel-cell">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAGVAQMAAADt5FSdAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAADpJREFUeNrtwQENAAAAwiD7p7bHBwwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoOj/cAAQfWnrIAAAAASUVORK5CYII=" class="carousel-cell-image"
+            data-flickity-lazyload="https://diansandiutama.github.io/nor/img/SAROS.webp" />
+        </div>
+        <div class="carousel-cell">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAGVAQMAAADt5FSdAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAADpJREFUeNrtwQENAAAAwiD7p7bHBwwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoOj/cAAQfWnrIAAAAASUVORK5CYII=" class="carousel-cell-image"
+            data-flickity-lazyload="https://diansandiutama.github.io/nor/img/METONIC.webp" />
+        </div>
+        <div class="carousel-cell">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAGVAQMAAADt5FSdAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAADpJREFUeNrtwQENAAAAwiD7p7bHBwwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoOj/cAAQfWnrIAAAAASUVORK5CYII=" class="carousel-cell-image"
+            data-flickity-lazyload="https://diansandiutama.github.io/nor/img/PARSIAL.webp" />
+        </div>
+        <div class="carousel-cell">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAGVAQMAAADt5FSdAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAADpJREFUeNrtwQENAAAAwiD7p7bHBwwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoOj/cAAQfWnrIAAAAASUVORK5CYII=" class="carousel-cell-image"
+            data-flickity-lazyload="https://diansandiutama.github.io/nor/img/TOTAL.webp" />
+        </div>
+        <div class="carousel-cell">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAGVAQMAAADt5FSdAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAADpJREFUeNrtwQENAAAAwiD7p7bHBwwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoOj/cAAQfWnrIAAAAASUVORK5CYII=" class="carousel-cell-image"
+            data-flickity-lazyload="https://diansandiutama.github.io/nor/img/ILUSTRASI.webp" />
+        </div>
+        <div class="carousel-cell">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtAAAAGVAQMAAADt5FSdAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAADpJREFUeNrtwQENAAAAwiD7p7bHBwwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALoOj/cAAQfWnrIAAAAASUVORK5CYII=" class="carousel-cell-image"
+            data-flickity-lazyload="https://diansandiutama.github.io/nor/img/SEKARANG.webp" />
+        </div>
+      </div>
+      <div class="pict-info">
+        <ol>
+          <li>Mundur 1 Saros</li>
+          <li>Mundur 1 Metonik</li>
+          <li>Gerhana Bulan Parsial (waktu lampau di slide 1)</li>
+        </ol>
+        <ol>
+          <li>Gerhana Bulan Total (waktu lampau di slide 2)</li>
+          <li>Ilustrasi</li>
+          <li class="special">Gimana, yeee. <i>I wanna</i>, <i>u tras isyue</i>. <i>i</i> terima, <i>u view once</i></li>
+        </ol>
+      </div>
+      <hr/>
+      <div class="super-last">
+        <h2 class="last-head">&#128104;&#127995;&#8205;&#128640; Once <code><small>short</small></code> More</h2>
+        Selamat ulang tahun yang ke-19, <b>Nadya Oktaviani Ramadina</b>. Tetap sehat dan bahagia yaa, teruslah tumbuh dan berkembang menjadi pribadi yang lebih baik setiap harinya. Semoga keinginan dan urusanmu diperlancar semua, <a id="horay" href="#love">Aamiin!</a>
+        <div class="last-note">
+          <h2>&#128371; Aturan#8</h2>
+          <b class="dispace"><sup>Di</sup>‘Space&#128760;</b> merupakan <code>nestedCode</code> atau kode bersarang. Artinya, selain dibangun dengan code, hasil jadi konten ini juga memiliki kode dan/atau pesan dari pengembang yang disampaikan dengan gaya tersirat.<br/><br/>
+          <ul>
+            <li>Kamu bebas mengajukan pertanyaan apapun yang berhubungan dengan <i>trip</i> ini.</li>
+            <li>Kamu wajib memberikan komentar, kritik serta saran. Ini Bertujuan untuk membuat <i><b><sup>Di</sup><u>sta</u></b>rium</i>&#128301; menjadi lebih baik lagi.</li>
+          </ul>
+          <br/>
+          <div class="blackhole">
+            <div class="backearth">
+              <a id="teleport" href="//wa.me/6285879861826?text=_Kamu%20baru%20saja%20terhisap%20dan%20keluar%20dari%20lubang%20hitam%20supermasif%20buatan%20dengan%20Bumi%20sebagai%20ujung%20yang%20memang%20sengaja%20dibuat%20untuk%20mengantarkanmu%20pulang._%0A%0A*Nadya%20Oktaviani%20Ramadina!*%0ASelamat%20datang%20kembali%20di%20Bumi!%20Selamat%20ulang%20tahun%20yang%20ke-19!%20_I%20LOVE%20U%201.005%20Days!_%20%F0%9F%92%99%0A%0A_*Kirim!*%20Ini%20sebagai%20pertanda%20bahwa%20kamu%20telah%20menyelesaikan%20*trip*%20dan%20sudah%20kembali%20dengan%20aman!%20Jangan%20lupakan%20*aturan%238*%20ya%20:)_"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="last-hr"/>
+      <div class="meh">
+        <div class="meh1">
+          <!-- span id="reveal">&#128104;&#127995;&#8205;&#128187;</span --><div class="running"><div class="rtext"><span>1.005 days after match, i still lope u.</span></div></div>
+          <!-- 
+            <s>&#128172;</s>
+            <s>&#128247;</s>
+            <s>&#128218;</s>
+            <s>&#127926;</s>
+            -->
+        </div>
+        <div class="meh2">
+          THANKS—<b>&#129517;</b>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="guide" id="guide">
+    <div id="systemguide" class="gallery js-flickity"
+      data-flickity-options='{ "cellAlign": "center","prevNextButtons": false, "adaptiveHeight": true}'>
+      <div class="gallery-cell">
+        Inget yaa, nanti kita lakuin bareng-bareng. <i>Step</i>nya harus bener, urutan, sesuai instruksi sistem. <br/>
+        Bentar, biar Mas idupin sistemnya.<br/>...<br/>
+        <b>Sistem aktif</b><br/>
+        » Tap semua teks berwana biru di setiap slide, berurutan dari yang pertama sampai akhir.<br/>
+        <i>Lets start, slide »</i>
+      </div>
+      <div class="gallery-cell">
+        <i>Selamat Datang <b><sup>Di</sup><u>sta</u></b>rium</i><br/>
+        Pertama! Jelas, inikan <b>Digital star-planetarium</b> ya, yakali terang gini. Yuk kita <a class="guide-link" href="#msg-text" id="offlamp">matiin lampu</a>nya dulu.<br/><br/> Duh ganggu juga ini teks, <a class="guide-link" href="#msg-text" id="hidetext">ilangin</a> juga yaa.
+      </div>
+      <div class="gallery-cell">
+        Coba <a class="guide-link" href="#msg-text" id="showrpion">tap</a>, lihat apa yang muncul.<br/>
+        Tau ga itu titik-titik apa? Yap, konstelasi!<br/>Rasi bintang <b>Scorpio</b>, zodiakmu.<br/><br/>Gak akurat-akurat amat sih, tapi kurang lebih begitu<br/>» Titik yang paling gede tuh <b>Antares</b>, bintang yang paling terang di konfigurasi <b><i>Scorpio</i></b>.<br/>» Yang agak gedean di sebelah kiri <b>Shaula</b>.<br/>» Di bawah tuh <b>Sargas</b>.<br/>» Nah, kalo kanan atas itu, namanya <b>Beta Scorpii</b> atau <b>Graffias Acrab</b>.<br/><br/>
+        Gini doang kurang estetik sih, <a class="guide-link" href="#msg-text" id="connecthis">sambungkan</a> rasinya yuk.<br/>Kayaknya masih kurang menarik gaksii? Coba tambahin <a class="guide-link" id="starbg" href="#msg-text">bintang</a> juga yuk.<br/><br/>Duh, kok masih keliatan biasa aja, yaa. Yaampun, aku lupa! Mereka kalah cantik ama kamu Ai, CUP. &#129392;
+      </div>
+      <div class="gallery-cell">
+        <b><i>Almost done!</i></b><br/>
+        Ini bagian terpenting <i>space journey</i> kita, Ai. Agak <i>tricky</i>. Semoga berhasil ya.<br/>
+        » Duduk rileks, bersila mungkin lebih bagus,<br/>
+        » Pegang bagian bawah kanan & kiri HP pake kedua tangan kamu,<br/>
+        » Arahin keatas, kaya mau foto langit,<br/>
+        <small>Ga perlu keatas-atas amat sih, depan badan juga boleh, mentok depan muka. Yang penting, kamu masih bisa lihat layar.</small><br/>
+        » 3...2.. 1! <a href="#msg-text" class="guide-link" id="activefall"><b>SHOOT!!!</b></a><br/>
+        » <i>Find the best angle, u'll see it.</i><br/>
+        » slide...<br/>
+      </div>
+      <div class="gallery-cell">Apa yang kamu liat, Ai? <span class="rotate">&#127776;</span> <i>shooting stars, rite?</i><br/>
+        Tahan yaa.. jangan sampe lepas,<br/>
+        Kalo sesuai arahan sistem, kamu sadar gesturmu sekarang, kan?<br/><br/>Malam cerah dengan bintang yang tak terhitung. Lihat, sebagian dari mereka membuka jalan. Maka, panjatan doa akan lebih mudah menembus angkasa.
+      </div>
+      <div class="gallery-cell">
+        <span id="ourbtn">Mau <a href="#msg-text">liat</a>?</span>
+        <div id="ourwish">
+          <p id="mywish" class="doa">
+            Kamu adalah perempuan yang sangat tangguh luar biasa. Selalu bangkit ketika jatuh, dan tetap maju meski penuh liku.<br/><br/>
+            Kamu juga begitu hebat, secara ga langsung, kamu bisa membuatku lebih bisa mamahami apa itu perjuangan, kesabaran, tanggung jawab. Tentu masih banyak, ga mungkin aku sebut semua, akan sangat panjang nanti. Makasih, Ai!<br/><br/>
+            Semoga, Tuhan selalu memberikanmu kesehatan, kesejahteraan, kebahagiaan, dan keberkahan disetiap langkahmu. Semoga, apapun yang kamu kerjakan selalu sejalan dengan kehendakNya. <br/><br/>
+            Maaf tidak ada hal spesial yang bisa kuberi. Hanya bisa menulis apa adanya, yang jauh dari kata puitis. Bahkan, akupun tidak memiliki doa yang benar-benar khusus untuk dipanjatkan pada hari spesialmu.<br/><br/>Karena dari sebelum hari ini dan seterusnya, doa terbaikku pasti selalu kupanjatkan untukmu. <b><i>Giliranmu, berdoalah</i></b><br/>
+            Percayalah! semesta seisinya akan tau apa yang Nadya pinta :)<br/>
+            <i>...</i><br/>
+            <i>...</i><br/>
+            <i>...</i><br/>
+            Aamiin.<br/>
+          </p>
+        </div>
+      </div>
+      <div class="gallery-cell">
+        <i>Alldone, <a href="#msg-text" class="last-guide" id="last-guide">thanks</a></i>.
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+var A = window.matchMedia("(max-width: 480px)");
+function B(a) {
+  if (a.matches) {
+    var G = function(m) {
+      var u = m.alpha;
+      beta = m.beta;
+      gamma = m.gamma;
+      null !== (container = document.getElementById("shoot")) && (110 <= beta && 180 >= beta && -45 <= gamma && 45 >= gamma && 50 <= u && 150 >= u ? container.classList.add("jatuh", "opacity") : container.classList.remove("jatuh"));
+    };
+    wrapper = (a = document).body;
+    openTips = a.getElementById("open-guide");
+    theGuide = a.getElementById("guide");
+    offLamp = a.getElementById("offlamp");
+    hideText = a.getElementById("hidetext");
+    showStar = a.getElementById("showrpion");
+    connestStar = a.getElementById("connecthis");
+    rasi = a.getElementById("scorpio");
+    starsBg = a.getElementById("star");
+    aimStar = a.getElementById("activefall");
+    shootStar = a.getElementById("shoot");
+    starBg = a.getElementById("starbg");
+    lastStep = a.getElementById("last-guide");
+    lastWord = a.getElementById("lword");
+    ourWish = a.getElementById("ourwish");
+    myWish = a.getElementById("mywish");
+    ourBtn = a.getElementById("ourbtn");
+    hideAll = a.querySelectorAll("#scorpio, #star, #guide, #shoot, #greet");
+    clickedInside = !1;
+    clickedOutside = !0;
+    openTips.addEventListener("click", function() {
+      clickedInside ? console.log("nope") : (alert("Perhatian!!! Isi konten akan mengandung unsur halu, sotoy, dan cocokologi berlebih. Harap bijak dalam menanggapi!"),theGuide.classList.add("uknow", "opacity"), openTips.style.display = "none", clickedInside = !0, clickedOutside = !1);
+    });
+    ourBtn.addEventListener("click", function() {
+      this && clickedInside ? (myWish.classList.add("muncul"), ourBtn.style.display = "none", clickedInside = !1) : (myWish.classList.remove("muncul"), myWish.classList.add("ngumpet"), clickedInside = !0);
+    });
+    offLamp.addEventListener("click", function() {
+      wrapper.classList.add("magic", "opacity");
+    });
+    hideText.addEventListener("click", function() {
+      document.getElementById("greet").classList.add("hidethis", "opacity");
+    });
+    showStar.addEventListener("click", function() {
+      rasi.classList.add("sulap", "opacity");
+    });
+    connestStar.addEventListener("click", function() {
+      rasi.classList.add("sulapp", "opacity");
+    });
+    starBg.addEventListener("click", function() {
+      starsBg.classList.add("noisy", "opacity");
+    });
+    aimStar.addEventListener("click", function() {
+      clickedOutside || (window.addEventListener("deviceorientation", G), aimStar.style.display = "none", clickedInside = !0, clickedOutside = !1);
+    });
+    lastStep.addEventListener("click", function() {
+      for (x = 0; x < hideAll.length; x++) {
+        hideAll[x].remove();
+      }
+      lastWord.classList.add("akhirkata");
+    });
+    document.getElementById("teleport").addEventListener("contextmenu", function(event) {
+      event.preventDefault();
+    });
+    for (i = 0; 170 > i; i++) {
+      a = document.createElement("span");
+      a.classList.add("opacity");1
+      var C = Math.round(1 * Math.random()) + 1, H = Math.round(100 * Math.random()), I = Math.round(100 * Math.random()), J = 9 * Math.random() + 12, K = 8 * Math.random() + 3;
+      a.style.height = C + "px";
+      a.style.width = C + "px";
+      a.style.top = H + "%";
+      a.style.left = I + "%";
+      a.style.animation = J + "s shiningStar linear infinite";
+      a.style.animationDelay = K + "s";
+      a.style.opacity = "." + Math.floor(10 * Math.random()) + "1";
+      starsBg.appendChild(a);
+    }
+    window.onload = function() {
+      function m(d, h, r) {
+        return "rgb(" + d + "," + h + "," + r + ")";
+      }
+      function u(d) {
+        this.frame = 0;
+        this.i = document.createElement("div");
+        this.l = document.createElement("div");
+        this.l.classList.add('yay');
+        this.i.appendChild(this.l);
+        var h = this.i.style, r = this.l.style;
+        h.position = "absolute";
+        h.width = 5 + 9 * b() + "px";
+        h.height = 5 + 9 * b() + "px";
+        r.width = "100%";
+        r.height = "100%";
+        r.backgroundColor = d();
+        h.perspective = "50px";
+        h.transform = "rotate(" + 360 * b() + "deg)";
+        this.axis = "rotate3D(" + v(360 * b()) + "," + v(360 * b()) + ",0,";
+        this.j = 360 * b();
+        this.m = .4 + .29999999999999993 * b();
+        r.transform = this.axis + this.j + "deg)";
+        this.x = window.innerWidth * b();
+        this.y = -100;
+        this.dx = D(-.1 + .2 * b());
+        this.dy = .13 + .18 * b();
+        h.left = this.x + "px";
+        h.top = this.y + "px";
+        this.g = function() {
+          for (var c = [.1, .9], e = .8, q = [0, 1]; e;) {
+            var g, k, l = e * b(), f = 0, p = c.length;
+            for (e = 0; f < p; f += 2) {
+              if (k = c[f], l < e + (g = c[f + 1] - k)) {
+                q.push(l += k - e);
+                break;
+              }
+              e += g;
+            }
+            e = l - .1;
+            g = l + .1;
+            for (f = c.length - 1; 0 < f; f -= 2) {
+              k = c[p = f - 1], l = c[f], k >= e && k < g ? l > g ? c[p] = g : c.splice(p, 2) : k < e && l > e && (l <= g ? c[f] = e : c.splice(f, 0, e, g));
+            }
+            f = 0;
+            p = c.length;
+            for (e = 0; f < p; f += 2) {
+              e += c[f + 1] - c[f];
+            }
+          }
+          return q.sort();
+        }();
+        this.h = [];
+        d = 1;
+        for (var w = this.g.length - 1; d < w; ++d) {
+          this.h[d] = 100 * b();
+        }
+        this.h[0] = this.h[w] = 100 * b();
+        this.update = function(c, e) {
+          this.frame += e;
+          this.x += this.dx * e;
+          this.y += this.dy * e;
+          this.j += this.m * e;
+          for (var q, g, k = this.frame % 7777 / 7777, l = 0, f = 1; k >= this.g[f];) {
+            l = f++;
+          }
+          var p = (q = this.h[l], g = this.h[f], (1 - v((k - this.g[l]) / (this.g[f] - this.g[l]) * E)) / 2 * (g - q) + q);
+          return k *= L, h.left = this.x + p * v(k) + "px", h.top = this.y + p * D(k) + "px", r.transform = this.axis + this.j + "deg)", this.y > c + 100;
+        };
+      }
+      var b = Math.random, v = Math.cos, D = Math.sin, E = Math.PI, L = 2 * E, F = void 0, z = void 0, t = [], y = [function() {
+        return m(200 * b() | 0, 200 * b() | 0, 200 * b() | 0);
+      }, function() {
+        var d = 200 * b() | 0;
+        return m(200, d, d);
+      }, function() {
+        var d = 200 * b() | 0;
+        return m(d, 200, d);
+      }, function() {
+        var d = 200 * b() | 0;
+        return m(d, d, 200);
+      }, function() {
+        return m(200, 100, 200 * b() | 0);
+      }, function() {
+        return m(200 * b() | 0, 200, 200);
+      }, function() {
+        var d = 256 * b() | 0;
+        return m(d, d, d);
+      }, function() {
+        return y[.5 > b() ? 1 : 2]();
+      }, function() {
+        return y[.5 > b() ? 3 : 5]();
+      }, function() {
+        return y[.5 > b() ? 2 : 4]();
+      }], n = document.createElement("div");
+      n.style.position = "fixed";
+      n.style.top = "0";
+      n.style.left = "0";
+      n.style.width = "100%";
+      n.style.height = "0";
+      n.style.overflow = "visible";
+      n.style.zIndex = "9999";
+      document.getElementById("horay").addEventListener("click", function() {
+        (function() {
+          if (!z) {
+            document.body.appendChild(n);
+            var d = y[0];
+            (function w() {
+              var c = new u(d);
+              t.push(c);
+              n.appendChild(c.i);
+              F = setTimeout(w, 30 * b());
+            }(0));
+            var h = void 0;
+            requestAnimationFrame(function e(c) {
+              var q = h ? c - h : 0;
+              h = c;
+              c = window.innerHeight;
+              for (var g = t.length - 1; 0 <= g; --g) {
+                t[g].update(c, q) && (n.removeChild(t[g].i), t.splice(g, 1));
+              }
+              if (F || t.length) {
+                return z = requestAnimationFrame(e);
+              }
+              document.body.removeChild(n);
+              z = void 0;
+            });
+          }
+        }());
+      });
+    };
+  } else {
+    alert("use smartphone (potrait), pls"), document.body.remove();
+  }
+}
+"use strict";
+B(A);
+A.addListener(B);
+
+
+
+</script>
+</body>
+
+</html>
