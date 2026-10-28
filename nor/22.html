@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<!-- i just want to `code` -->
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#090d22">
+<title>22</title>
+<meta name="description" content="A Year of Woven Dreams">
+<style>
+html{background:transparent}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --i:cubic-bezier(.4,0,1,1);--x:cubic-bezier(.16,1,.3,1);
+  --e:cubic-bezier(.4,0,.2,1);--o:cubic-bezier(.22,1,.36,1);
+  --bg-dark:#090d22;--bg-mid:#141830;
+  --hi:rgba(255,255,255,.92);--lo:rgba(255,255,255,.08);--accent:rgba(91,110,245,.25);
+  --emboss:0 -1px 0 rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.04);--halo:0 0 6px var(--bg-dark),0 0 2px var(--bg-dark),0 0 10px var(--bg-dark),0 0 16px rgba(9,13,34,.90);
+}
+body{
+  font-family:'SF Mono','Courier New',monospace;
+  background:linear-gradient(145deg,var(--bg-dark),var(--bg-mid));
+  display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden;
+}
+
+#particles{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;transition:z-index 0s linear .200s}
+.pt{position:absolute;background:rgba(255,255,255,.55);border-radius:50%;pointer-events:none;will-change:transform,opacity;backface-visibility:hidden}
+
+#loader{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:100;opacity:0;contain:layout style;transition:opacity .524s var(--o)}
+#loader.loader-active{opacity:1}
+#loader.hidden{opacity:0!important;pointer-events:none;transition:none}
+#date{font-size:26px;font-weight:500;color:var(--hi);letter-spacing:4px;margin-bottom:26px;font-variant-numeric:tabular-nums;text-align:center;text-shadow:0 0 18px var(--accent);opacity:0;transform:translateY(10px);transition:opacity .524s var(--o),transform .524s var(--o)}
+#date.warp  {animation:spaceWarp 3.589s ease-in-out infinite}
+#date.settle{animation:hologramSettle 3.589s var(--e)}
+#date.arrival{animation:arrivalSettle 1.372s var(--o) infinite}
+#date.special{animation:none}
+@keyframes spaceWarp{
+  0%,100%{letter-spacing:4px;   text-shadow:0 0 18px rgba(91,110,245,.45),0 0 36px rgba(91,110,245,.20)}
+  30%    {letter-spacing:4.3px; text-shadow:0 0 22px rgba(110,155,255,.55),0 0 44px rgba(110,155,255,.25),1px 0 0 rgba(110,155,255,.25),-1px 0 0 rgba(255,110,140,.15)}
+  60%    {letter-spacing:3.85px;text-shadow:0 0 20px rgba(120,175,255,.50),0 0 40px rgba(120,175,255,.22)}
+  80%    {letter-spacing:4.15px;text-shadow:0 0 24px rgba(91,140,255,.52),0 0 46px rgba(91,140,255,.26),-1px 0 0 rgba(110,155,255,.20),1px 0 0 rgba(255,110,140,.12)}
+}
+@keyframes hologramSettle{
+  from{letter-spacing:4.2px;text-shadow:0 0 22px rgba(110,155,255,.50),0 0 44px rgba(110,155,255,.25)}
+  to  {letter-spacing:4px;  text-shadow:0 0 18px rgba(91,110,245,.35),0 0 36px rgba(91,110,245,.15)}
+}
+@keyframes arrivalSettle{
+  0%  {letter-spacing:4px;   text-shadow:0 0 18px rgba(91,110,245,.35),0 0 36px rgba(91,110,245,.15)}
+  10% {letter-spacing:4.5px; text-shadow:0 0 10px rgba(255,255,255,.65),0 0 26px rgba(155,195,255,.62),0 0 58px rgba(91,128,255,.50),0 0 108px rgba(91,110,245,.26)}
+  28% {letter-spacing:4.3px; text-shadow:0 0 8px rgba(255,255,255,.45),0 0 22px rgba(135,180,255,.48),0 0 50px rgba(91,120,255,.36),0 0 90px rgba(91,110,245,.18)}
+  62% {letter-spacing:4.12px;text-shadow:0 0 5px rgba(255,255,255,.28),0 0 18px rgba(115,160,255,.36),0 0 40px rgba(91,115,255,.26),0 0 72px rgba(91,110,245,.13)}
+  100%{letter-spacing:4px;   text-shadow:0 0 18px rgba(91,110,245,.35),0 0 36px rgba(91,110,245,.15)}
+}
+.bar-wrap{position:relative;width:288px;opacity:0;transform:translateY(10px);transition:opacity .524s var(--o) .124s,transform .524s var(--o) .124s}
+#loader.loader-entered #date{opacity:1;transform:translateY(0)}
+#loader.loader-entered .bar-wrap{opacity:1;transform:translateY(0)}
+.bar{width:288px;height:2px;background:var(--lo);border-radius:10px;position:relative;overflow:hidden;contain:layout style;box-shadow:0 1px 0 rgba(255,255,255,.05),0 -1px 0 rgba(0,0,0,.4)}
+#morse-bg{position:absolute;inset:0;display:flex;align-items:center;z-index:1}
+#bar-overlay{position:absolute;inset:0 auto 0 0;width:0%;background:transparent;z-index:2;overflow:hidden;will-change:width;transform:translateZ(0)}
+#morse-fg{position:absolute;left:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;height:100%;white-space:nowrap}
+.morse-dot,.morse-dash{height:2px;flex-shrink:0}
+.morse-dot{border-radius:50%}
+.morse-dash{border-radius:2px}
+.morse-gap{flex-shrink:0}
+#morse-bg .morse-dot,#morse-bg .morse-dash{background:rgba(255,255,255,.10)}
+#morse-fg .morse-dot,#morse-fg .morse-dash{background:rgba(255,255,255,.88);box-shadow:0 0 4px rgba(91,110,245,.40)}
+#bar-cursor{position:absolute;top:-2px;width:2px;height:6px;background:rgba(200,215,255,.85);box-shadow:0 0 6px rgba(91,110,245,.65),0 0 12px rgba(91,110,245,.28);border-radius:1px;pointer-events:none;z-index:5;opacity:0;will-change:left,opacity;transform:translateZ(0)}
+
+#splash{position:fixed;inset:0;display:flex;justify-content:center;align-items:center;z-index:10;opacity:0;pointer-events:none;will-change:opacity;transform:translateZ(0)}
+#splash.visible{pointer-events:auto;touch-action:none}
+.splash-inner{text-align:center;width:100%;max-width:466px;position:relative;z-index:10;opacity:0;transform:translateY(16px);transition:opacity .524s var(--o),transform .524s var(--o)}
+.splash-inner.visible{opacity:1;transform:translateY(0)}
+.digits{display:flex;gap:16px;justify-content:center;margin-bottom:68px;transition:opacity .524s var(--e),scale .848s var(--o),filter .848s var(--o)}
+.digit{position:relative;width:84px;height:136px}
+.seg{
+  position:absolute;
+  background:linear-gradient(168deg,#1a2038 0%,#121830 38%,#0c1022 100%);
+  opacity:0;cursor:grab;user-select:none;touch-action:none;
+  border:1px solid rgba(120,140,255,.10);
+  border-top-color:rgba(190,205,255,.16);
+  border-bottom-color:rgba(0,0,0,.55);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 0 0 1px rgba(255,255,255,.015),inset 0 -2px 4px rgba(0,0,0,.45),inset 0 6px 10px -6px rgba(140,160,255,.07),0 1px 2px rgba(0,0,0,.55),0 4px 6px rgba(0,0,0,.38),0 6px 16px rgba(0,0,0,.22);
+  border-radius:4px;will-change:transform;contain:layout style;backface-visibility:hidden;
+  transition:border-color .20s var(--e),box-shadow .20s var(--e);
+}
+.seg:hover{border-color:rgba(91,110,245,.26);border-top-color:rgba(200,215,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.13),inset 0 0 0 1px rgba(255,255,255,.02),inset 0 -2px 4px rgba(0,0,0,.45),inset 0 6px 10px -6px rgba(140,160,255,.10),0 1px 2px rgba(0,0,0,.55),0 4px 6px rgba(0,0,0,.38),0 0 16px rgba(91,110,245,.12)}
+.seg.dragging{cursor:grabbing;z-index:1000;border-color:rgba(91,110,245,.34);border-top-color:rgba(200,215,255,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 4px rgba(0,0,0,.55),0 2px 4px rgba(0,0,0,.45),0 16px 26px rgba(0,0,0,.55),0 26px 42px rgba(0,0,0,.30),0 0 16px rgba(91,110,245,.14);transition:none}
+.seg.loaded{animation:segPowerOn 1.372s var(--o) 1 both}
+@keyframes segPowerOn{0%{opacity:0;transform:scale(.95)}40%{opacity:.35;transform:scale(1.006)}70%{opacity:.72}100%{opacity:1;transform:scale(1)}}
+.seg.on.loaded{animation:segPowerOnGlow 1.372s var(--e) 1 both}
+@keyframes segPowerOnGlow{0%{opacity:0;transform:scale(.92)}35%{opacity:.30;transform:scale(1.008)}65%{opacity:.72;transform:scale(1.003)}100%{opacity:1;transform:scale(1)}}
+.seg.on{background:linear-gradient(160deg,#7dcfff 0%,#4eaaff 30%,#3190f0 70%,#2e7ee8 100%);opacity:0;border-color:rgba(160,210,255,.22);border-top-color:rgba(230,245,255,.55);border-bottom-color:rgba(20,70,150,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.60),inset 0 6px 10px -6px rgba(255,255,255,.28),inset 0 -2px 4px rgba(10,50,130,.40),0 1px 2px rgba(10,40,100,.45),0 4px 10px rgba(40,120,230,.28),0 0 16px rgba(60,150,255,.14);transition:filter .324s var(--e),border-color .200s var(--e),box-shadow .200s var(--e)}
+.seg.on::after{content:'';position:absolute;inset:-8px;border-radius:12px;background:radial-gradient(ellipse at 38% 25%,rgba(100,195,255,.05) 0%,transparent 60%);pointer-events:none;opacity:.75}
+body.modal-open .seg{animation-play-state:paused}
+.seg.on.theta-home{animation:thetaHeart 1.372s ease-in-out infinite;transition:none}
+@keyframes thetaHeart{
+  0%   {filter:hue-rotate(0deg)  brightness(1)   }
+  8%   {filter:hue-rotate(38deg) brightness(1.12)}
+  16%  {filter:hue-rotate(8deg)  brightness(1.03)}
+  24%  {filter:hue-rotate(28deg) brightness(1.08)}
+  36%  {filter:hue-rotate(0deg)  brightness(1)   }
+  100% {filter:hue-rotate(0deg)  brightness(1)   }
+}
+@keyframes segLockFlash{
+  0%  {border-color:rgba(140,190,255,.65);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -2px 4px rgba(0,0,0,.45),0 1px 2px rgba(0,0,0,.5),0 3px 7px rgba(0,0,0,.28),0 0 12px rgba(91,150,255,.35)}
+  100%{border-color:rgba(255,255,255,.04)}
+}
+.seg.locked{animation:segLockFlash .200s var(--o) both}
+
+#modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;pointer-events:none}
+#modal-backdrop{position:absolute;inset:0;background:rgba(4,7,20,.80);contain:strict;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transform:translateZ(0);will-change:opacity;transition:opacity .524s var(--e)}
+#modal.open{pointer-events:auto}
+#modal.open #modal-backdrop{opacity:1}
+#modal-card{position:relative;z-index:2;width:min(466px,90vw);background:linear-gradient(160deg,#070a1a 0%,#0b0f22 60%,#0d1228 100%);border:1px solid rgba(91,110,245,.28);border-top-color:rgba(170,190,255,.38);border-bottom-color:rgba(0,0,0,.6);overflow:hidden;contain:layout style;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 -1px 0 rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.02),0 0 0 1px rgba(0,0,0,.45),0 2px 4px rgba(0,0,0,.45),0 32px 80px rgba(0,0,0,.70),0 0 80px rgba(91,110,245,.12);opacity:0;transform:translateY(16px) scale(.982);will-change:transform,opacity;transition:opacity .524s var(--o),transform .524s var(--o),border-color .324s var(--e)}
+#modal.open #modal-card{opacity:1;transform:translateY(0) scale(1)}
+#modal-card::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:4px;overflow:hidden;opacity:0;will-change:opacity;transform:translateZ(0);transition:opacity .524s var(--o),filter .324s var(--e);background:radial-gradient(ellipse 55% 40% at 15% 20%,rgba(91,110,245,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 35% at 88% 75%,rgba(77,163,255,.06) 0%,transparent 65%),radial-gradient(ellipse 30% 25% at 72% 12%,rgba(140,100,255,.04) 0%,transparent 60%),radial-gradient(circle 1px at 8% 12%,rgba(255,255,255,.30) 0%,transparent 100%),radial-gradient(circle 1px at 23% 44%,rgba(200,215,255,.22) 0%,transparent 100%),radial-gradient(circle 1px at 38% 8%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(circle 1px at 55% 31%,rgba(200,215,255,.25) 0%,transparent 100%),radial-gradient(circle 1px at 67% 56%,rgba(255,255,255,.20) 0%,transparent 100%),radial-gradient(circle 1px at 80% 18%,rgba(200,215,255,.28) 0%,transparent 100%),radial-gradient(circle 1px at 91% 42%,rgba(255,255,255,.16) 0%,transparent 100%),radial-gradient(circle 1px at 14% 68%,rgba(200,215,255,.20) 0%,transparent 100%),radial-gradient(circle 1px at 44% 79%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(circle 1px at 76% 85%,rgba(200,215,255,.22) 0%,transparent 100%),radial-gradient(circle 1px at 30% 92%,rgba(255,255,255,.14) 0%,transparent 100%),radial-gradient(circle 1px at 62% 95%,rgba(200,215,255,.16) 0%,transparent 100%),radial-gradient(circle 1px at 5% 82%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(circle 1px at 88% 92%,rgba(200,215,255,.20) 0%,transparent 100%),radial-gradient(circle 1.5px at 50% 22%,rgba(180,200,255,.22) 0%,transparent 100%),radial-gradient(circle 1.5px at 18% 55%,rgba(255,255,255,.18) 0%,transparent 100%),radial-gradient(circle 1.5px at 84% 60%,rgba(180,200,255,.20) 0%,transparent 100%)}
+#modal.open #modal-card::before{opacity:1}
+#modal-card.theta-special{border-color:rgba(120,80,255,.32)}
+#modal-card.theta-special::before{filter:hue-rotate(200deg) saturate(1.4)}
+#modal-card.theta-special .mc-corner{border-color:rgba(120,80,255,.60)}
+#modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 26px 16px;border-bottom:1px solid rgba(255,255,255,.06);position:relative;z-index:1}
+#modal-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,rgba(91,110,245,.50) 15%,rgba(120,150,255,.90) 50%,rgba(91,110,245,.50) 85%,transparent 100%);pointer-events:none}
+#modal-label,#modal-counter,#modal-close{opacity:0;transform:translateY(-4px);transition:opacity .200s var(--o),transform .324s var(--o)}
+#modal.open #modal-label  {opacity:1;transform:translateY(0);transition-delay:.200s}
+#modal.open #modal-counter{opacity:1;transform:translateY(0);transition-delay:.324s}
+#modal.open #modal-close  {opacity:1;transform:translateY(0);transition-delay:.524s,.524s,0s,0s}
+#modal-label{font-size:10px;letter-spacing:6px;color:rgba(190,205,255,.92);text-transform:uppercase}
+#modal-counter{font-size:10px;letter-spacing:4px;color:rgba(185,200,255,.80)}
+#modal-counter .inf-sym{font-size:16px;line-height:1;vertical-align:middle}
+#modal-label::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:rgba(77,210,140,.75);box-shadow:0 0 5px rgba(77,210,140,.55);margin:0 9px 0 0;vertical-align:middle;animation:statusBlink 3.589s ease-in-out infinite}
+@keyframes statusBlink{0%,100%{opacity:1}50%{opacity:.28}}
+#modal-close{background:none;border:none;cursor:pointer;padding:4px;color:rgba(205,215,255,.80);font-size:16px;line-height:1;font-family:inherit;text-shadow:var(--emboss);transition:opacity .200s var(--o),transform .324s var(--o),color .200s var(--e),filter .124s var(--e)}
+#modal-close:hover {color:#fff}
+#modal-close:active{filter:opacity(.55)}
+#modal-body{padding:26px 26px 26px;min-height:162px;position:relative;overflow:hidden;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.10) 100%);box-shadow:inset 0 4px 10px rgba(0,0,0,.50),inset 0 1px 0 rgba(0,0,0,.60),inset 0 -1px 0 rgba(255,255,255,.04)}
+#modal-body::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.012) 3px,rgba(255,255,255,.012) 4px);pointer-events:none;z-index:0}
+#modal-body::after{content:'';position:absolute;inset:0 0 auto 0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(91,110,245,.30) 15%,rgba(140,180,255,.85) 50%,rgba(91,110,245,.30) 85%,transparent 100%);opacity:0;pointer-events:none;z-index:5}
+#modal-body.sweeping::after{animation:panelSweep .324s var(--e) .124s forwards}
+@keyframes panelSweep{0%{transform:translateY(0);opacity:0}12%{opacity:1}86%{opacity:.40}100%{transform:translateY(158px);opacity:0}}
+#modal-inner{display:flex;flex-direction:column;gap:10px}
+#modal-inner.data-out{animation:dataOut .124s var(--i) both}
+#modal-inner.data-in {animation:dataIn  .324s var(--o) both}
+@keyframes dataOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-5px)}}
+@keyframes dataIn {from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+#modal-inner.data-in #modal-seg-id{animation:lineIn .200s var(--o) .000s both}
+#modal-inner.data-in #modal-title  {animation:lineIn .324s var(--o) .076s both}
+#modal-inner.data-in #modal-text   {animation:lineIn .324s var(--o) .200s both}
+@keyframes lineIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+#modal.open #modal-inner{animation:none}
+#modal-inner.modal-entering #modal-seg-id {animation:lineIn .324s var(--o) .200s both}
+#modal-inner.modal-entering #modal-title  {animation:lineIn .324s var(--o) .324s both}
+#modal-inner.modal-entering #modal-text   {animation:lineIn .324s var(--o) .524s both}
+#modal-seg-id{font-size:10px;letter-spacing:4px;color:rgba(140,170,255,.95)}
+#modal-seg-id::before{content:'//';margin-right:6px;opacity:.40;letter-spacing:1px}
+#modal-title {font-size:21px;letter-spacing:3px;color:#f2f6ff}
+#modal-title:empty{display:none}
+#modal-text  {font-size:13px;letter-spacing:.5px;line-height:1.85;color:rgba(214,223,247,.86);transition:opacity .200s var(--e)}
+
+#modal-text .hot{position:relative;display:inline-block;cursor:pointer;outline:none;color:rgba(232,238,255,.98);-webkit-tap-highlight-color:transparent;padding:0 2px;margin:0 -2px;animation:hotGlow 3.589s ease-in-out infinite;transition:color .324s var(--e),text-shadow .324s var(--e),opacity .124s var(--e)}
+#modal-text .hot:hover,#modal-text .hot:focus-visible{color:#fff;animation:none;text-shadow:0 0 14px rgba(140,165,255,.55),0 0 34px rgba(100,135,255,.26)}
+#modal-text .hot:active{opacity:.55}
+@keyframes hotGlow{0%,100%{text-shadow:0 0 6px rgba(140,165,255,.16),0 0 14px rgba(100,135,255,.07)}50%{text-shadow:0 0 10px rgba(140,165,255,.40),0 0 24px rgba(100,135,255,.17)}}
+
+#modal-text .sc-r{display:block;white-space:pre}
+#modal-text .sc-c{display:inline-block;width:var(--cw,auto);vertical-align:top;transition:color .324s var(--e),opacity .324s var(--e)}
+#modal-text .sc-c.on{color:rgba(150,182,255,.95);opacity:.618}
+#modal-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(91,110,245,.18) 20%,rgba(120,150,255,.28) 50%,rgba(91,110,245,.18) 80%,transparent);transform:scaleX(0);transform-origin:left center;transition:transform .524s var(--o)}
+.mc-corner{position:absolute;width:10px;height:10px;border-color:rgba(91,110,245,.55);border-style:solid;z-index:20;pointer-events:none;opacity:0;transition:opacity .524s var(--o),border-color .324s var(--e)}
+#modal.open .mc-corner{opacity:1}
+.mc-tl{top:-1px;   left:-1px;  border-width:1.5px 0 0 1.5px}
+.mc-tr{top:-1px;   right:-1px; border-width:1.5px 1.5px 0 0}
+.mc-bl{bottom:-1px;left:-1px;  border-width:0 0 1.5px 1.5px}
+.mc-br{bottom:-1px;right:-1px; border-width:0 1.5px 1.5px 0}
+#modal-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 26px 16px;border-top:1px solid rgba(255,255,255,.06);opacity:0;transform:translateY(5px);transition:opacity .324s var(--o),transform .324s var(--o);position:relative;z-index:1}
+#modal.open #modal-nav{opacity:1;transform:translateY(0);transition-delay:.524s}
+#modal-nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(91,110,245,.20) 30%,rgba(91,110,245,.20) 70%,transparent);pointer-events:none}
+.nav-btn{background:none;border:none;border-radius:2px;color:rgba(205,218,255,.92);font-family:inherit;font-size:10px;letter-spacing:4px;padding:10px 0;white-space:nowrap;cursor:pointer;text-shadow:var(--emboss);transition:color .200s var(--e),opacity .200s var(--e)}
+#modal-prev{padding-right:10px}
+#modal-next{padding-left:10px}
+.nav-btn:hover   {color:#fff}
+.nav-btn:active  {opacity:.60}
+.nav-btn:disabled{opacity:.236;cursor:not-allowed}
+#modal-dots{display:flex;gap:4px;align-items:center}
+.modal-dot{width:4px;height:4px;border-radius:2px;background:rgba(91,110,245,.28);flex-shrink:0;transition:width .324s var(--o),background .200s var(--e),box-shadow .200s var(--e),opacity .200s var(--e)}
+.modal-dot.active   {width:16px;background:linear-gradient(180deg,rgba(160,185,255,.95),rgba(100,135,255,.75));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 6px rgba(91,110,245,.40)}
+.modal-dot.available{background:rgba(91,110,245,.38);box-shadow:inset 0 1px 2px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.05)}
+
+#modal-card{--ac:91,110,245}
+#modal-spec{display:none;flex:1;justify-content:space-between;gap:16px;padding:10px 0;font-size:10px;letter-spacing:4px;color:rgba(205,218,255,.92);text-shadow:var(--emboss)}
+#modal.single #modal-spec{display:flex}
+#modal.single #modal-prev,#modal.single #modal-dots,#modal.single #modal-next{display:none}
+#modal.single #modal-card{border-color:rgba(var(--ac),.24);border-top-color:rgba(var(--ac),.40);transform-origin:var(--ox,50%) var(--oy,50%);transform:scale(.382);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 -1px 0 rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.02),0 0 0 1px rgba(0,0,0,.45),0 2px 4px rgba(0,0,0,.45),0 32px 80px rgba(0,0,0,.70),0 0 80px rgba(var(--ac),.05)}
+#modal.single.open #modal-card{transform:scale(1)}
+#modal.single #modal-card.theta-special::before{filter:none}
+#modal.single #modal-card .mc-corner{border-color:rgba(var(--ac),.46)}
+#modal.single #modal-header::before{background:linear-gradient(90deg,transparent 0%,rgba(var(--ac),.34) 15%,rgba(var(--ac),.62) 50%,rgba(var(--ac),.34) 85%,transparent 100%)}
+#modal.single #modal-body::after{background:linear-gradient(90deg,transparent 0%,rgba(var(--ac),.22) 15%,rgba(var(--ac),.58) 50%,rgba(var(--ac),.22) 85%,transparent 100%)}
+#modal.single #modal-label::before{background:rgba(var(--ac),.75);box-shadow:0 0 4px rgba(var(--ac),.38)}
+#modal.single #modal-seg-id{color:rgba(var(--ac),.86)}
+#modal.single #modal-divider{background:linear-gradient(90deg,transparent,rgba(var(--ac),.14) 20%,rgba(var(--ac),.24) 50%,rgba(var(--ac),.14) 80%,transparent)}
+.modal-dot.locked   {width:auto;height:auto;background:none;border-radius:0;font-size:6px;line-height:1;color:rgba(255,255,255,.236);transition:color .200s var(--e)}
+.modal-dot.saturn{width:16px;height:16px;background:none!important;border-radius:0;box-shadow:none!important;flex-shrink:0;transition:opacity .200s var(--e)}
+.modal-dot.saturn svg{display:block;width:16px;height:16px;overflow:visible}
+.modal-dot.saturn .saturn-ring-back ,.modal-dot.saturn .saturn-ring-front{transition:stroke .200s var(--e)}
+.modal-dot.saturn .saturn-body{transition:fill .200s var(--e)}
+.modal-dot.saturn.active    .saturn-ring-back {stroke:rgba(180,210,255,.40)}
+.modal-dot.saturn.active    .saturn-body      {fill:rgba(140,170,255,.92)}
+.modal-dot.saturn.active    .saturn-ring-front{stroke:rgba(200,225,255,.80)}
+.modal-dot.saturn.available .saturn-ring-back {stroke:rgba(91,110,245,.25)}
+.modal-dot.saturn.available .saturn-body      {fill:rgba(91,110,245,.45)}
+.modal-dot.saturn.available .saturn-ring-front{stroke:rgba(110,140,255,.38)}
+
+#cosmos{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:201;background:transparent!important}
+#start-screen{position:fixed;inset:0;z-index:200;display:flex;justify-content:center;align-items:center;background:transparent;overflow:hidden;contain:layout style;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+#start-screen.gone{display:none}
+#start-screen::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.006) 3px,rgba(255,255,255,.006) 4px);pointer-events:none;z-index:2}
+#corner-tl,#corner-tr,#corner-bl,#corner-br{position:absolute;font-size:10px;letter-spacing:4px;opacity:0;z-index:10;line-height:1.8;text-transform:uppercase}
+#corner-tl{top:26px;   left:26px;  color:rgba(215,225,255,.95);animation:cornerTL 1.372s var(--x) .200s forwards}
+#corner-tr{top:26px;   right:26px; color:rgba(215,225,255,.92);animation:cornerTR 1.372s var(--x) .324s forwards;text-align:right;cursor:default;transition:color .200s var(--e),opacity .200s var(--e);display:inline-block}
+#corner-bl{bottom:26px;left:26px;  color:rgba(215,225,255,.90);animation:cornerBL 1.372s var(--x) .524s forwards}
+#corner-br{bottom:26px;right:26px; color:rgba(215,225,255,.92);animation:cornerBR 1.372s var(--x) .524s forwards;text-align:right}
+#corner-tr:hover {color:#fff!important}
+#corner-tr:active{opacity:.75}
+@keyframes cornerTL{from{opacity:0;transform:translate(-16px,-16px)}to{opacity:1;transform:translate(0,0)}}
+@keyframes cornerTR{from{opacity:0;transform:translate( 16px,-16px)}to{opacity:1;transform:translate(0,0)}}
+@keyframes cornerBL{from{opacity:0;transform:translate( -16px, 16px)}to{opacity:1;transform:translate(0,0)}}
+@keyframes cornerBR{from{opacity:0;transform:translate(  16px, 16px)}to{opacity:1;transform:translate(0,0)}}
+#corner-tl::before,#corner-tr::before,#corner-bl::before,#corner-br::before{content:'';position:absolute;border-color:rgba(91,110,245,.2);border-style:solid;width:10px;height:10px}
+#corner-tl::before{top:-10px;  left:-10px;  border-width:1px 0 0 1px}
+#corner-tr::before{top:-10px;  right:-10px; border-width:1px 1px 0 0;left:auto}
+#corner-bl::before{bottom:-10px;left:-10px;  border-width:0 0 1px 1px;top:auto}
+#corner-br::before{bottom:-10px;right:-10px; border-width:0 1px 1px 0;top:auto;left:auto}
+#start-body{display:flex;flex-direction:column;align-items:center;text-align:center;width:min(288px,88vw);position:relative;z-index:10;isolation:isolate}
+#start-eyebrow{font-size:10px;letter-spacing:6px;color:rgba(205,218,255,.95);margin-bottom:26px;opacity:0;transition:opacity .524s var(--e)}
+#start-eyebrow span    {opacity:0;transition:opacity .200s var(--e)}
+#start-eyebrow span.vis{opacity:1}
+#start-name{display:flex;align-items:flex-start;gap:6px;margin-bottom:6px;position:relative;animation:nameEntrance 1.372s var(--x) .524s both}
+@keyframes nameEntrance{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+#start-name-main{font-size:clamp(68px,26vw,110px);font-weight:300;letter-spacing:-2px;line-height:1;color:rgba(235,240,255,.97);cursor:pointer;user-select:none;-webkit-user-select:none;text-shadow:0 0 40px rgba(140,160,255,.22),0 0 90px rgba(100,130,255,.10);transition:text-shadow .848s var(--e),color .524s var(--e)}
+#start-name-main:hover{color:rgba(245,248,255,1);text-shadow:0 0 50px rgba(140,160,255,.32),0 0 100px rgba(100,130,255,.15),0 0 180px rgba(91,110,245,.08)}
+#start-name-main.tapped{animation:nameTap 1.372s var(--e) forwards}
+@keyframes nameTap{
+  0%  {text-shadow:0 0 40px rgba(140,160,255,.22),0 0 90px rgba(100,130,255,.10)}
+  6%  {text-shadow:0 0 80px rgba(160,185,255,.98),0 0 160px rgba(120,155,255,.60),0 0 280px rgba(91,120,245,.28);color:rgba(255,255,255,1)}
+  20% {text-shadow:0 0 60px rgba(150,175,255,.70),0 0 120px rgba(110,145,255,.38),0 0 220px rgba(91,110,245,.18)}
+  55% {text-shadow:0 0 48px rgba(140,165,255,.40),0 0 100px rgba(100,135,255,.20)}
+  100%{text-shadow:0 0 40px rgba(140,160,255,.22),0 0 90px rgba(100,130,255,.10);color:rgba(235,240,255,.97)}
+}
+#start-name-sup{font-size:16px;letter-spacing:4px;color:rgba(200,214,255,.92);margin-top:16px;font-weight:300}
+#start-divider{width:100%;height:1px;position:relative;margin-bottom:26px;opacity:0;transform:scaleX(0);animation:dividerEntrance .848s var(--o) .848s forwards}
+#start-divider::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(140,160,255,.06) 10%,rgba(140,160,255,.28) 40%,rgba(180,200,255,.38) 50%,rgba(140,160,255,.28) 60%,rgba(140,160,255,.06) 90%,transparent)}
+@keyframes dividerEntrance{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
+#start-sub{font-size:10px;letter-spacing:6px;color:rgba(225,232,255,.92);margin-bottom:42px;opacity:0;transform:translateY(6px);animation:fadeUp .848s var(--x) 1.372s forwards}
+#start-btn{position:relative;width:100%;height:42px;background:transparent;border:none;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(6px);animation:fadeUp .848s var(--x) 1.372s forwards;overflow:hidden}
+#start-btn::before{content:'';position:absolute;inset:0;border:1px solid rgba(91,110,245,.18);background:linear-gradient(180deg,rgba(255,255,255,.018) 0%,transparent 55%);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),inset 0 -6px 10px -6px rgba(0,0,0,.45);transition:border-color .324s var(--e),box-shadow .324s var(--e),background .324s var(--e)}
+#start-btn:hover::before {border-color:rgba(91,110,245,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 -6px 10px -6px rgba(0,0,0,.45),inset 0 0 20px rgba(91,110,245,.06),0 0 18px rgba(91,110,245,.08)}
+#start-btn:active::before{border-color:rgba(91,110,245,.28);background:rgba(91,110,245,.03);box-shadow:inset 0 2px 6px rgba(0,0,0,.45)}
+#start-btn::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(91,110,245,.04) 40%,rgba(91,110,245,.10) 50%,rgba(91,110,245,.04) 60%,transparent);animation:btnScan 5.807s ease-in-out 2.218s infinite}
+@keyframes btnScan{0%{left:-100%}100%{left:200%}}
+.btn-line{position:absolute;top:0;width:1px;height:100%;background:rgba(91,110,245,.35);transition:background .324s var(--e),opacity .324s var(--e)}
+.btn-line.left {left:0}
+.btn-line.right{right:0}
+.btn-corner{position:absolute;width:10px;height:10px;border-color:rgba(91,110,245,.5);border-style:solid;transition:border-color .324s var(--e)}
+.btn-corner.tl{top:-1px;   left:-1px;  border-width:1.5px 0 0 1.5px}
+.btn-corner.tr{top:-1px;   right:-1px; border-width:1.5px 1.5px 0 0}
+.btn-corner.bl{bottom:-1px;left:-1px;  border-width:0 0 1.5px 1.5px}
+.btn-corner.br{bottom:-1px;right:-1px; border-width:0 1.5px 1.5px 0}
+#start-btn:hover  .btn-line  {background:rgba(91,110,245,.60)}
+#start-btn:hover  .btn-corner{border-color:rgba(110,140,255,.80)}
+#start-btn:active .btn-line  {background:rgba(91,110,245,.45)}
+#start-btn:active .btn-corner{border-color:rgba(91,110,245,.55)}
+#start-btn-label{font-size:13px;letter-spacing:6px;padding-left:6px;color:rgba(228,236,255,.92);transition:color .324s var(--e),letter-spacing .524s var(--o),padding-left .524s var(--o),opacity .200s var(--e);position:relative;z-index:2}
+#start-btn:hover  #start-btn-label{color:#fff;letter-spacing:10px;padding-left:10px}
+#start-btn:active #start-btn-label{color:rgba(215,225,255,.75);letter-spacing:6px;padding-left:6px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+#start-screen.dismissing{animation:screenExitBg .848s var(--e) forwards;pointer-events:none}
+@keyframes screenExitBg{0%,10%{opacity:1}100%{opacity:0}}
+#start-screen.dismissing #start-btn    {animation:fadeDown     .200s var(--e) .000s forwards}
+#start-screen.dismissing #start-sub    {animation:fadeDown     .200s var(--e) .076s forwards}
+#start-screen.dismissing #start-divider{animation:dividerExit  .324s var(--e) .076s forwards}
+#start-screen.dismissing #start-eyebrow{animation:eyebrowExit  .200s var(--e) .076s forwards}
+#start-screen.dismissing #start-name   {animation:nameExit     .324s var(--e) .076s forwards}
+#start-screen.dismissing #corner-bl    {animation:cornerBLExit .324s var(--e) .124s forwards}
+#start-screen.dismissing #corner-br    {animation:cornerBRExit .324s var(--e) .124s forwards}
+#start-screen.dismissing #corner-tl    {animation:cornerTLExit .324s var(--e) .200s forwards}
+#start-screen.dismissing #corner-tr    {animation:cornerTRExit .324s var(--e) .200s forwards}
+@keyframes cornerTLExit{to{opacity:0;transform:translate(-10px,-10px)}}
+@keyframes cornerTRExit{to{opacity:0;transform:translate( 10px,-10px)}}
+@keyframes cornerBLExit{to{opacity:0;transform:translate(-10px, 10px)}}
+@keyframes cornerBRExit{to{opacity:0;transform:translate( 10px, 10px)}}
+@keyframes eyebrowExit {to{opacity:0;transform:translateY(-6px)}}
+@keyframes nameExit    {to{opacity:0;transform:translateY(-12px)}}
+@keyframes dividerExit {to{opacity:0;transform:scaleX(0);transform-origin:center}}
+@keyframes fadeDown    {to{opacity:0;transform:translateY(10px)}}
+
+#probe{position:fixed;left:0;top:0;width:0;height:0;z-index:13;pointer-events:none;opacity:0;will-change:transform,opacity;transition:opacity .200s var(--e)}
+#probe.on{opacity:1;transition-duration:.324s}
+body.probing{cursor:crosshair}
+.pr-halo{position:absolute;left:-34px;top:-34px;width:68px;height:68px;border-radius:50%;opacity:.9}
+.pr-box{position:absolute;left:-13px;top:-13px;width:26px;height:26px}
+.pr-box.acq{animation:prAcquire .524s var(--o) both}
+@keyframes prAcquire{from{opacity:0;transform:scale(2.618) rotate(34deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.pr-b{position:absolute;inset:0;animation:prBreath 3.589s ease-in-out infinite}
+@keyframes prBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.0618)}}
+.pr-inner{position:absolute;inset:0}
+.pr-inner.pulse{animation:prLock .524s var(--o)}
+@keyframes prLock{0%{transform:scale(1.618)}100%{transform:scale(1)}}
+.pr-c{position:absolute;width:10px;height:10px;border:0 solid rgba(130,165,255,.78);transition:border-color .324s var(--e)}
+.pr-c.tl{top:0;left:0;border-width:1.5px 0 0 1.5px}
+.pr-c.tr{top:0;right:0;border-width:1.5px 1.5px 0 0}
+.pr-c.bl{bottom:0;left:0;border-width:0 0 1.5px 1.5px}
+.pr-c.br{bottom:0;right:0;border-width:0 1.5px 1.5px 0}
+#probe.locked .pr-c{border-color:rgba(205,222,255,.96)}
+
+.pr-hold{position:absolute;left:-22px;top:-22px;width:44px;height:44px;transform:rotate(-90deg);opacity:0;transition:opacity .200s var(--e)}
+.pr-hold circle{fill:none;stroke:rgba(205,222,255,.96);stroke-width:1.5;stroke-linecap:round;stroke-dasharray:119.4;stroke-dashoffset:119.4;transition:stroke-dashoffset .200s var(--e)}
+.pr-hold.on{opacity:1;transition-delay:.200s}
+.pr-hold.on circle{stroke-dashoffset:0;transition:stroke-dashoffset .324s linear .200s}
+.pr-hold.done{opacity:0;transition-delay:0s}
+.pr-label{position:absolute;left:26px;top:-26px;display:flex;flex-direction:column;gap:4px;white-space:nowrap;text-align:left}
+.pr-label.flip{left:auto;right:26px;text-align:right;align-items:flex-end}
+.pr-status{font-size:10px;letter-spacing:6px;color:#fff;text-transform:uppercase;text-shadow:var(--halo)}
+.pr-status::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:rgba(77,210,140,.75);box-shadow:0 0 5px rgba(77,210,140,.55);margin:0 9px 0 0;vertical-align:middle;animation:statusBlink 3.589s ease-in-out infinite}
+.pr-name{font-size:16px;font-weight:500;letter-spacing:4px;color:#fff;text-shadow:var(--halo),0 0 16px rgba(91,110,245,.28)}
+.pr-meta{font-size:10px;letter-spacing:4px;line-height:1.8;color:rgba(232,238,255,.98);text-shadow:var(--halo)}
+.pr-label.in .pr-status{animation:lineIn .324s var(--o) .000s both}
+.pr-label.in .pr-name  {animation:lineIn .324s var(--o) .076s both}
+.pr-label.in .pr-meta  {animation:lineIn .324s var(--o) .200s both}
+.pr-ping{position:fixed;z-index:13;pointer-events:none;border:1px solid rgba(150,185,255,.7);border-radius:50%;opacity:0;animation:prPing 1.372s var(--x) forwards}
+@keyframes prPing{0%{opacity:.85;transform:scale(.382)}100%{opacity:0;transform:scale(2.618)}}
+body.chart-mode .digits{opacity:.382;scale:.92;filter:blur(1.618px) saturate(.382) brightness(.618)}
+body.chart-mode #particles{z-index:12}
+body.chart-mode>svg{z-index:12!important}
+svg g.gl{opacity:0;transition:opacity .848s var(--o)}
+body.chart-mode svg g.gl{opacity:1}
+body>svg{transition:z-index 0s linear .200s}
+#chart-catch{position:fixed;inset:0;z-index:14;display:none;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
+body.chart-mode #chart-catch{display:block}
+body.orbiting #chart-catch{cursor:grabbing}
+#chart-hud{position:fixed;inset:0;z-index:15;pointer-events:none;opacity:0;transition:opacity .324s var(--e)}
+body.chart-mode #chart-hud{opacity:1;transition-delay:.200s}
+.ch-exit,.ch-name,.ch-hint{position:absolute;font-size:10px;letter-spacing:6px;line-height:1.8;text-transform:uppercase;color:rgba(225,232,255,.97)}
+.ch-name{right:26px;bottom:26px;text-align:right}
+.ch-hint{left:26px;top:26px;white-space:nowrap;transition:opacity .524s var(--o)}
+.ch-hint.off{opacity:0}
+body.chart-mode{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+
+#seg-lit{position:fixed;left:0;top:0;z-index:11;pointer-events:none;border-radius:4px;opacity:0;scale:.88;will-change:transform,opacity;background:linear-gradient(160deg,#b4e9ff 0%,#74c8ff 30%,#46a2f8 70%,#3d8ff0 100%);border:1px solid rgba(190,228,255,.34);border-top-color:rgba(245,252,255,.72);border-bottom-color:rgba(20,70,150,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.70),inset 0 6px 10px -6px rgba(255,255,255,.34),inset 0 -2px 4px rgba(10,50,130,.40),0 0 8px rgba(140,210,255,.60),0 0 26px rgba(70,160,255,.40),0 0 56px rgba(70,160,255,.18);transition:opacity .200s var(--e),scale .200s var(--e)}
+#seg-lit.on{opacity:1;scale:1;animation:litBreath 2.218s ease-in-out infinite;transition:opacity .324s var(--o),scale .324s var(--o)}
+#seg-lit.on.heart{animation:thetaHeart 1.372s ease-in-out infinite}
+@keyframes litBreath{0%,100%{filter:brightness(1)}50%{filter:brightness(1.14)}}
+.ch-exit{left:10px;bottom:10px;padding:16px;background:none;border:none;font-family:inherit;text-align:left;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;transition:color .200s var(--e),opacity .200s var(--e)}
+.ch-exit::before{content:'';position:absolute;left:6px;bottom:6px;width:10px;height:10px;border:solid rgba(91,110,245,.2);border-width:0 0 1px 1px}
+.ch-exit:hover{color:#fff}
+.ch-exit:active{opacity:.55}
+
+.sa,.sd,.sg{width:56px;height:10px;left:14px}
+.sa{top:0}
+.sd{top:63px}
+.sg{top:126px}
+.sb,.sc,.se,.sf{width:10px;height:45px}
+.sb,.sc{top:14px}
+.sb{right:0}
+.sc{left:0}
+.se,.sf{top:77px}
+.se{right:0}
+.sf{left:0}
+#start-btn:active::before,#start-btn:active .btn-line,#start-btn:active .btn-corner{transition-duration:.124s}
+</style>
+</head>
+<body>
+<canvas id="cosmos"></canvas>
+<div id="start-screen">
+  <div id="corner-tl">DSPC-NR22</div>
+  <div id="corner-tr">♏︎-SCRP</div>
+  <div id="corner-bl">XXIX.X.MMIV</div>
+  <div id="corner-br">6.9422e+8S</div>
+  <div id="start-body">
+    <div id="start-eyebrow">DEEPSPACE EXPLORATION</div>
+    <div id="start-name">
+      <span id="start-name-main">22</span>
+      <span id="start-name-sup">YRS</span>
+    </div>
+    <div id="start-divider"></div>
+    <div id="start-sub">SPACEWALK MISSION</div>
+    <button id="start-btn" aria-label="Begin">
+      <span class="btn-line left"></span>
+      <span class="btn-line right"></span>
+      <span class="btn-corner tl"></span>
+      <span class="btn-corner tr"></span>
+      <span class="btn-corner bl"></span>
+      <span class="btn-corner br"></span>
+      <span id="start-btn-label">START</span>
+    </button>
+  </div>
+</div>
+<div id="modal" role="dialog" aria-modal="true">
+  <div id="modal-backdrop"></div>
+  <div id="modal-card">
+    <div class="mc-corner mc-tl"></div>
+    <div class="mc-corner mc-tr"></div>
+    <div class="mc-corner mc-bl"></div>
+    <div class="mc-corner mc-br"></div>
+    <div id="modal-header">
+      <span id="modal-label">DISTATION</span>
+      <span id="modal-counter">—</span>
+      <button id="modal-close" aria-label="Close">✕</button>
+    </div>
+    <div id="modal-body">
+      <div id="modal-inner">
+        <div id="modal-seg-id">SEG-00</div>
+        <div id="modal-title">—</div>
+        <div id="modal-divider"></div>
+        <div id="modal-text">—</div>
+      </div>
+    </div>
+    <div id="modal-nav">
+      <div id="modal-spec"><span id="modal-spec-mag"></span><span id="modal-spec-cls"></span></div>
+      <button class="nav-btn" id="modal-prev">◂ PREV</button>
+      <div id="modal-dots"></div>
+      <button class="nav-btn" id="modal-next">NEXT ▸</button>
+    </div>
+  </div>
+</div>
+<div id="particles"></div>
+<div id="loader">
+  <div id="date">29 OCT 2004</div>
+  <div class="bar-wrap">
+    <div class="bar">
+      <div id="morse-bg"></div>
+      <div id="bar-overlay"><div id="morse-fg"></div></div>
+    </div>
+    <div id="bar-cursor"></div>
+  </div>
+</div>
+<div id="splash">
+  <div class="splash-inner">
+    <div class="digits">
+      <div class="digit">
+        <div class="seg sa on"></div><div class="seg sb on"></div><div class="seg sc"></div>
+        <div class="seg sd on"></div><div class="seg se"></div><div class="seg sf on"></div><div class="seg sg on"></div>
+      </div>
+      <div class="digit">
+        <div class="seg sa on"></div><div class="seg sb on"></div><div class="seg sc"></div>
+        <div class="seg sd on"></div><div class="seg se"></div><div class="seg sf on"></div><div class="seg sg on"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+
+const Shared = (() => {
+  const MORSE_CODE = '−•|•−|−••|••|•−|−−−|−•−|−|•−|•••−|••|•−|−•|••|•−•';
+  const BAR_WIDTH = 288, PARTICLE_N = 22, TOTAL_MS = 11000, TRANSITION_MS = 3589;
+  const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const START_DATE = new Date('2004-10-29'), END_DATE = new Date('2026-10-29');
+  const TOTAL_DAYS = (END_DATE - START_DATE) / 86400000 | 0;
+  const START_MS = START_DATE.getTime();
+  const REF_MS = 1000 / 60, clock = { k: 1 };
+  const tickK = (o, ts, ref = REF_MS) => { const k = o.kt ? Math.min((ts - o.kt) / ref, 3) : 1; o.kt = ts; return Math.abs(k - 1) < .08 ? 1 : k; };
+  const damp = (r, k) => k === 1 ? r : 1 - Math.pow(1 - r, k);
+  const fmtUTC = d => `${String(d.getUTCDate()).padStart(2, '0')} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+  const END_STR = fmtUTC(END_DATE);
+  const SPECIAL_DATE = new Date('2021-01-27');
+  const SPECIAL_IDX = (SPECIAL_DATE - START_DATE) / 86400000 | 0;
+  const TAP_MAX_MS = 200, TAP_MAX_MOVE_SQ = 36;
+  const EASE_STD = 'cubic-bezier(.4,0,.2,1)', EASE_OUT_BACK = 'cubic-bezier(.22,1,.36,1)', EASE_SHARP_IN = 'cubic-bezier(.4,0,1,1)';
+  const DUR_XS = 124, DUR_SM = 200, DUR_MD = 324, DUR_LG = 524, DUR_XL = 848;
+
+  const screen = {
+    w: window.innerWidth, h: window.innerHeight,
+    get cx() { return this.w / 2; }, get cy() { return this.h / 2; },
+  };
+  const DATE_CACHE_EMPTY = -1;
+  let lastDay = DATE_CACHE_EMPTY, lastDateStr = '';
+
+  const byId = id => document.getElementById(id);
+  const ease = t => t * t * (3 - 2 * t);
+  const cubicInOut = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const hx = v => ((v * 255 + .5) | 0).toString(16).padStart(2, '0');
+  const rnd = (v, p = 100) => (v * p | 0) / p;
+  const setTf = (el, x, y, r) => { el.style.transform = `translate(${rnd(x)}px,${rnd(y)}px) rotate(${rnd(r)}deg)`; };
+  const syncPt = (el, x, y, r) => { if (!el.pt) el.pt = [x, y, r]; else { el.pt[0] = x; el.pt[1] = y; el.pt[2] = r; } };
+
+  class DotParticle {
+    constructor(container) {
+      this.el = document.createElement('div');
+      this.el.className = 'pt';
+      container.appendChild(this.el);
+      this.el.style.cssText = 'left:0;top:0';
+    }
+    destroy() { this.el.remove(); }
+  }
+
+  const createPerlin = () => {
+    const seed = new Uint8Array(256);
+    for (let i = 0; i < 256; i++) seed[i] = i;
+    for (let i = 255; i > 0; i--) { const j = Math.random() * (i + 1) | 0; const t = seed[i]; seed[i] = seed[j]; seed[j] = t; }
+    const perm = new Uint8Array(512);
+    for (let i = 0; i < 256; i++) perm[i] = perm[i + 256] = seed[i];
+    const noise = x => {
+      const X = Math.floor(x) & 255; x -= Math.floor(x);
+      const u = x * x * x * (x * (x * 6 - 15) + 10);
+      const g0 = (perm[X] & 1) ? x : -x;
+      const g1 = (perm[X + 1] & 1) ? x - 1 : -(x - 1);
+      return (g0 + u * (g1 - g0)) * .5 + .5;
+    };
+    return { noise };
+  };
+  const perlin = createPerlin();
+
+  const journey = t => {
+    if (t <= 0) return 0; if (t >= 1) return 1;
+    const ta = t ** 3; return ta / (ta + (1 - t) ** 4);
+  };
+  const jProgress = elapsed => journey(Math.min(elapsed / TOTAL_MS, 1));
+  const dayAt = elapsed => TOTAL_DAYS * jProgress(elapsed);
+  const jSpeed = t => { const dx = 5e-4; return (journey(Math.min(t + dx, 1)) - journey(Math.max(t - dx, 0))) / (dx * 2); };
+  const particleSpeed = elapsed => { const t = Math.min(elapsed / TOTAL_MS, 1); return .2 + Math.min(Math.abs(jSpeed(t)) / .55, 1) * 35; };
+  const fmtDate = d => {
+    const day = d | 0;
+    if (day === lastDay) return lastDateStr;
+    lastDay = day;
+    return lastDateStr = fmtUTC(new Date(START_MS + day * 86400000));
+  };
+  const resetDateCache = () => { lastDay = DATE_CACHE_EMPTY; };
+
+  const dom = {
+    date: byId('date'), barOverlay: byId('bar-overlay'), barCursor: byId('bar-cursor'),
+    loader: byId('loader'), splash: byId('splash'), particles: byId('particles'),
+  };
+
+  return {
+    MORSE_CODE, BAR_WIDTH, PARTICLE_N, TOTAL_MS, TRANSITION_MS,
+    TOTAL_DAYS, END_STR, SPECIAL_IDX,
+    TAP_MAX_MS, TAP_MAX_MOVE_SQ,
+    EASE_STD, EASE_OUT_BACK, EASE_SHARP_IN, DUR_XS, DUR_SM, DUR_MD, DUR_LG, DUR_XL,
+    screen, dom,
+    byId, ease, cubicInOut, hx, rnd, setTf, syncPt, REF_MS, clock, tickK, damp,
+    DotParticle, perlin,
+    journey, dayAt, particleSpeed,
+    fmtDate, resetDateCache,
+  };
+})();
+
+const StartPhase = (() => {
+  const { byId } = Shared;
+  const initCosmos = () => {
+    const canvas = byId('cosmos');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H, raf = null, active = false, burstStartTs = null, lastShoot = -4000;
+    const shooters = [];
+    const STAR_COUNT = 90;
+    const COLORS = ['#c8d8ff', '#aabfff', '#ffffff', '#ffeedd', '#d4e8ff'];
+    const stars = Array.from({ length: STAR_COUNT }, () => ({
+      x: Math.random(), y: Math.random(), r: .3 + Math.random() * 1.4,
+      baseOp: .15 + Math.random() * .75, curOp: 0,
+      bOff: Math.random() * Math.PI * 2, bSpd: .3 + Math.random() * 1.0,
+      col: COLORS[Math.floor(Math.random() * 5)],
+      delay: Math.random() * 2200,
+    }));
+    const easeOut = t => 1 - Math.pow(1 - Math.min(t, 1), 3);
+    const resize = () => { W = canvas.width = canvas.offsetWidth * devicePixelRatio; H = canvas.height = canvas.offsetHeight * devicePixelRatio; ctx.clearRect(0, 0, W, H); };
+    const _tail = { x: 0, y: 0 };
+
+    const spawnShooter = () => {
+      const angle = (Math.random() * 25 + 5) * Math.PI / 180, speed = W * .0013 + Math.random() * W * .0008;
+      shooters.push({ x: Math.random() * W * .7, y: Math.random() * H * .4, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, len: 50 + Math.random() * 70, op: 0, life: 0, maxLife: 50 + Math.random() * 25, speed });
+    };
+
+    const getShooterGradient = (sh, tail) => {
+      const gr = ctx.createLinearGradient(tail.x, tail.y, sh.x, sh.y);
+      gr.addColorStop(0, 'rgba(255,255,255,0)');
+      gr.addColorStop(.6, `rgba(180,210,255,${(0.12 * sh.op * 1000 | 0) / 1000})`);
+      gr.addColorStop(1, `rgba(255,255,255,${(0.55 * sh.op * 1000 | 0) / 1000})`);
+      return gr;
+    };
+
+    const burst = () => {
+      active = true; burstStartTs = performance.now();
+      stars.forEach(s => { s.curOp = 0; });
+      setTimeout(() => { active = false; }, Shared.TRANSITION_MS);
+      if (raf === null) raf = requestAnimationFrame(draw);
+    };
+
+    const draw = now => {
+      const t = now * .001, ck = Shared.tickK(draw, now), dpr = devicePixelRatio;
+      ctx.clearRect(0, 0, W, H);
+      const elapsed = burstStartTs ? now - burstStartTs : 0, fadingOut = !active;
+      let starsVisible = 0;
+      for (const s of stars) {
+        const inT = Math.max(0, elapsed - s.delay) / 1200;
+        const targetOp = fadingOut ? 0 : easeOut(inT) * s.baseOp;
+        s.curOp += (targetOp - s.curOp) * Shared.damp(fadingOut ? .018 : .035, ck);
+        if (s.curOp < .005) continue;
+        starsVisible++;
+        ctx.globalAlpha = s.curOp * (0.6 + 0.4 * Math.sin(t * s.bSpd + s.bOff));
+        ctx.fillStyle = s.col;
+        ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r * dpr, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      if (!fadingOut && now - lastShoot > Shared.TRANSITION_MS) { spawnShooter(); lastShoot = now; }
+      for (let i = shooters.length - 1; i >= 0; i--) {
+        const sh = shooters[i];
+        sh.x += sh.vx * ck; sh.y += sh.vy * ck; sh.life += ck;
+        sh.op = sh.life < 8 ? sh.life / 8 : sh.life > sh.maxLife - 10 ? (sh.maxLife - sh.life) / 10 : 1;
+        if (sh.op <= 0 || sh.life > sh.maxLife) { shooters.splice(i, 1); continue; }
+        _tail.x = sh.x - sh.vx * sh.len / sh.speed; _tail.y = sh.y - sh.vy * sh.len / sh.speed;
+        ctx.strokeStyle = getShooterGradient(sh, _tail);
+        ctx.lineWidth = 1.2 * dpr;
+        ctx.beginPath(); ctx.moveTo(_tail.x, _tail.y); ctx.lineTo(sh.x, sh.y); ctx.stroke();
+      }
+      if (fadingOut && starsVisible === 0 && shooters.length === 0) { burstStartTs = null; raf = null; return; }
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    const startScreen = byId('start-screen');
+    const obs = new MutationObserver(() => {
+      if (startScreen.classList.contains('dismissing') && !startScreen.classList.contains('gone')) {
+        canvas.style.transition = `opacity ${Shared.DUR_XL / 1000}s ${Shared.EASE_STD}`; canvas.style.opacity = '0';
+      }
+      if (!startScreen.classList.contains('gone')) return;
+      if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+      window.removeEventListener('resize', resize); obs.disconnect();
+    });
+    obs.observe(startScreen, { attributes: true, attributeFilter: ['class'] });
+    return burst;
+  };
+
+  const initEyebrowTypeOn = () => {
+    const el = byId('start-eyebrow');
+    if (!el) return;
+    const chars = [...el.textContent.trim()];
+    el.textContent = '';
+    const spans = chars.map(ch => {
+      const s = document.createElement('span');
+      s.textContent = ch; el.appendChild(s); return s;
+    });
+    setTimeout(() => {
+      el.style.opacity = '1';
+      const n = spans.length;
+      spans.forEach((s, i) => {
+        const u = i / (n - 1), e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+        setTimeout(() => s.classList.add('vis'), e * Shared.DUR_XL + i * 8);
+      });
+    }, Shared.DUR_MD);
+  };
+
+  const initNameBurst = burst => {
+    const nameEntranceEl = byId('start-name-main');
+    const triggerBurst = () => {
+      nameEntranceEl.classList.remove('tapped'); void nameEntranceEl.offsetWidth; nameEntranceEl.classList.add('tapped');
+      nameEntranceEl.addEventListener('animationend', () => nameEntranceEl.classList.remove('tapped'), { once: true });
+      burst?.();
+    };
+    nameEntranceEl.addEventListener('pointerdown', triggerBurst);
+  };
+
+  const bindLaunch = () => {
+    const startScreen = byId('start-screen');
+    const startBtn = byId('start-btn');
+    const onLaunch = () => {
+      startBtn.removeEventListener('click', onLaunch);
+      startScreen.classList.add('dismissing');
+      setTimeout(() => {
+        startScreen.classList.add('gone');
+        CountdownPhase.startLoader();
+      }, Shared.DUR_LG);
+    };
+    startBtn.addEventListener('click', onLaunch);
+  };
+
+  const init = () => {
+    const burst = initCosmos();
+    initEyebrowTypeOn();
+    initNameBurst(burst);
+    bindLaunch();
+  };
+
+  return { init };
+})();
+
+const CountdownPhase = (() => {
+  const { ease, cubicInOut, dom, screen, perlin, byId, MORSE_CODE, BAR_WIDTH, PARTICLE_N, TOTAL_MS,
+    SPECIAL_IDX, END_STR, dayAt, particleSpeed, fmtDate, resetDateCache,
+    EASE_OUT_BACK, DUR_MD, DUR_LG, DUR_XL, DotParticle } = Shared;
+
+  const SPECIAL_MS = (() => {
+    const target = (SPECIAL_IDX + 0.3) / Shared.TOTAL_DAYS;
+    let lo = 0, hi = 1;
+    for (let i = 0; i < 52; i++) { const mid = (lo + hi) * .5; Shared.journey(mid) < target ? lo = mid : hi = mid; }
+    return (lo + hi) * .5 * TOTAL_MS;
+  })();
+
+  const state = {
+    startTs: 0, loaderRafId: null, noiseOffset: 0, isTransitioning: false,
+    transitionPhase: 0, loaderParticles: [],
+  };
+  const specialDay = { triggered: false, active: false, turbulence: 0, rampTs: 0, rampDur: 0, rampType: 0, rampFrom: 0 };
+  const arrival = { triggered: false, beatTs: 0, BEAT_MS: DUR_LG };
+  const freeze = { phase: 'none', pinnedAt: 0, pinned: 0, FREEZE: DUR_MD, BLEND: DUR_LG };
+
+  const dipDateDisplay = (midOpacity, opacityEase, onMid) => {
+    const el = dom.date;
+    el.style.transition = `transform ${DUR_XL / 1000}s ${EASE_OUT_BACK}, opacity ${DUR_LG / 1000}s ${opacityEase}`;
+    el.style.transform = 'translateY(-4px)'; el.style.opacity = String(midOpacity);
+    setTimeout(() => {
+      onMid();
+      el.style.transform = 'translateY(0px)'; el.style.opacity = '1';
+      setTimeout(() => { el.style.transition = ''; el.style.transform = ''; el.style.opacity = ''; }, DUR_XL);
+    }, DUR_MD);
+  };
+
+  const hologramState = (elapsed, spd) => {
+    const t = elapsed / TOTAL_MS;
+    if (t < .06) return 'stable';
+    if (t > .86) return 'clear';
+    if (spd > 25) return 'warp';
+    if (spd > 12) return 'settle';
+    return 'stable';
+  };
+
+  const effectiveElapsed = re => {
+    if (freeze.phase === 'none') return re;
+    const s = re - freeze.pinnedAt;
+    if (s <= freeze.FREEZE) return freeze.pinned;
+    if (s <= freeze.FREEZE + freeze.BLEND) {
+      const t = (s - freeze.FREEZE) / freeze.BLEND;
+      return freeze.pinned + (s - freeze.FREEZE) + ((re - freeze.FREEZE) - (freeze.pinned + (s - freeze.FREEZE))) * cubicInOut(t);
+    }
+    return re - freeze.FREEZE;
+  };
+
+  const buildMorse = () => {
+    const symbols = MORSE_CODE.split('|');
+    const totalUnits = symbols.reduce((acc, sym, i) => {
+      let u = 0; for (const c of sym) u += c === '•' ? 1.5 : c === '−' ? 3.5 : 0;
+      return acc + u + (i < symbols.length - 1 ? 2 : 0);
+    }, 0);
+    const unit = BAR_WIDTH / totalUnits;
+    const build = container => {
+      const frag = document.createDocumentFragment();
+      for (let si = 0; si < symbols.length; si++) {
+        const sym = symbols[si];
+        for (let ci = 0; ci < sym.length; ci++) {
+          const c = sym[ci];
+          if (c !== '•' && c !== '−') continue;
+          const el = document.createElement('div');
+          el.className = c === '•' ? 'morse-dot' : 'morse-dash';
+          el.style.width = (c === '•' ? unit : unit * 3) + 'px';
+          if (ci < sym.length - 1 || si < symbols.length - 1) el.style.marginRight = unit * .5 + 'px';
+          frag.appendChild(el);
+        }
+        if (si < symbols.length - 1) {
+          const sp = document.createElement('div');
+          sp.className = 'morse-gap'; sp.style.width = unit * 2 + 'px'; frag.appendChild(sp);
+        }
+      }
+      container.appendChild(frag);
+    };
+    build(byId('morse-bg')); build(byId('morse-fg'));
+  };
+
+  class LoaderParticle extends DotParticle {
+    constructor() {
+      super(dom.particles);
+      this.speedVar = .92 + Math.random() * .16;
+      this.noiseOff = Math.random() * 1000;
+      this.pulsePhase = Math.random() * Math.PI * 2;
+      this.pulseSpeed = .001 + Math.random() * .0015;
+      this.reset();
+    }
+    reset() {
+      this.sx = Math.random() * screen.w; this.sy = Math.random() * screen.h;
+      const a = Math.atan2(this.sy - screen.cy, this.sx - screen.cx);
+      this.dx = Math.cos(a); this.dy = Math.sin(a);
+      this.x = this.sx; this.y = this.sy; this.prog = 0;
+      this.size = Math.random() * 2 + .7; this.spd = .0014 + Math.random() * .0008;
+      this.rot = a.toFixed(4);
+      this.maxDim = Math.max(screen.w, screen.h) * 2.2;
+      this.el.style.height = this.size + 'px';
+      this._w = null; this._lastOp = -1;
+    }
+    update(spd) {
+      const noise = perlin.noise(state.noiseOffset + this.noiseOff) * .12 + .94;
+      this.prog += this.spd * spd * this.speedVar * noise * Shared.clock.k;
+      const dist = this.prog * this.maxDim;
+      this.x = this.sx + this.dx * dist; this.y = this.sy + this.dy * dist;
+      const scale = 1 + this.prog * 3.5, stretch = Math.min(spd * .5, 15);
+      this.pulsePhase += this.pulseSpeed * spd * Shared.clock.k;
+      let op = .75 + Math.sin(this.pulsePhase) * .06;
+      if (spd > 20) op = Math.min(op + Math.min((spd - 20) / 15, 1) * .1, .92);
+      if (state.transitionPhase) op *= 1 - ease(state.transitionPhase) * .92;
+      if (this.prog > .7) op *= 1 - ease((this.prog - .7) / .3) * .6;
+      op = Math.max(op, .06);
+      const w = ((this.size * scale * 100 | 0) / 100) + '';
+      if (this._w !== w) { this.el.style.width = w + 'px'; this._w = w; }
+      this.el.style.transform = `translate(${this.x | 0}px,${this.y | 0}px) rotate(${this.rot}rad) scaleX(${(1 + stretch * 100 | 0) / 100})`;
+      const opR = (op * 1000 | 0) / 1000;
+      if (this._lastOp !== opR) { this.el.style.opacity = opR; this._lastOp = opR; }
+      if (this.prog >= 2.5 || this.x < -600 || this.x > screen.w + 600 || this.y < -600 || this.y > screen.h + 600) this.reset();
+    }
+  }
+
+  const loaderTick = ts => {
+    Shared.clock.k = Shared.tickK(state, ts);
+    const re = ts - state.startTs;
+    const elapsed = effectiveElapsed(re);
+    if (!specialDay.triggered && (dayAt(elapsed) | 0) >= SPECIAL_IDX) {
+      specialDay.triggered = specialDay.active = true;
+      freeze.phase = 'frozen'; freeze.pinnedAt = re; freeze.pinned = SPECIAL_MS; resetDateCache();
+      specialDay.rampTs = ts; specialDay.rampDur = DUR_XL; specialDay.rampType = 1; specialDay.rampFrom = 0;
+      dipDateDisplay(0.7, 'ease-out', () => {
+        dom.date.classList.remove('warp', 'settle'); dom.date.textContent = '27 JAN 2021'; dom.date.classList.add('special');
+      });
+    }
+    if (freeze.phase !== 'none') {
+      const s = re - freeze.pinnedAt;
+      if (s >= freeze.FREEZE + freeze.BLEND) {
+        freeze.phase = 'none';
+      } else if (s >= freeze.FREEZE) {
+        if (freeze.phase === 'frozen') {
+          freeze.phase = 'blending';
+          if (specialDay.active) {
+            specialDay.active = false;
+            specialDay.rampTs = ts; specialDay.rampDur = DUR_XL; specialDay.rampType = -1; specialDay.rampFrom = specialDay.turbulence;
+            dipDateDisplay(0.6, 'ease-in-out', () => {
+              dom.date.classList.remove('special'); resetDateCache();
+            });
+          }
+        }
+      }
+    }
+    let speedMul = 1;
+    if (freeze.phase === 'frozen') {
+      speedMul = 0;
+    } else if (freeze.phase === 'blending') {
+      const bt = (re - freeze.pinnedAt - freeze.FREEZE) / freeze.BLEND;
+      speedMul = cubicInOut(bt);
+    }
+    if (!state.isTransitioning) state.noiseOffset += .008 * speedMul * Shared.clock.k;
+    const lp = state.loaderParticles, spd = particleSpeed(elapsed);
+    if (specialDay.rampType !== 0) {
+      const rt = Math.min((ts - specialDay.rampTs) / specialDay.rampDur, 1);
+      specialDay.turbulence = specialDay.rampType > 0 ? ease(rt) : specialDay.rampFrom * (1 - ease(rt));
+      if (rt >= 1) specialDay.rampType = 0;
+    }
+    const tb = specialDay.turbulence;
+    const turbSpd = tb > 0 ? spd + tb * (perlin.noise(state.noiseOffset * 3.1) * 28 + 18) : spd;
+    for (let i = 0; i < lp.length; i++) lp[i].update(turbSpd);
+    if (!specialDay.active && !dom.date.classList.contains('special')) {
+      const str = fmtDate(dayAt(elapsed));
+      if (dom.date.textContent !== str) dom.date.textContent = str;
+      const hs = hologramState(elapsed, spd);
+      dom.date.classList.toggle('warp', hs === 'warp');
+      dom.date.classList.toggle('settle', hs === 'settle');
+    }
+    const basePct = Math.min(elapsed / TOTAL_MS, 1) * 100;
+    const glitch = tb > 0 ? tb * (perlin.noise(state.noiseOffset * 5.7) - 0.5) * 1.2 : 0;
+    const pct = Math.max(0, basePct + glitch).toFixed(2) + '%';
+    if (dom.barOverlay.style.width !== pct) dom.barOverlay.style.width = pct;
+    const pctNum = parseFloat(pct);
+    if (pctNum > 1.5 && pctNum < 99) {
+      if (!dom.barCursor._shown) { dom.barCursor._shown = true; dom.barCursor.style.transition = `opacity ${DUR_LG / 1000}s ${Shared.EASE_STD}`; }
+      dom.barCursor.style.left = ((pctNum * BAR_WIDTH / 100 - 1) | 0) + 'px';
+      dom.barCursor.style.opacity = ((0.55 + Math.sin(ts * 0.006) * 0.25) * 1000 | 0) / 1000 + '';
+    } else {
+      dom.barCursor.style.opacity = '0';
+    }
+    if (elapsed >= TOTAL_MS) {
+      dom.barOverlay.style.width = '100%'; dom.barCursor.style.opacity = '0';
+      if (!arrival.triggered) { arrival.triggered = true; arrival.beatTs = ts; dom.date.textContent = END_STR; dom.date.className = 'arrival'; }
+      if (!state.isTransitioning && ts - arrival.beatTs >= arrival.BEAT_MS) { Transition.start(ts); return; }
+    }
+    state.loaderRafId = requestAnimationFrame(loaderTick);
+  };
+
+  const startLoader = () => {
+    buildMorse();
+    state.startTs = performance.now();
+    for (let i = 0; i < PARTICLE_N; i++) state.loaderParticles.push(new LoaderParticle());
+    requestAnimationFrame(loaderTick);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      dom.loader.classList.add('loader-active', 'loader-entered');
+    }));
+  };
+
+  const resumeAfterHidden = () => {
+    if (state.startTs && !state.isTransitioning && !state.loaderRafId && !dom.loader.classList.contains('hidden')) {
+      state.startTs += performance.now() - state._hiddenAt;
+      state.loaderRafId = requestAnimationFrame(loaderTick);
+    }
+  };
+  const pauseForHidden = () => {
+    if (state.loaderRafId) { cancelAnimationFrame(state.loaderRafId); state.loaderRafId = null; state._hiddenAt = performance.now(); }
+  };
+  const teardown = () => {
+    if (state.loaderRafId) { cancelAnimationFrame(state.loaderRafId); state.loaderRafId = null; }
+    state.loaderParticles.forEach(p => p.destroy()); state.loaderParticles = [];
+  };
+
+  return { state, startLoader, resumeAfterHidden, pauseForHidden, teardown };
+})();
+
+
+const Scramble = (() => {
+  const { DUR_SM, DUR_MD, DUR_XL, EASE_STD, ease } = Shared;
+  const GLYPHS = '·•+×01<>:;_%#', TICK_MIN = 45, TICK_VAR = 35, JITTER = 76, ONSET = 100;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let raf = null, timer = null, token = 0, live = null;
+
+  const glyph = () => GLYPHS[Math.random() * GLYPHS.length | 0];
+  const release = () => {
+    if (!live) return;
+    const s = live.style; live = null;
+    s.height = s.overflow = s.transition = ''; s.removeProperty('--cw');
+  };
+  const cancel = () => { cancelAnimationFrame(raf); clearTimeout(timer); raf = timer = null; token++; release(); };
+
+
+  const measure = (el, str, lh) => {
+    el.textContent = str;
+    const node = el.firstChild, lines = [], widths = [], h = el.getBoundingClientRect().height;
+    if (node) {
+      const r = document.createRange();
+      let start = 0, top = null;
+      for (let i = 0; i < str.length; i++) {
+        r.setStart(node, i); r.setEnd(node, i + 1);
+        const rc = r.getClientRects()[0];
+        if (!rc || !rc.width) continue;
+        if (top === null) top = rc.top;
+        else if (rc.top > top + lh * .5) { lines.push([start, i]); start = i; top = rc.top; }
+        widths.push(rc.width);
+      }
+      lines.push([start, str.length]);
+    }
+    return { str, lines, widths, h };
+  };
+  const rowText = (m, r) => m.lines[r] ? m.str.slice(m.lines[r][0], m.lines[r][1]) : '';
+
+  const run = (el, from, to, center) => {
+    cancel();
+    if (reduced.matches) { el.textContent = to; return; }
+    const my = token;
+    const lh = parseFloat(getComputedStyle(el).lineHeight) || 24;
+    const a = measure(el, from, lh), b = measure(el, to, lh);
+    const rows = Math.max(a.lines.length, b.lines.length, 1);
+    const ws = a.widths.concat(b.widths), cw = ws[0] || 0;
+    const uniform = cw > 0 && ws.every(w => Math.abs(w - cw) < .6);
+    const cwv = cw || 8;
+
+
+    const ci = Math.max(0, Math.min(Math.round(center), from.length - 1));
+    let crow = 0, ccol = 0;
+    a.lines.forEach(([s, e], r) => { if (ci >= s && ci < e) { crow = r; ccol = ci - s; } });
+    const cx = (ccol + .5) * cwv, cy = (crow + .5) * lh;
+
+
+    const frag = document.createDocumentFragment(), cells = [];
+    let maxD = 1;
+    for (let r = 0; r < rows; r++) {
+      const A = rowText(a, r), B = rowText(b, r), m = Math.max(A.length, B.length);
+      const row = document.createElement('div');
+      row.className = 'sc-r'; row.style.height = lh + 'px';
+      for (let c = 0; c < m; c++) {
+        const fc = A[c] ?? ' ', tc = B[c] ?? ' ';
+        const s = document.createElement('span');
+        s.className = 'sc-c'; s.textContent = fc; row.appendChild(s);
+        if (fc === ' ' && tc === ' ') continue;
+        const d = Math.hypot((c + .5) * cwv - cx, (r + .5) * lh - cy);
+        if (d > maxD) maxD = d;
+        cells.push({ s, to: tc, d, done: false, nt: 0, onset: 0, settle: 0 });
+      }
+      frag.appendChild(row);
+    }
+    for (const c of cells) {
+      const nd = c.d / maxD;
+      c.onset = c.nt = nd * ONSET + Math.random() * JITTER;
+      c.settle = DUR_SM + ease(nd) * DUR_XL + Math.random() * JITTER;
+    }
+    el.textContent = '';
+    el.appendChild(frag);
+    if (uniform) el.style.setProperty('--cw', cw + 'px');
+    el.style.height = a.h + 'px'; el.style.overflow = 'hidden'; live = el;
+    void el.offsetHeight;
+    el.style.transition = `height ${DUR_XL + DUR_SM}ms ${EASE_STD},opacity ${DUR_SM}ms ${EASE_STD}`;
+    el.style.height = b.h + 'px';
+
+    const t0 = performance.now();
+    const frame = now => {
+      if (my !== token) return;
+      const t = now - t0;
+      let left = 0;
+      for (const c of cells) {
+        if (c.done) continue;
+        if (t >= c.settle) { c.done = true; c.s.textContent = c.to; c.s.classList.remove('on'); continue; }
+        left++;
+        if (t < c.onset || t < c.nt) continue;
+        c.s.textContent = glyph(); c.s.classList.add('on');
+        c.nt = t + TICK_MIN + Math.random() * TICK_VAR;
+      }
+      if (left) { raf = requestAnimationFrame(frame); return; }
+      raf = null;
+      timer = setTimeout(() => {
+        if (my !== token) return;
+        timer = null; el.textContent = to; release();
+      }, DUR_MD);
+    };
+    raf = requestAnimationFrame(frame);
+  };
+
+  return { run, cancel };
+})();
+
+const Transition = (() => {
+  const { ease, EASE_STD, EASE_OUT_BACK, DUR_LG, dom } = Shared;
+  let transitionStart = 0;
+
+  const phase = (t, a, b) => ease(Math.max(0, Math.min(1, (t - a) / (b - a))));
+
+  const start = ts => {
+    const cd = CountdownPhase.state;
+    cd.isTransitioning = true; transitionStart = ts; cd.transitionPhase = 0;
+    [{ el: dom.date, delay: 0 }, { el: document.querySelector('.bar-wrap'), delay: 76 }].forEach(({ el, delay }) => {
+      if (!el) return;
+      el.style.transition = `opacity ${DUR_LG / 1000}s ${EASE_STD} ${delay}ms,transform ${DUR_LG / 1000}s ${EASE_OUT_BACK} ${delay}ms`;
+      el.style.opacity = '0'; el.style.transform = 'translateY(-5px)';
+    });
+    SplashPhase.Constellation.initSplash();
+    dom.splash.classList.add('visible');
+    requestAnimationFrame(tick);
+  };
+
+  const tick = ts => {
+    const cd = CountdownPhase.state;
+    const t = Math.min((ts - transitionStart) / Shared.TRANSITION_MS, 1);
+    cd.transitionPhase = phase(t, .28, .90);
+    Shared.clock.k = Shared.tickK(cd, ts);
+    for (let i = 0; i < cd.loaderParticles.length; i++) cd.loaderParticles[i].update(1 + phase(t, 0, .36) * 2.0);
+    const sp = SplashPhase.state.splashParticles;
+    for (let i = 0; i < sp.length; i++) sp[i].update(ts);
+    if (t >= .36 && !SplashPhase.state.splashInnerVisible) { SplashPhase.state.splashInnerVisible = true; SplashPhase.state.splashInner?.classList.add('visible'); }
+    if (t >= .52 && !SplashPhase.state.segmentsOn) { SplashPhase.state.segmentsOn = true; SplashPhase.initSegments(); }
+    if (t >= .80 && !SplashPhase.state.constellationOn) SplashPhase.Constellation.triggerForm();
+    cd.noiseOffset += .008 * Shared.clock.k;
+    dom.loader.style.opacity = ((1 - phase(t, 0, .44)) * 10000 | 0) / 10000 + '';
+    dom.splash.style.opacity = (phase(t, .28, .56) * 10000 | 0) / 10000 + '';
+    SplashPhase.checkSegsHome(); SplashPhase.Constellation.updateLines();
+    if (t < 1) { requestAnimationFrame(tick); return; }
+    dom.loader.classList.add('hidden');
+    CountdownPhase.teardown();
+    cd.transitionPhase = 1; dom.splash.style.opacity = '1';
+    requestAnimationFrame(SplashPhase.splashTick);
+  };
+
+  return { start };
+})();
+
+const SplashPhase = (() => {
+  const { cubicInOut, hx, rnd, setTf, syncPt, screen, perlin, byId, TAP_MAX_MS, TAP_MAX_MOVE_SQ, dom,
+    EASE_STD, EASE_OUT_BACK, EASE_SHARP_IN, DUR_XS, DUR_SM, DUR_MD, DUR_LG, DUR_XL, DotParticle } = Shared;
+
+  const RETURN_TIERS = [
+    new Set([1, 4, 9, 12]),
+    new Set([3, 10]),
+  ];
+  const TIER_OF_IDX = new Map();
+  RETURN_TIERS.forEach((tier, t) => tier.forEach(idx => TIER_OF_IDX.set(idx, t)));
+  const ALWAYS_UNLOCKED = new Set([0, 2, 5, 6, 7, 8, 11, 13]);
+  const UNLOCK_GROUPS = {
+    3: [[0, 2], [5, 6]], 1: [[0, 2, 3]], 4: [[5, 6, 3]],
+    10: [[7, 8], [11, 13]], 9: [[7, 8, 10]], 12: [[11, 13, 10]],
+  };
+  const STAR_FORM_MS = 1372;
+
+  const SCORPIO_STARS = [
+    { x: -1.023, y: 0.446, size: 2.5, color: '#aac5ff' }, { x: -1.324, y: 0.543, size: 5.0, color: '#9db4ff' },
+    { x: -1.423, y: 0.814, size: 2.5, color: '#9db4ff' }, { x: -1.044, y: 1.148, size: 2.5, color: '#aac5ff' },
+    { x: -0.349, y: 1.034, size: 4.0, color: '#f8f7ff' }, { x: -0.025, y: 0.730, size: 2.5, color: '#aac5ff' },
+    { x: -0.116, y: 0.174, size: 2.5, color: '#ffcc6f' }, { x: -0.193, y: -0.385, size: 2.5, color: '#aac5ff' },
+    { x: 0.181, y: -0.775, size: 2.5, color: '#aac5ff' }, { x: 0.406, y: -0.908, size: 2.5, color: '#f8f7ff' },
+    { x: 0.775, y: -0.978, size: 6.0, color: '#ff6b4a' }, { x: 1.425, y: -1.108, size: 2.5, color: '#aac5ff' },
+    { x: 1.258, y: -1.453, size: 4.0, color: '#9db4ff' }, { x: 1.533, y: -0.702, size: 2.5, color: '#aac5ff' },
+  ];
+  const SCORPIO_LINKS = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11], [10, 12], [10, 13]];
+  const SEG_CONTENT = [
+    { title: 'AN', key:'081125', text: 'Titan\'s shadow kisses five percent of Saturn.' },
+    { title: 'ID', key:'301125', text: 'With Titan, Enceladus, and Rhea around, Saturn is never truly empty.' },
+    { title: '-A', key:'080126', text: 'Earth looks into the night and spots a quiet glow.' },
+    { title: 'KO', key:'090326', text: 'A gas giant, adrift in the middle of nowhere.' },
+    { title: 'AT', key:'120426', text: 'Bound to its rings, in the same home, yet rarely seen.' },
+    { title: 'AIV', key:'160426', text: 'Rings seems slip away, Earth misses the shine.' },
+    { title: 'IN', key:'140626', text: 'Clearer, nearer, Saturn and Jupiter return to their grand routine, a gift for Earth.' },
+    { key:'\u{1FA90}', text: 'Wonders of Saturn in a magical realm.' },
+    { title: 'AR', key:'020726', text: 'No longer hiding in the deep, Saturn catches the Sun, offering its whole glowing self to the night.' },
+    { title: 'AM', key:'070726', text: 'Cassini opened Saturn\'s world. Every ring, moon, and hidden light.' },
+    { title: 'ID', key:'170726', text: 'Saturn always keeps another secret waiting to be found.' },
+    { title: 'AN', key:'260726', text:'Does the Moon keep Saturn safe on a starry night?' },
+    { title: '22', key:'230826', text: 'Earth never stops watching, quietly, through every eye sent.' },
+    { title: 'SRY', text: 'A wonder of the universe, beautifully real', hot: 'real', text2: 'All of that was really my dreams of Nadia from the past year. I\'m too shy to just spell it out. So, i translated into real cosmic phenomenon to show what I really dreamt about' },
+  ];
+
+  const THETA_IDX = 7;
+  const SATURN_SVG = '<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" overflow="visible"><defs><mask id="sb-mask"><rect width="16" height="16" fill="white"/><circle cx="8" cy="7.8" r="3.6" fill="black"/></mask></defs><ellipse class="saturn-ring-back" cx="8" cy="8.4" rx="7.0" ry="2.4" fill="none" stroke-width="1.0" stroke-linecap="round" transform="rotate(-16,8,8.4)" mask="url(#sb-mask)" clip-path="inset(50% 0 0 0)"/><circle class="saturn-body" cx="8" cy="7.8" r="3.6"/><ellipse class="saturn-ring-front" cx="8" cy="8.4" rx="7.0" ry="2.4" fill="none" stroke-width="1.0" stroke-linecap="round" transform="rotate(-16,8,8.4)" clip-path="inset(0 0 50% 0)"/></svg>';
+
+  const state = { chartMode: false, constellationOn: false, segmentsOn: false, scorpioDone: false, splashParticles: [], splashInnerVisible: false, splashInner: null };
+  const constellation = { dim: 1.0, linesOn: true };
+  const modal = {
+    el: byId('modal'), backdrop: byId('modal-backdrop'), card: byId('modal-card'),
+    close: byId('modal-close'), counter: byId('modal-counter'), segId: byId('modal-seg-id'),
+    title: byId('modal-title'), text: byId('modal-text'),
+    inner: byId('modal-inner'), prev: byId('modal-prev'), next: byId('modal-next'), dots: byId('modal-dots'),
+    divider: byId('modal-divider'), body: byId('modal-body'),
+    label: byId('modal-label'), specMag: byId('modal-spec-mag'), specCls: byId('modal-spec-cls'),
+    open: false, single: false, curIdx: 0, allSegs: [], navLocked: false,
+  };
+
+  const physMap = new Map();
+  const activeSegs = new Set();
+  let segIdxMap = new Map();
+  let _tierHomeFrame = [];
+
+  const Constellation = (() => {
+    class SplashParticle extends DotParticle {
+      constructor(sd) {
+        super(dom.particles);
+        this.forming = false; this.formProg = 0;
+        this.twinklePhase = Math.random() * Math.PI * 2; this.twinkleSpeed = .0006 + Math.random() * .001;
+        this.noiseOff = Math.random() * 1000; this._twF = 0; this._twC = 0;
+        this.lockedOp = .85; this.formMs = STAR_FORM_MS;
+        const unit = this.unit = Math.min(screen.w, screen.h) * .28;
+        this.tx = this.x = screen.cx + sd.x * unit; this.ty = this.y = screen.cy + sd.y * unit;
+        this.size = sd.size; this.op = 0; this._lastOp = -1;
+        const glow = sd.size * 1.8, c = sd.color;
+        const bs = `0 0 ${glow.toFixed(1)}px ${c}${hx(.50)},0 0 ${(glow * 1.6).toFixed(1)}px ${c}${hx(.28)},0 0 ${(glow * 2.2).toFixed(1)}px ${c}${hx(.14)}`;
+        this.el.style.cssText = `position:absolute;border-radius:50%;pointer-events:none;will-change:transform,opacity;backface-visibility:hidden;width:${sd.size}px;height:${sd.size}px;background:${c};left:0;top:0;box-shadow:${bs};opacity:0;`;
+      }
+      form() {
+        if (this.forming) return;
+        this.forming = true; this.formProg = 0; this.formStartMs = performance.now();
+      }
+      spring(ts) {
+        const prog = cubicInOut(Math.min((ts - this.formStartMs) / this.formMs, 1));
+        this.formProg = prog; this.x = this.tx; this.y = this.ty; this.op = this.lockedOp * prog;
+      }
+      place() {
+        const tf = `translate(${rnd(this.x, 10)}px,${rnd(this.y, 10)}px)` + (this._sc ? ` scale(${this._sc})` : '');
+        if (tf !== this._tf) this.el.style.transform = this._tf = tf;
+      }
+      render() {
+        this.twinklePhase += this.twinkleSpeed * Shared.clock.k;
+        if (++this._twF % 3 === 0) {
+          const no = CountdownPhase.state.noiseOffset;
+          const n1 = perlin.noise(no * .40 + this.noiseOff);
+          const n2 = perlin.noise(no * .25 + this.noiseOff + 100);
+          this._twC = n1 * .06 + Math.sin(this.twinklePhase) * n2 * .04;
+        }
+        const finalOp = Math.min(.94, (.8 + this._twC) * constellation.dim * this.op);
+        const opR = rnd(Math.max(0, finalOp), 10000);
+        this.place();
+        if (this._lastOp !== opR) { this.el.style.opacity = opR; this._lastOp = opR; }
+      }
+      update(ts) {
+        if (this.forming) this.spring(ts); else this.op = 0;
+        this.render();
+      }
+    }
+
+    let splashLines = [];
+    let _linePositionsSettled = false;
+    let _linesFullySettled = false;
+
+    const initSplash = () => {
+      state.splashInner = document.querySelector('.splash-inner');
+      for (const star of SCORPIO_STARS) state.splashParticles.push(new SplashParticle(star));
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1';
+      document.body.insertBefore(svg, dom.particles);
+
+      const NS = 'http://www.w3.org/2000/svg';
+      const mkLine = (stroke, width) => {
+        const l = document.createElementNS(NS, 'line');
+        l.setAttribute('stroke', stroke); l.setAttribute('stroke-width', width);
+        l.style.cssText = `opacity:0;transition:opacity ${DUR_LG / 1000}s ${EASE_OUT_BACK}`;
+        return l;
+      };
+      const glowG = document.createElementNS(NS, 'g'); glowG.setAttribute('class', 'gl'); svg.appendChild(glowG);
+      splashLines = SCORPIO_LINKS.map(([i1, i2]) => {
+        const line = mkLine('rgba(94,179,255,.28)', '1.2'), glow = mkLine('rgba(120,175,255,.047)', '6');
+        glow.setAttribute('stroke-linecap', 'round'); glowG.appendChild(glow); svg.appendChild(line);
+        return { line, glow, i1, i2, _x1: -1, _y1: -1, _x2: -1, _y2: -1, _op: '-1' };
+      });
+      Physics.initPhysics();
+    };
+
+    const updateLines = () => {
+      if (_linesFullySettled) return;
+      const sp = state.splashParticles;
+      let allDone = true;
+      for (let i = 0; i < splashLines.length; i++) {
+        const sl = splashLines[i], p1 = sp[sl.i1], p2 = sp[sl.i2];
+        if (!p1 || !p2) continue;
+        if (!_linePositionsSettled) {
+          const x1 = p1.x + p1.size * .5, y1 = p1.y + p1.size * .5;
+          const x2 = p2.x + p2.size * .5, y2 = p2.y + p2.size * .5;
+          if (Math.abs(x1 - sl._x1) > .5 || Math.abs(y1 - sl._y1) > .5 || Math.abs(x2 - sl._x2) > .5 || Math.abs(y2 - sl._y2) > .5) {
+            for (const el of [sl.line, sl.glow]) { el.setAttribute('x1', x1); el.setAttribute('y1', y1); el.setAttribute('x2', x2); el.setAttribute('y2', y2); }
+            sl._x1 = x1; sl._y1 = y1; sl._x2 = x2; sl._y2 = y2;
+          }
+        }
+        if (p1.formProg >= .80 && p2.formProg >= .80) {
+          const fade = Math.min(((p1.formProg + p2.formProg) * .5 - .80) / .20, 1);
+          const newOp = (constellation.linesOn ? (0.28 * constellation.dim * fade) : 0).toFixed(4);
+          if (sl._op !== newOp) { sl.line.style.opacity = sl.glow.style.opacity = newOp; sl._op = newOp; }
+          if (fade < 1 || !constellation.linesOn) allDone = false;
+        } else {
+          if (sl._op !== '0') { sl.line.style.opacity = sl.glow.style.opacity = '0'; sl._op = '0'; }
+          allDone = false;
+        }
+      }
+      if (!_linePositionsSettled && sp.every(p => p.formProg >= 1)) _linePositionsSettled = true;
+      if (_linePositionsSettled && allDone && constellation.dim >= 0.999) _linesFullySettled = true;
+    };
+
+    const triggerForm = () => {
+      state.constellationOn = true;
+      _linesFullySettled = false;
+      const locked = state.splashParticles;
+      locked.forEach((p, i) => setTimeout(() => p.form(), Math.sqrt(i / (Math.max(locked.length - 1, 1))) * STAR_FORM_MS));
+    };
+
+    const getLines = () => splashLines;
+    const resetLinesSettled = (positions = false) => { _linesFullySettled = false; if (positions) _linePositionsSettled = false; };
+
+    return { initSplash, updateLines, triggerForm, getLines, resetLinesSettled };
+  })();
+
+  const Physics = (() => {
+    const beginReturning = (seg, st, { fromVel = true, activate = false } = {}) => {
+      if (fromVel) { st.rvx = st.vx; st.rvy = st.vy; st.vx = 0; st.vy = 0; }
+      st.returning = true; seg.style.zIndex = '10';
+      if (activate) { activeSegs.add(seg); startPhysLoop(); }
+    };
+    const cancelReturning = st => {
+      st.returning = false;
+      st.vx = st.rvx || 0; st.vy = st.rvy || 0;
+      st.rvx = 0; st.rvy = 0;
+    };
+    const renderSegState = (seg, st) => { setTf(seg, st.x, st.y, st.rot); syncPt(seg, st.x, st.y, st.rot); };
+    const syncSeg = (seg, st) => {
+      const pt = seg.pt;
+      if (!pt || Math.abs(pt[0] - st.x) > .05 || Math.abs(pt[1] - st.y) > .05 || Math.abs(pt[2] - st.rot) > .05) renderSegState(seg, st);
+    };
+    const segIsOut = seg => {
+      if (!seg) return false;
+      if (seg.everDragged) return true;
+      const st = physMap.get(seg);
+      return !!st && st.x * st.x + st.y * st.y > 4;
+    };
+    const isUnlocked = idx => {
+      if (!modal.allSegs.length || ALWAYS_UNLOCKED.has(idx)) return true;
+      const groups = UNLOCK_GROUPS[idx];
+      if (!groups) return true;
+      const out = i => segIsOut(modal.allSegs[i]);
+      return groups.some(g => g.every(out));
+    };
+    const forceReturnSeg = seg => {
+      if (seg === dragSeg) { seg._pendingForceReturn = true; return; }
+      const st = physMap.get(seg);
+      if (!st || st.returning) return;
+      if (st.x * st.x + st.y * st.y < 4) {
+        seg.everDragged = false; activeSegs.delete(seg);
+        checkCascade(); checkReturnQueue();
+        return;
+      }
+      seg._returnSuppressed = false;
+      st.rvx = st.vx * .3; st.rvy = st.vy * .3; st.vx = 0; st.vy = 0;
+      beginReturning(seg, st, { fromVel: false, activate: true });
+    };
+    const checkCascade = () => {
+      const segs = modal.allSegs;
+      for (let i = 0; i < segs.length; i++) {
+        if (segIsOut(segs[i]) && !isUnlocked(i)) forceReturnSeg(segs[i]);
+      }
+    };
+    const cancelCascade = () => {
+      const segs = modal.allSegs;
+      for (let i = 0; i < segs.length; i++) {
+        const seg = segs[i];
+        const st = physMap.get(seg);
+        if (!st || !st.returning) continue;
+        if (!isUnlocked(i)) continue;
+        cancelReturning(st);
+      }
+    };
+    const allTiersUpToHome = level => {
+      for (let t = 0; t <= level; t++) {
+        for (const idx of RETURN_TIERS[t]) {
+          if (idx < modal.allSegs.length && segIsOut(modal.allSegs[idx])) return false;
+        }
+      }
+      return true;
+    };
+    const suppressSeg = seg => {
+      seg._returnSuppressed = true;
+      const st = physMap.get(seg);
+      if (!st || !st.returning) return;
+      cancelReturning(st);
+    };
+    const checkReturnQueue = () => {
+      if (!modal.allSegs.length) return;
+      const tierGates = RETURN_TIERS.map((_, t) => t === 0 ? true : allTiersUpToHome(t - 1));
+      for (let i = 0; i < modal.allSegs.length; i++) {
+        const tier = TIER_OF_IDX.get(i);
+        if (tier === 0) continue;
+        const seg = modal.allSegs[i];
+        if (!segIsOut(seg)) continue;
+        const gate = tier === undefined ? allTiersUpToHome(RETURN_TIERS.length - 1) : tierGates[tier];
+        if (!gate) { suppressSeg(seg); continue; }
+        if (!seg._returnSuppressed) continue;
+        seg._returnSuppressed = false;
+        const st = physMap.get(seg);
+        if (!st || st.returning || st.dragging) continue;
+        setTimeout(() => {
+          if (seg._returnSuppressed || st.dragging || st.returning || !segIsOut(seg)) return;
+          st.rvel += (Math.random() - .5) * 1.8;
+          if (st.vx * st.vx + st.vy * st.vy < 0.5) beginReturning(seg, st, { activate: true });
+        }, Math.random() * 2218);
+      }
+    };
+
+    let dragSeg = null, dragData = null, dragState = null;
+
+    const segPos = (seg, st) => {
+      if (!seg.style.transition) return [st.x, st.y];
+      const m = new DOMMatrix(getComputedStyle(seg).transform);
+      return [m.m41, m.m42];
+    };
+    let dragPendingX = 0, dragPendingY = 0, dragPrevX = 0, dragPrevY = 0;
+
+    const onPointerMove = e => {
+      if (!dragState?.dragging || e.pointerId !== dragData.id) return;
+      const cx = e.clientX, cy = e.clientY;
+      const now = performance.now(), dd = dragData, st = dragState, dt = now - dd.lt;
+      dragPendingX = cx - dd.sx; dragPendingY = cy - dd.sy;
+      if (dragSeg && !dd.movedThisInteraction) {
+        const mdx = cx - dd.ox, mdy = cy - dd.oy;
+        if (mdx * mdx + mdy * mdy > TAP_MAX_MOVE_SQ) { dd.movedThisInteraction = true; dragSeg.everDragged = true; cancelCascade(); }
+      }
+      if (dt > 0 && dt < 80) {
+        const nvx = (cx - dd.lx) / dt * 16, nvy = (cy - dd.ly) / dt * 16;
+        st.vx = st.vx * .4 + nvx * .6; st.vy = st.vy * .4 + nvy * .6;
+      }
+      dd.lx = cx; dd.ly = cy; dd.lt = now;
+    };
+    const onPointerUp = e => {
+      if (!dragState?.dragging || (e && e.pointerId !== dragData.id)) return;
+      const st = dragState, seg = dragSeg;
+      const wasTap = !dragData.movedThisInteraction && (performance.now() - dragData.startT) < TAP_MAX_MS;
+      const [px, py] = segPos(seg, st);
+      const isDisplaced = Math.abs(px) > 2 || Math.abs(py) > 2;
+      st.x = px; st.y = py; st.dragging = false; st.returning = false; st.rvx = st.rvy = 0;
+      if (wasTap) {
+        st.vx = 0; st.vy = 0;
+        if (isDisplaced) {
+          const idx = segIdxMap.get(seg) ?? -1;
+          if (idx !== -1) {
+            beginReturning(seg, st, { fromVel: false, activate: true });
+            Modal.openModal(idx);
+          }
+        }
+      } else {
+        const maxV = Math.min(screen.w, screen.h) * .22;
+        const spd = Math.sqrt(st.vx * st.vx + st.vy * st.vy);
+        if (spd > maxV) { const s = maxV / spd; st.vx *= s; st.vy *= s; }
+        activeSegs.add(seg); startPhysLoop();
+        if (st.vx === 0 && st.vy === 0 && (st.x * st.x + st.y * st.y) > 4) beginReturning(seg, st, { fromVel: false });
+      }
+      seg.classList.remove('dragging'); dragSeg = dragData = dragState = null;
+      if (seg._pendingForceReturn) { seg._pendingForceReturn = false; forceReturnSeg(seg); }
+    };
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointercancel', onPointerUp);
+
+    const attachDrag = seg => {
+      const st = physMap.get(seg);
+      const dd = { sx: 0, sy: 0, ox: 0, oy: 0, lx: 0, ly: 0, lt: 0, startT: 0 };
+      const onStart = e => {
+        e.preventDefault();
+        const segIdx = segIdxMap.get(seg) ?? -1;
+        if (segIdx !== -1 && !isUnlocked(segIdx)) return;
+        const cx = e.clientX, cy = e.clientY;
+        if (dragState?.dragging) onPointerUp();
+        st.dragging = true; st.returning = false; st.rvx = st.rvy = 0;
+        seg.classList.remove('theta-home'); seg.classList.add('dragging'); activeSegs.add(seg);
+        const [mx, my] = segPos(seg, st);
+        dd.sx = cx - mx; dd.sy = cy - my; dd.ox = cx; dd.oy = cy;
+        dd.lx = cx; dd.ly = cy; dd.lt = performance.now(); dd.startT = dd.lt;
+        dd.movedThisInteraction = false; dd.id = e.pointerId;
+        dragSeg = seg; dragData = dd; dragState = st;
+        dragPendingX = mx; dragPendingY = my; startPhysLoop();
+      };
+      seg.addEventListener('pointerdown', onStart);
+    };
+
+    const segBatch = [];
+    let boundsArr = new Float32Array(256);
+    let staticArr = new Uint8Array(64);
+    let physRaf = null;
+    const startPhysLoop = () => { if (!physRaf) physRaf = requestAnimationFrame(physLoop); };
+
+    const initPhysics = () => {
+      modal.allSegs = Array.from(document.querySelectorAll('.seg'));
+      segIdxMap = new Map();
+      modal.allSegs.forEach((seg, idx) => {
+        segIdxMap.set(seg, idx);
+        const r = seg.getBoundingClientRect();
+        const mass = .85 + (r.width * r.height / 1000) * .35;
+        seg.sw = r.width; seg.sh = r.height;
+        seg.ox = r.left + r.width * .5; seg.oy = r.top + r.height * .5;
+        seg.everDragged = false;
+        physMap.set(seg, { x: 0, y: 0, vx: 0, vy: 0, rvx: 0, rvy: 0, rot: 0, rvel: 0, dragging: false, returning: false, mass });
+        attachDrag(seg);
+      });
+    };
+
+
+    let physK = 1; const physT = {}, pw = (b, k) => k === 1 ? b : Math.pow(b, k);
+    const physLoop = ts => {
+      if (activeSegs.size === 0 && !dragSeg) { physRaf = null; physT.kt = 0; return; }
+      physK = Shared.tickK(physT, ts);
+      if (dragSeg && dragState?.dragging) {
+        dragPrevX = dragState.x; dragPrevY = dragState.y;
+        dragState.x = dragPendingX; dragState.y = dragPendingY;
+        setTf(dragSeg, dragState.x, dragState.y, dragState.rot);
+        if (dragSeg.pt) { dragSeg.pt[0] = dragState.x; dragSeg.pt[1] = dragState.y; }
+        activeSegs.add(dragSeg);
+      }
+      physStep();
+      physRaf = requestAnimationFrame(physLoop);
+    };
+
+    const physStep = () => {
+      for (let t = 0; t < RETURN_TIERS.length; t++) _tierHomeFrame[t] = allTiersUpToHome(t);
+      segBatch.length = 0; activeSegs.forEach(s => segBatch.push(s));
+      const len = segBatch.length;
+      if (boundsArr.length < len * 4) boundsArr = new Float32Array(len * 4 + 32);
+      if (staticArr.length < len) staticArr = new Uint8Array(len + 8);
+      let anyNonStatic = false;
+      for (let i = 0; i < len; i++) {
+        const seg = segBatch[i], st = physMap.get(seg);
+        if (!st.dragging) updateSeg(seg, st);
+        const i4 = i * 4;
+        boundsArr[i4] = seg.ox + st.x; boundsArr[i4 + 1] = seg.oy + st.y;
+        boundsArr[i4 + 2] = seg.sw * .5; boundsArr[i4 + 3] = seg.sh * .5;
+        const isStatic = !seg.everDragged && boundsArr[i4] === seg.ox && boundsArr[i4 + 1] === seg.oy ? 1 : 0;
+        staticArr[i] = isStatic;
+        if (!isStatic) anyNonStatic = true;
+      }
+      if (anyNonStatic) {
+        let dSweptX1 = 0, dSweptY1 = 0, dSweptX2 = 0, dSweptY2 = 0, dIdx = -1;
+        if (dragSeg) {
+          for (let i = 0; i < len; i++) { if (segBatch[i] === dragSeg) { dIdx = i; break; } }
+          if (dIdx >= 0) {
+            const di4 = dIdx * 4, chw = boundsArr[di4 + 2], chh = boundsArr[di4 + 3];
+            const curCx = boundsArr[di4], curCy = boundsArr[di4 + 1];
+            const prvCx = dragSeg.ox + dragPrevX, prvCy = dragSeg.oy + dragPrevY;
+            dSweptX1 = Math.min(prvCx, curCx) - chw; dSweptY1 = Math.min(prvCy, curCy) - chh;
+            dSweptX2 = Math.max(prvCx, curCx) + chw; dSweptY2 = Math.max(prvCy, curCy) + chh;
+          }
+        }
+        for (let i = 0; i < len; i++) {
+          const i4 = i * 4, cx1 = boundsArr[i4], cy1 = boundsArr[i4 + 1], hw1 = boundsArr[i4 + 2], hh1 = boundsArr[i4 + 3];
+          for (let j = i + 1; j < len; j++) {
+            const s1Static = staticArr[i] === 1, s2Static = staticArr[j] === 1;
+            if (s1Static && s2Static) continue;
+            const j4 = j * 4, cx2 = boundsArr[j4], cy2 = boundsArr[j4 + 1], hw2 = boundsArr[j4 + 2], hh2 = boundsArr[j4 + 3];
+            let hit = Math.abs(cx1 - cx2) < hw1 + hw2 + 2 && Math.abs(cy1 - cy2) < hh1 + hh2 + 2;
+            if (!hit && (i === dIdx || j === dIdx)) {
+              const oi = i === dIdx ? j : i, oi4 = oi * 4;
+              const ocx = boundsArr[oi4], ocy = boundsArr[oi4 + 1], ohw = boundsArr[oi4 + 2], ohh = boundsArr[oi4 + 3];
+              hit = ocx + ohw > dSweptX1 && ocx - ohw < dSweptX2 && ocy + ohh > dSweptY1 && ocy - ohh < dSweptY2;
+            }
+            if (!hit) continue;
+            activeSegs.add(segBatch[i]); activeSegs.add(segBatch[j]);
+            resolveCollision(segBatch[i], segBatch[j], cx1, cy1, hw1, hh1, cx2, cy2, hw2, hh2);
+          }
+        }
+      }
+    };
+
+    const updateSeg = (seg, st) => {
+      const spd2 = st.vx * st.vx + st.vy * st.vy;
+      const k = physK, air = pw(spd2 > 0 ? Math.max(.978 - spd2 * .000004, .92) : .978, k);
+      st.vx *= air; st.vy *= air; st.rvel *= pw(.97, k);
+      st.rot += st.rvel * k;
+      if (st.rot > 360) st.rot -= 360;
+      else if (st.rot < -360) st.rot += 360;
+      if (st.returning) {
+        updateReturning(seg, st);
+      } else {
+        st.x += st.vx * k; st.y += st.vy * k;
+        let justBeganReturning = false;
+        if (spd2 > 0) {
+          const vel = Math.sqrt(spd2), dist2 = st.x * st.x + st.y * st.y;
+          if (vel < .08 && (dist2 > 1 || vel < .04) && Math.abs(st.rvel) < .2 && !seg._returnSuppressed) {
+            beginReturning(seg, st);
+            justBeganReturning = true;
+          }
+        }
+        if (!justBeganReturning) {
+          const idx = segIdxMap.get(seg) ?? -1;
+          const tier = TIER_OF_IDX.get(idx);
+          const gateOpen = tier === 0 ? true : tier === undefined ? _tierHomeFrame[RETURN_TIERS.length - 1] : _tierHomeFrame[tier - 1];
+          if (idx !== -1 && tier !== 0 && !gateOpen && segIsOut(seg)) {
+            suppressSeg(seg);
+            const spd = Math.sqrt(st.vx * st.vx + st.vy * st.vy);
+            if (spd > 0 && spd < .22) { const s = .22 / spd; st.vx *= s; st.vy *= s; }
+          }
+        }
+      }
+      wallBounce(seg, st);
+      syncSeg(seg, st);
+    };
+
+    const updateReturning = (seg, st) => {
+      const dx = st.x, dy = st.y, dist = Math.sqrt(dx * dx + dy * dy);
+      const rv2 = st.rvx * st.rvx + st.rvy * st.rvy;
+      if (dist < 6 && rv2 < .012 && Math.abs(st.rvel) < .2) {
+        st.x = 0; st.y = 0; st.vx = 0; st.vy = 0; st.rvx = 0; st.rvy = 0; st.rot = 0; st.rvel = 0;
+        st.returning = false; seg.everDragged = false; seg._returnSuppressed = false;
+        seg.style.transition = `transform ${DUR_MD / 1000}s ${EASE_OUT_BACK}`;
+        seg.style.transform = 'translate(0,0) rotate(0deg)';
+        seg.style.zIndex = ''; seg.pt = [0, 0, 0];
+        activeSegs.delete(seg); seg.classList.add('locked');
+        setTimeout(() => { if (seg?.classList) { seg.classList.remove('locked'); seg.style.transition = ''; } }, DUR_MD);
+        checkCascade(); checkReturnQueue();
+        Constellation.resetLinesSettled();
+        return;
+      }
+      const maxR = screen.w * .6;
+      const nt = Math.min(dist / maxR, 1);
+      const proximity = 1 - nt, p2 = proximity * proximity, p3 = p2 * proximity;
+      if (nt > .35) {
+        const segs = modal.allSegs, ox = seg.ox, oy = seg.oy;
+        for (let i = 0; i < segs.length; i++) {
+          const other = segs[i]; if (other === seg) continue;
+          const ost = physMap.get(other); if (!ost) continue;
+          const odx = (ox + st.x) - (other.ox + ost.x), ody = (oy + st.y) - (other.oy + ost.y);
+          const d2 = odx * odx + ody * ody;
+          const minD = seg.sw * .5 + seg.sh * .5 + other.sw * .5 + other.sh * .5;
+          if (d2 > minD * minD * 2.25) continue;
+          const d = Math.sqrt(d2) || 1, f = .008 * (1 - d / (minD * 1.5));
+          if (f <= 0) continue;
+          st.rvx += odx / d * f * physK; st.rvy += ody / d * f * physK;
+        }
+      }
+      const springK = .00005 + .008 * p3;
+      const damp = .988 - .052 * p2;
+      const dk = pw(damp, physK);
+      st.rvx = (st.rvx - dx * springK * physK) * dk;
+      st.rvy = (st.rvy - dy * springK * physK) * dk;
+      const maxV = Math.max(screen.w * .009 * nt, screen.w * .0018);
+      const newRv2 = st.rvx * st.rvx + st.rvy * st.rvy;
+      if (newRv2 > maxV * maxV) { const s = maxV / Math.sqrt(newRv2); st.rvx *= s; st.rvy *= s; }
+      const rotK = .0008 + .020 * p2, rotDamp = .975 - .042 * proximity;
+      st.rvel = (st.rvel - st.rot * rotK * physK) * pw(rotDamp, physK);
+      st.x += st.rvx * physK; st.y += st.rvy * physK;
+    };
+
+    const wallBounce = (seg, st) => {
+      const hw = seg.sw * .5, hh = seg.sh * .5, cx = seg.ox + st.x, cy = seg.oy + st.y, m = .5;
+      let hit = false;
+      const reflect = (axis, pos) => {
+        hit = true;
+        const k = axis === 'x' ? (st.returning ? 'rvx' : 'vx') : (st.returning ? 'rvy' : 'vy');
+        st[k] = pos ? Math.max(Math.abs(st[k]) * .55, .5) : -Math.max(Math.abs(st[k]) * .55, .5);
+        st.rvel += Math.random() * 2.5 - 1.25;
+      };
+      if (cx - hw <= m) { st.x += m - (cx - hw) + 1; reflect('x', true); }
+      if (cx + hw >= screen.w - m) { st.x -= (cx + hw) - (screen.w - m) + 1; reflect('x', false); }
+      if (cy - hh <= m) { st.y += m - (cy - hh) + 1; reflect('y', true); }
+      if (cy + hh >= screen.h - m) { st.y -= (cy + hh) - (screen.h - m) + 1; reflect('y', false); }
+      if (hit && st.returning) {
+        const rv2 = st.rvx * st.rvx + st.rvy * st.rvy;
+        if (rv2 > .09) { st.vx = st.rvx; st.vy = st.rvy; st.rvx = st.rvy = 0; st.returning = false; }
+      }
+    };
+
+    const resolveCollision = (s1, s2, cx1, cy1, hw1, hh1, cx2, cy2, hw2, hh2) => {
+      const a = physMap.get(s1), b = physMap.get(s2);
+      const aAtOrigin = !s1.everDragged && (a.x * a.x + a.y * a.y) < 4;
+      const bAtOrigin = !s2.everDragged && (b.x * b.x + b.y * b.y) < 4;
+      if (aAtOrigin && bAtOrigin) return;
+      const dx = cx1 - cx2, dy = cy1 - cy2, dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < .1) return;
+      const nx = dx / dist, ny = dy / dist;
+      if (aAtOrigin) {
+        const sep = ((hw1 + hh1 + hw2 + hh2) * .5 - dist) * .5 + 2;
+        if (sep > 0) { b.x -= nx * sep * 2; b.y -= ny * sep * 2; }
+        const bSpd = Math.abs(b.vx + b.vy) * .6; b.vx -= nx * bSpd; b.vy -= ny * bSpd;
+        activeSegs.add(s2); startPhysLoop(); return;
+      }
+      if (bAtOrigin) {
+        const sep = ((hw1 + hh1 + hw2 + hh2) * .5 - dist) * .5 + 2;
+        if (sep > 0) { a.x += nx * sep * 2; a.y += ny * sep * 2; }
+        const aSpd = Math.abs(a.vx + a.vy) * .6; a.vx += nx * aSpd; a.vy += ny * aSpd;
+        activeSegs.add(s1); startPhysLoop(); return;
+      }
+      const m1 = (a.x * a.x + a.y * a.y) < 64, m2 = (b.x * b.x + b.y * b.y) < 64;
+      const d1 = a.dragging, d2 = b.dragging;
+      const overlap = (hw1 + hh1 + hw2 + hh2) * .5 - dist;
+      if (overlap > 0) separate(s1, s2, a, b, nx, ny, overlap, d1, d2, m1, m2);
+      if (d1 || d2) {
+        if (d1 !== d2) {
+          const [pushed, pushedSeg, sgn] = d1 ? [b, s2, -1] : [a, s1, 1];
+          pushed.vx = nx * sgn * 7.5; pushed.vy = ny * sgn * 7.5;
+          pushed.rvel += Math.random() * 3 - 1.5; pushed.returning = false; pushed.rvx = pushed.rvy = 0;
+          activeSegs.add(pushedSeg); startPhysLoop();
+        }
+        return;
+      }
+      const v1x = a.returning ? a.rvx : a.vx, v1y = a.returning ? a.rvy : a.vy;
+      const rvx = v1x - (b.returning ? b.rvx : b.vx), rvy = v1y - (b.returning ? b.rvy : b.vy);
+      const dot = rvx * nx + rvy * ny;
+      if (dot < 0) applyImpulse(a, b, nx, ny, dot, rvx, rvy, m1, m2);
+    };
+
+    const separate = (s1, s2, a, b, nx, ny, ol, d1, d2, m1, m2) => {
+      const sep = ol * .5 + 2;
+      if (d1 && !d2) { b.x -= nx * sep * 2; b.y -= ny * sep * 2; }
+      else if (d2 && !d1) { a.x += nx * sep * 2; a.y += ny * sep * 2; }
+      else if (d1 && d2) { a.x += nx * sep; a.y += ny * sep; b.x -= nx * sep; b.y -= ny * sep; }
+      else if (m1 && !m2) { b.x -= nx * sep * 2; b.y -= ny * sep * 2; }
+      else if (m2 && !m1) { a.x += nx * sep * 2; a.y += ny * sep * 2; }
+      else {
+        const mr1 = b.mass / (a.mass + b.mass), mr2 = a.mass / (a.mass + b.mass);
+        a.x += nx * sep * mr1; a.y += ny * sep * mr1; b.x -= nx * sep * mr2; b.y -= ny * sep * mr2;
+      }
+      syncSeg(s1, a); syncSeg(s2, b);
+      activeSegs.add(s1); activeSegs.add(s2); startPhysLoop();
+    };
+
+    const applyImpulse = (a, b, nx, ny, dot, rvx, rvy, m1, m2) => {
+      const total = a.mass + b.mass;
+      const impulse = -(1 + .75) * dot / total;
+      const mag = Math.abs(impulse);
+      const rotI = (rvx * ny - rvy * nx) * .12;
+      const applyImp = (st, ix, iy) => {
+        if (!st.returning) { st.vx += ix; st.vy += iy; return; }
+        st.rvx += ix; st.rvy += iy;
+        if (mag > .35) { st.vx = st.rvx; st.vy = st.rvy; st.rvx = 0; st.rvy = 0; st.returning = false; }
+      };
+      if (m1 && !m2) { applyImp(b, -impulse * nx * a.mass * 2, -impulse * ny * a.mass * 2); b.rvel += rotI * 2; }
+      else if (m2 && !m1) { applyImp(a, impulse * nx * b.mass * 2, impulse * ny * b.mass * 2); a.rvel -= rotI * 2; }
+      else {
+        applyImp(a, impulse * nx * b.mass, impulse * ny * b.mass);
+        applyImp(b, -impulse * nx * a.mass, -impulse * ny * a.mass);
+        a.rvel -= rotI; b.rvel += rotI;
+      }
+    };
+
+    const isSegFree = seg => {
+      const st = physMap.get(seg);
+      if (!st) return false;
+      return st.dragging || Math.abs(st.x) > 2 || Math.abs(st.y) > 2 || Math.abs(st.rot) > 1;
+    };
+
+    return {
+      segIsOut, isSegFree, initPhysics, startPhysLoop,
+      getDragSeg: () => dragSeg,
+      cancelPhysLoop: () => { if (physRaf) { cancelAnimationFrame(physRaf); physRaf = null; } physT.kt = 0; },
+    };
+  })();
+
+  let splashRafId = null, splashTimer = null, _splashLastTs = 0;
+  const splashTick = ts => {
+    const constellationDone = state.constellationOn && state.scorpioDone && constellation.dim > 0.99;
+    const idle = constellationDone && activeSegs.size === 0 && !Physics.getDragSeg();
+    const interval = idle ? 100 : state.constellationOn && activeSegs.size === 0 ? 33 : 16;
+    if (ts - _splashLastTs < interval) { splashRafId = requestAnimationFrame(splashTick); return; }
+    const nominal = interval === 100 ? 100 : interval === 33 ? 100 / 3 : Shared.REF_MS;
+    const sk = _splashLastTs ? Math.min((ts - _splashLastTs) / nominal, 3) : 1;
+    Shared.clock.k = Math.abs(sk - 1) < .08 ? 1 : sk;
+    _splashLastTs = ts;
+    checkSegsHome();
+    if (!idle) CountdownPhase.state.noiseOffset += .008 * Shared.clock.k;
+    const sp = state.splashParticles;
+    for (let i = 0; i < sp.length; i++) sp[i].update(ts);
+    Constellation.updateLines();
+    if (idle) {
+      splashRafId = null;
+      splashTimer = setTimeout(() => { splashTimer = null; splashRafId = requestAnimationFrame(splashTick); }, 80);
+      return;
+    }
+    splashRafId = requestAnimationFrame(splashTick);
+  };
+  const pauseSplashLoop = () => { cancelAnimationFrame(splashRafId); clearTimeout(splashTimer); splashRafId = splashTimer = null; };
+  const resumeSplashLoop = () => { if (!splashRafId && !splashTimer && state.splashParticles.length > 0) splashRafId = requestAnimationFrame(splashTick); };
+
+  const Modal = (() => {
+    const SEG_LABELS = 'IJUSTWANTOCODE'.split('').map(c => 'DST' + c.charCodeAt(0).toString(2).padStart(8, '0'));
+    const LABEL_DEFAULT = modal.label.textContent;
+    const rgbOf = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16)).join(',');
+    const setDividerScale = (divider, toVisible, durMs, easing) => {
+      if (!divider) return;
+      divider.style.transition = durMs === 0 ? 'none' : `transform ${durMs / 1000}s ${easing}`;
+      divider.style.transform = toVisible ? 'scaleX(1)' : 'scaleX(0)';
+    };
+    const dotClass = (idx, seg) => {
+      if (idx === 7) return 'modal-dot saturn' + (idx === modal.curIdx ? ' active' : ' available');
+      if (!Physics.isSegFree(seg)) return 'modal-dot locked';
+      return 'modal-dot' + (idx === modal.curIdx ? ' active' : ' available');
+    };
+    const buildDots = (animate = false) => {
+      const container = modal.dots;
+      const existing = container.querySelectorAll('.modal-dot');
+      if (animate && existing.length === modal.allSegs.length) {
+        modal.allSegs.forEach((seg, idx) => {
+          const d = existing[idx]; if (!d) return;
+          d.className = dotClass(idx, seg);
+          if (idx !== 7) d.textContent = !Physics.isSegFree(seg) ? '×' : '';
+        });
+        return;
+      }
+      container.innerHTML = '';
+      modal.allSegs.forEach((seg, idx) => {
+        const d = document.createElement('div');
+        d.className = dotClass(idx, seg);
+        if (idx === 7) d.innerHTML = SATURN_SVG;
+        else d.textContent = !Physics.isSegFree(seg) ? '×' : '';
+        container.appendChild(d);
+      });
+    };
+    const animateCounter = html => {
+      const el = modal.counter;
+      el.style.transition = `opacity ${DUR_XS / 1000}s ${EASE_SHARP_IN}`; el.style.opacity = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.innerHTML = html; el.style.transition = `opacity ${DUR_SM / 1000}s ${EASE_OUT_BACK}`; el.style.opacity = '1';
+      }));
+    };
+    const renderText = data => {
+      Scramble.cancel();
+      const i = data.hot && data.text2 ? data.text.indexOf(data.hot) : -1;
+      if (i < 0) { modal.text.textContent = data.text; return; }
+      const w = document.createElement('span');
+      w.className = 'hot'; w.textContent = data.hot; w.tabIndex = 0; w.setAttribute('role', 'button');
+      modal.text.replaceChildren(data.text.slice(0, i), w, data.text.slice(i + data.hot.length));
+    };
+    const fireHot = e => {
+      if (!e.target.closest?.('.hot')) return;
+      const d = SEG_CONTENT[modal.curIdx];
+      if (!d?.text2 || !d.hot) return;
+      Scramble.run(modal.text, d.text, d.text2, d.text.indexOf(d.hot) + (d.hot.length - 1) / 2);
+    };
+    const populateContent = () => {
+      const data = SEG_CONTENT[modal.curIdx] || { title: `SEGMENT ${modal.curIdx}`, text: 'No data.' };
+      const free = modal.single || Physics.isSegFree(modal.allSegs[modal.curIdx]);
+      modal.segId.textContent = [SEG_LABELS[modal.curIdx] || `SEG-${String(modal.curIdx).padStart(2, '0')}`, data.key].filter(Boolean).join('.');
+      modal.title.textContent = data.title ?? ''; renderText(data);
+      modal.text.style.opacity = free ? '1' : '0.35';
+      modal.card.classList.toggle('theta-special', modal.curIdx === THETA_IDX);
+    };
+    const getFreeIdxs = () => modal.allSegs.flatMap((s, i) => Physics.isSegFree(s) ? [i] : []);
+    const updateNavState = free => {
+      free = free || getFreeIdxs();
+      const pos = free.indexOf(modal.curIdx);
+      modal.prev.disabled = pos <= 0; modal.next.disabled = pos < 0 || pos >= free.length - 1;
+    };
+    const counterStr = idx => idx === THETA_IDX ? `<span class="inf-sym">∞</span> / ${modal.allSegs.length}` : `${idx + 1} / ${modal.allSegs.length}`;
+    const renderStar = star => {
+      modal.label.textContent = star.name;
+      modal.counter.textContent = star.bayer ? `${star.bayer} SCO` : 'SCORPIUS';
+      modal.specMag.textContent = `MAG ${star.mag}`; modal.specCls.textContent = `CLASS ${star.cls.toUpperCase()}`;
+    };
+    const renderModalImmediate = star => {
+      populateContent();
+      if (star) return renderStar(star);
+      modal.label.textContent = LABEL_DEFAULT;
+      updateNavState(); modal.counter.innerHTML = counterStr(modal.curIdx); buildDots();
+    };
+
+    const setStarMode = (star, origin) => {
+      const { el, card } = modal;
+      card.style.transition = 'none';
+      el.classList.toggle('single', !!star);
+      if (star) {
+        card.style.setProperty('--ac', rgbOf(star.color));
+        card.style.setProperty('--ox', `${origin.x - (innerWidth - card.offsetWidth) / 2}px`);
+        card.style.setProperty('--oy', `${origin.y - (innerHeight - card.offsetHeight) / 2}px`);
+      } else card.style.removeProperty('--ac');
+      void card.offsetWidth;
+      card.style.transition = '';
+    };
+
+    const modalFreeze = () => {
+      Physics.cancelPhysLoop();
+      pauseSplashLoop();
+      document.body.classList.add('modal-open');
+    };
+
+    const modalUnfreeze = () => {
+      document.body.classList.remove('modal-open');
+      Physics.startPhysLoop();
+      resumeSplashLoop();
+    };
+
+    const openModal = (idx, star = null, origin = null) => {
+      if (!physMap.size || modal.allSegs.length === 0) return;
+      if (modal.open) return;
+      modal.curIdx = Math.max(0, Math.min(idx, modal.allSegs.length - 1));
+      modal.single = !!star;
+      modalFreeze();
+      renderModalImmediate(star);
+      setStarMode(star, origin);
+      const { divider, body, inner, el } = modal;
+      inner.className = '';
+      inner.style.opacity = '0';
+      setDividerScale(divider, false, 0, '');
+      if (body) body.classList.remove('sweeping', 'sweeping-open');
+      modal.open = true;
+      el.classList.add('open');
+      requestAnimationFrame(() => {
+        inner.style.transition = 'none';
+        inner.style.opacity = '1';
+        requestAnimationFrame(() => {
+          inner.style.transition = '';
+          inner.style.opacity = '';
+          inner.classList.add('modal-entering');
+          if (body) setTimeout(() => {
+            body.classList.add('sweeping');
+            body.addEventListener('animationend', () => body.classList.remove('sweeping'), { once: true });
+          }, DUR_SM);
+          if (divider) setTimeout(() => setDividerScale(divider, true, DUR_LG, EASE_OUT_BACK), DUR_LG);
+          setTimeout(() => inner.classList.remove('modal-entering'), DUR_XL);
+        });
+      });
+    };
+
+    const closeModal = () => {
+      if (!modal.open) return;
+      modal.open = false;
+      Scramble.cancel();
+      const { inner, divider, card, backdrop, el } = modal;
+      inner.classList.remove('modal-entering', 'data-in', 'data-out');
+      setDividerScale(divider, false, DUR_SM, EASE_SHARP_IN);
+      card.style.transition = `opacity ${DUR_MD / 1000}s ${EASE_STD},transform ${DUR_MD / 1000}s ${EASE_STD}`;
+      backdrop.style.transition = `opacity ${DUR_MD / 1000}s ${EASE_STD},backdrop-filter ${DUR_MD / 1000}s ${EASE_STD},-webkit-backdrop-filter ${DUR_MD / 1000}s ${EASE_STD}`;
+      el.classList.remove('open');
+      setTimeout(() => {
+        card.style.transition = '';
+        backdrop.style.transition = '';
+        if (!modal.open) { modalUnfreeze(); modal.el.classList.remove('single'); modal.single = false; }
+      }, DUR_LG);
+    };
+    const navigateModal = dir => {
+      if (modal.navLocked || modal.single) return;
+      const free = getFreeIdxs(), pos = free.indexOf(modal.curIdx), nextPos = pos + dir;
+      if (nextPos < 0 || nextPos >= free.length) return;
+      modal.navLocked = true;
+      const { inner, body, divider } = modal;
+      body.classList.remove('sweeping');
+      body.addEventListener('animationend', () => body.classList.remove('sweeping'), { once: true });
+      requestAnimationFrame(() => body.classList.add('sweeping'));
+      setDividerScale(divider, false, DUR_XS, EASE_SHARP_IN);
+      inner.classList.remove('data-out', 'data-in', 'modal-entering');
+      requestAnimationFrame(() => inner.classList.add('data-out'));
+      setTimeout(() => {
+        modal.curIdx = free[nextPos]; populateContent(); updateNavState(free);
+        animateCounter(counterStr(modal.curIdx)); buildDots(true);
+        inner.classList.remove('data-out');
+        requestAnimationFrame(() => inner.classList.add('data-in'));
+        setTimeout(() => setDividerScale(divider, true, DUR_LG, EASE_OUT_BACK), DUR_XS);
+        setTimeout(() => { inner.classList.remove('data-in'); modal.navLocked = false; }, DUR_LG);
+      }, DUR_XS);
+    };
+
+    const bindEvents = () => {
+      modal.close.addEventListener('click', closeModal);
+      modal.text.addEventListener('click', fireHot);
+      modal.text.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fireHot(e); } });
+      modal.prev.addEventListener('click', () => navigateModal(-1));
+      modal.next.addEventListener('click', () => navigateModal(1));
+      document.addEventListener('keydown', e => {
+        if (!modal.open) return;
+        if (e.key === 'Escape') { closeModal(); e.preventDefault(); } 
+        else if (e.key === 'ArrowLeft') navigateModal(-1);
+        else if (e.key === 'ArrowRight') navigateModal(1);
+      });
+      (() => {
+        let sx = 0, sy = 0;
+        const card = modal.card;
+        card.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+        card.addEventListener('touchend', e => {
+          const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+          if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) navigateModal(dx < 0 ? 1 : -1);
+        }, { passive: true });
+      })();
+    };
+
+    const prewarmModal = () => {
+      const { el, card, backdrop, inner } = modal;
+      const prev = el.style.cssText;
+      el.style.cssText = 'display:block;visibility:hidden;opacity:0;pointer-events:none;';
+      void getComputedStyle(backdrop).backdropFilter;
+      void card.offsetHeight;
+      void inner.offsetHeight;
+      el.style.cssText = prev;
+    };
+
+    return { openModal, openSingle: (idx, star, x, y) => openModal(idx, star, { x, y }), bindEvents, prewarmModal };
+  })();
+
+  Modal.bindEvents();
+
+  const initSegments = () => {
+    modal.allSegs.forEach((seg, globalIdx) => {
+      const di = globalIdx < 7 ? 0 : 1, si = globalIdx % 7;
+      const delay = seg.classList.contains('on') ? DUR_MD + di * DUR_XS + si * 76 : di * DUR_SM + si * 76;
+      setTimeout(() => {
+        seg.classList.add('loaded');
+        seg.addEventListener('animationend', function onEnd(e) {
+          if (e.animationName !== 'segPowerOn' && e.animationName !== 'segPowerOnGlow') return;
+          seg.removeEventListener('animationend', onEnd);
+          seg.classList.remove('loaded'); seg.style.opacity = '1'; seg.style.transform = '';
+        });
+      }, delay);
+    });
+    setTimeout(Modal.prewarmModal, 1372);
+  };
+
+  const checkSegsHome = () => {
+    if (!state.scorpioDone && state.constellationOn) {
+      if (state.splashParticles.every(p => p.formProg >= 1)) state.scorpioDone = true;
+    }
+    const thetaSeg = modal.allSegs[THETA_IDX];
+    if (activeSegs.size === 0 && !Physics.getDragSeg() && constellation.dim > 0.99) {
+      constellation.linesOn = true;
+      if (state.scorpioDone && thetaSeg && thetaSeg.style.opacity === '1' && !thetaSeg.style.transition) thetaSeg.classList.add('theta-home');
+      return;
+    }
+    let allHome = true;
+    for (const seg of activeSegs) { const st = physMap.get(seg); if (st && st.x * st.x + st.y * st.y > 4) { allHome = false; break; } }
+    const tDim = allHome ? 1.0 : 0.2;
+    constellation.dim += (tDim - constellation.dim) * Shared.damp(allHome ? (state.chartMode ? .146 : .012) : .06, Shared.clock.k);
+    constellation.linesOn = constellation.dim > .85;
+    if (thetaSeg && thetaSeg.style.opacity === '1' && !thetaSeg.style.transition) {
+      thetaSeg.classList.toggle('theta-home', !Physics.segIsOut(thetaSeg) && constellation.dim > 0.99);
+    }
+  };
+
+  const pauseLoop = () => { Physics.cancelPhysLoop(); pauseSplashLoop(); };
+  const resumeLoop = () => {
+    if (activeSegs.size > 0) Physics.startPhysLoop();
+    resumeSplashLoop();
+  };
+
+  return {
+    state, constellation, modal,
+    Constellation, Physics, Modal, THETA_IDX,
+    SCORPIO_STARS, SCORPIO_LINKS,
+    initSegments, checkSegsHome, splashTick, pauseLoop, resumeLoop,
+  };
+})();
+
+
+
+const SegLit = (() => {
+  const { DUR_XL, DUR_SM } = Shared;
+  const { modal, THETA_IDX } = SplashPhase;
+  const el = document.createElement('div');
+  el.id = 'seg-lit';
+  document.body.appendChild(el);
+  let shown = -1, fadeTimer = null, trackRaf = null, trackEnd = 0;
+
+  const sync = () => {
+    const r = modal.allSegs[shown]?.getBoundingClientRect(); if (!r) return;
+    const k = `${r.width}|${r.height}|${r.left}|${r.top}`;
+    if (k === el._k) return; el._k = k;
+    el.style.width = r.width + 'px'; el.style.height = r.height + 'px';
+    el.style.transform = `translate(${r.left}px,${r.top}px)`;
+  };
+  const track = ts => { sync(); trackRaf = ts < trackEnd ? requestAnimationFrame(track) : null; };
+
+  const retrack = () => {
+    if (shown === -1) return;
+    trackEnd = performance.now() + DUR_XL + DUR_SM;
+    trackRaf ??= requestAnimationFrame(track);
+  };
+  const show = idx => {
+    shown = idx; el.classList.toggle('heart', idx === THETA_IDX);
+    sync(); el.classList.add('on'); retrack();
+  };
+
+  const set = idx => {
+    clearTimeout(fadeTimer);
+    if (idx === shown) { if (idx !== -1) el.classList.add('on'); return; }
+    if (shown === -1) return show(idx);
+    el.classList.remove('on');
+    fadeTimer = setTimeout(() => { shown = -1; if (idx !== -1) show(idx); }, DUR_SM);
+  };
+  window.addEventListener('resize', retrack, { passive: true });
+  return { set, retrack };
+})();
+
+const StarProbe = (() => {
+  const { screen, byId, EASE_STD, DUR_XS, DUR_MD, DUR_LG, TRANSITION_MS } = Shared;
+  const { state, constellation, modal, Physics, Constellation, Modal, THETA_IDX, SCORPIO_STARS, SCORPIO_LINKS } = SplashPhase;
+  const STAR_INFO = [
+    { name: 'LESATH',   bayer: 'υ',  mag: '2.70', cls: 'B2IV' },
+    { name: 'SHAULA',   bayer: 'λ',  mag: '1.62', cls: 'B2IV+DA7.9' },
+    { name: 'GIRTAB',   bayer: 'κ',  mag: '2.39', cls: 'B1.5III' },
+    { name: 'ι¹ SCO',   bayer: null, mag: '2.99', cls: 'F3Ia' },
+    { name: 'SARGAS',   bayer: 'θ',  mag: '1.86', cls: 'F1II' },
+    { name: 'η SCO',    bayer: null, mag: '3.32', cls: 'F3p' },
+    { name: 'ζ² SCO',   bayer: null, mag: '3.62', cls: 'K4III' },
+    { name: 'μ¹ SCO',   bayer: null, mag: '3.00', cls: 'B1.5IV+B' },
+    { name: 'LARAWAG',  bayer: 'ε',  mag: '2.29', cls: 'K2IIIb' },
+    { name: 'τ SCO',    bayer: null, mag: '2.82', cls: 'B0V' },
+    { name: 'ANTARES',  bayer: 'α',  mag: '0.91', cls: 'M1.5Iab-b' },
+    { name: 'π SCO',    bayer: null, mag: '2.89', cls: 'B1V+B2V' },
+    { name: 'DSCHUBBA', bayer: 'δ',  mag: '2.29', cls: 'B0.2IVe' },
+    { name: 'ρ SCO',    bayer: null, mag: '3.87', cls: 'B2IV/V' },
+  ];
+
+  const HIT_MOUSE = 26, HIT_TOUCH = 42, KEEP = 42, FRAME_CAP = 76, HOLD_MS = DUR_LG;
+  const LINE_HI = 'rgba(150,195,255,.95)';
+
+  const make = (tag, id, html) => {
+    const n = document.createElement(tag);
+    n.id = id;
+    if (html) n.innerHTML = html;
+    return n;
+  };
+
+  const root = make('div', 'probe',
+    '<div class="pr-halo"></div>' +
+    '<svg class="pr-hold" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19"/></svg>' +
+    '<div class="pr-box"><div class="pr-b"><div class="pr-inner">' +
+    '<span class="pr-c tl"></span><span class="pr-c tr"></span><span class="pr-c bl"></span><span class="pr-c br"></span>' +
+    '</div></div></div>' +
+    '<div class="pr-label"><div class="pr-status"></div><div class="pr-name"></div>' +
+    '<div class="pr-meta pr-m1"></div><div class="pr-meta pr-m2"></div></div>');
+  const q = s => root.querySelector(s);
+  const el = { halo: q('.pr-halo'), box: q('.pr-box'), inner: q('.pr-inner'), label: q('.pr-label'),
+    status: q('.pr-status'), name: q('.pr-name'), m1: q('.pr-m1'), m2: q('.pr-m2'), hold: q('.pr-hold') };
+  const catcher = make('div', 'chart-catch');
+  const hud = make('div', 'chart-hud',
+    '<button class="ch-exit" id="chart-exit" aria-label="Exit chart">◂ EXIT</button>' +
+    `<div class="ch-hint">DRAG / HOLD STAR</div>` +
+    `<div class="ch-name">SCORPIUS · ${STAR_INFO.length} STARS</div>`);
+  document.body.append(root, catcher, hud);
+  const hintEl = hud.querySelector('.ch-hint');
+
+  const baseLine = new WeakMap();
+  const tuned = new WeakSet();
+  
+  let cur = -1, locked = false, shown = false, chart = false;
+  let px = 0, py = 0, tx = 0, ty = 0, raf = null, lastTs = 0, releaseTimer = null;
+
+  const retrigger = (node, cls) => { node.classList.remove(cls); void node.offsetWidth; node.classList.add(cls); };
+  const centerOf = i => { const p = state.splashParticles[i]; return p ? [p.x + p.size * .5, p.y + p.size * .5] : null; };
+  const place = () => { root.style.transform = `translate(${(px * 100 | 0) / 100}px,${(py * 100 | 0) / 100}px)`; };
+  const overSeg = e => !!e.target.closest?.('.seg');
+
+  const nearest = (x, y, r) => {
+    let best = -1, bd = r * r;
+    const sp = state.splashParticles;
+    for (let i = 0; i < sp.length; i++) {
+      const p = sp[i];
+      if (p.formProg < 1) continue;
+      const dx = p.x + p.size * .5 - x, dy = p.y + p.size * .5 - y, d = dx * dx + dy * dy;
+      if (d <= bd) { bd = d; best = i; }
+    }
+    return best;
+  };
+
+  const canProbe = () =>
+    !modal.open && state.scorpioDone && !Physics.getDragSeg() &&
+    constellation.dim > .6 && !document.body.classList.contains('modal-open');
+
+  const allHome = () =>
+    canProbe() && modal.allSegs.length > 0 &&
+    modal.allSegs.every(s => !Physics.segIsOut(s));
+
+  const paint = i => {
+    const linked = new Set();
+    if (i !== -1) SCORPIO_LINKS.forEach(([a, b]) => { if (a === i || b === i) linked.add(a).add(b); });
+    Constellation.getLines().forEach(l => {
+      if (!tuned.has(l)) {
+        tuned.add(l);
+        baseLine.set(l, [l.line.getAttribute('stroke'), l.line.getAttribute('stroke-width')]);
+        l.line.style.transition += `,stroke ${DUR_MD / 1000}s ${EASE_STD},stroke-width ${DUR_MD / 1000}s ${EASE_STD}`;
+      }
+      const on = l.i1 === i || l.i2 === i;
+      const [stroke, width] = baseLine.get(l);
+      l.line.setAttribute('stroke', on ? LINE_HI : stroke);
+      l.line.setAttribute('stroke-width', on ? '1.6' : width);
+    });
+    state.splashParticles.forEach((p, k) => {
+      if (!tuned.has(p)) { tuned.add(p); p.el.style.transition = `filter ${DUR_MD / 1000}s ${EASE_STD}`; }
+      p.el.style.filter = k === i ? 'brightness(1.9)' : linked.has(k) ? 'brightness(1.35)' : '';
+    });
+  };
+
+  const fill = i => {
+    const sd = SCORPIO_STARS[i], [x] = centerOf(i), d = STAR_INFO[i];
+    el.name.textContent = d.name;
+    el.m1.textContent = (d.bayer ? `${d.bayer} SCO · ` : '') + `MAG ${d.mag}`;
+    el.m2.textContent = `CLASS ${d.cls.toUpperCase()}`;
+    el.status.textContent = locked ? 'LOCKED' : 'TRACKING';
+    el.label.classList.toggle('flip', x > screen.w * .618 || screen.w - x < 178);
+    el.halo.style.background = `radial-gradient(circle,${sd.color}33 0%,transparent 61.8%)`;
+    retrigger(el.label, 'in');
+  };
+
+  const ping = i => {
+    const sd = SCORPIO_STARS[i], [x, y] = centerOf(i), d = sd.size >= 5 ? 42 : sd.size >= 4 ? 26 : 16;
+    const ring = document.createElement('div');
+    ring.className = 'pr-ping';
+    ring.style.cssText = `left:${x}px;top:${y}px;width:${d}px;height:${d}px;margin:${-d / 2}px 0 0 ${-d / 2}px;border-color:${sd.color}b3`;
+    document.body.appendChild(ring);
+    ring.addEventListener('animationend', () => ring.remove(), { once: true });
+  };
+
+  const tick = ts => {
+    if (!shown || cur === -1) { raf = null; lastTs = 0; return; }
+    const dt = Math.min(ts - (lastTs || ts), FRAME_CAP); lastTs = ts;
+    const k = 1 - Math.exp(-dt / DUR_XS);
+    px += (tx - px) * k; py += (ty - py) * k;
+    const settled = Math.abs(tx - px) < .05 && Math.abs(ty - py) < .05;
+    if (settled) { px = tx; py = ty; }
+    place();
+    if (settled) { raf = null; lastTs = 0; return; }
+    raf = requestAnimationFrame(tick);
+  };
+
+  const acquire = i => {
+    const c = centerOf(i); if (!c) return;
+    cur = i; locked = false; root.classList.remove('locked');
+    [tx, ty] = c;
+    paint(i); fill(i);
+    if (!shown) {
+      shown = true; px = tx; py = ty; place();
+      root.classList.add('on'); retrigger(el.box, 'acq');
+      document.body.classList.add('probing');
+    } else raf ??= requestAnimationFrame(tick);
+    syncLink();
+  };
+
+  const release = () => {
+    clearTimeout(releaseTimer);
+    if (cur === -1 && !shown) return;
+    cur = -1; locked = false; shown = false;
+    root.classList.remove('on', 'locked');
+    document.body.classList.remove('probing');
+    paint(-1); cancelHold(); syncLink();
+  };
+
+  const lockOn = autoRelease => {
+    if (cur === -1) return;
+    locked = true; root.classList.add('locked');
+    el.status.textContent = 'LOCKED';
+    retrigger(el.inner, 'pulse'); ping(cur);
+    clearTimeout(releaseTimer);
+    if (autoRelease) releaseTimer = setTimeout(release, TRANSITION_MS);
+    syncLink();
+  };
+
+
+  const DEPTH = SCORPIO_STARS.map((sd, i) =>
+    (sd.size - 4) * .236 + [.236, -.382, .146, -.236, .382, -.236, .236, -.382, .146, -.146, 0, .382, -.236, .236][i]);
+  const YAW_MAX = .618, PITCH_MAX = .382, ORBIT_TAU = 144, DRAG_GAIN = .0062, MOVE_TOL = 6, CHART_ZOOM = 1.09, ZOOM_TAU = 200;
+  const orb = { yaw: 0, pitch: 0, tyaw: 0, tpitch: 0, zoom: 1, tzoom: 1, raf: null, last: 0 };
+  let drag = null;
+
+  const baseOf = (p, i) => p._ob ??= { x: p.tx - screen.cx, y: p.ty - screen.cy, z: DEPTH[i] * p.unit };
+
+  const applyOrbit = () => {
+    const cy = Math.cos(orb.yaw), sy = Math.sin(orb.yaw), cp = Math.cos(orb.pitch), sp = Math.sin(orb.pitch), F = [], Z = orb.zoom;
+    state.splashParticles.forEach((p, i) => {
+      const b = baseOf(p, i), K = .382 / p.unit;
+      const x1 = b.x * cy + b.z * sy, z1 = -b.x * sy + b.z * cy;
+      const y2 = b.y * cp - z1 * sp, z2 = b.y * sp + z1 * cp;
+      const f = 1 + (z2 - b.z) * K;
+      p.tx = p.x = screen.cx + x1 * f * Z; p.ty = p.y = screen.cy + y2 * f * Z;
+      p._sc = (f * Z).toFixed(3); F[i] = f;
+      p.place();
+    });
+    Constellation.resetLinesSettled(true); Constellation.updateLines();
+
+    Constellation.getLines().forEach(l => {
+      const so = Math.max(.236, Math.min(1, 1 + ((F[l.i1] + F[l.i2]) * .5 - 1) * 2.618)).toFixed(2);
+      if (l._so !== so) { l.line.style.strokeOpacity = so; l._so = so; }
+    });
+    if (shown && cur !== -1) { const c = centerOf(cur); if (c) { [tx, ty] = c; raf ??= requestAnimationFrame(tick); } }
+  };
+
+  const orbitStep = ts => {
+    const dt = Math.min(ts - (orb.last || ts), FRAME_CAP); orb.last = ts;
+    const k = 1 - Math.exp(-dt / ORBIT_TAU), kz = 1 - Math.exp(-dt / ZOOM_TAU);
+    orb.yaw += (orb.tyaw - orb.yaw) * k; orb.pitch += (orb.tpitch - orb.pitch) * k; orb.zoom += (orb.tzoom - orb.zoom) * kz;
+    const settled = Math.abs(orb.tyaw - orb.yaw) < .0004 && Math.abs(orb.tpitch - orb.pitch) < .0004 && Math.abs(orb.tzoom - orb.zoom) < .0004;
+    if (settled) { orb.yaw = orb.tyaw; orb.pitch = orb.tpitch; orb.zoom = orb.tzoom; }
+    applyOrbit();
+    if (settled) { orb.raf = null; orb.last = 0; return; }
+    orb.raf = requestAnimationFrame(orbitStep);
+  };
+  const kickOrbit = () => { orb.raf ??= requestAnimationFrame(orbitStep); };
+
+  const orbitDrag = e => {
+    if (!drag.moved) {
+      if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) < MOVE_TOL) return;
+      drag.moved = true; drag.lx = e.clientX; drag.ly = e.clientY; cancelHold();
+      hintEl.classList.add('off'); document.body.classList.add('orbiting');
+      return;
+    }
+    const dx = e.clientX - drag.lx, dy = e.clientY - drag.ly; drag.lx = e.clientX; drag.ly = e.clientY;
+    orb.tyaw = Math.max(-YAW_MAX, Math.min(YAW_MAX, orb.tyaw + dx * DRAG_GAIN));
+    orb.tpitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, orb.tpitch - dy * DRAG_GAIN));
+    kickOrbit();
+  };
+
+
+  const STAR_SEG = (() => {
+    const n = STAR_INFO.length, antares = STAR_INFO.findIndex(s => s.name === 'ANTARES');
+    const pool = [...Array(n).keys()].filter(i => i !== THETA_IDX);
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    return STAR_INFO.map((_, s) => s === antares ? THETA_IDX : pool.pop());
+  })();
+
+  const syncLink = () => {
+    const on = chart && locked && cur !== -1;
+    SegLit.set(on ? STAR_SEG[cur] : -1);
+  };
+
+  let holdTimer = null;
+  const cancelHold = () => { clearTimeout(holdTimer); holdTimer = null; el.hold.classList.remove('on', 'done'); };
+  const fireHold = k => {
+    holdTimer = null; drag = null; document.body.classList.remove('orbiting');
+    el.hold.classList.add('done'); hintEl.classList.add('off');
+    const [x, y] = centerOf(k);
+    Modal.openSingle(STAR_SEG[k], { ...STAR_INFO[k], color: SCORPIO_STARS[k].color }, x, y);
+  };
+  const armHold = k => { cancelHold(); retrigger(el.hold, 'on'); holdTimer = setTimeout(fireHold, HOLD_MS, k); };
+
+  const modalBusy = () => modal.open || document.body.classList.contains('modal-open');
+
+  const enterChart = () => {
+    chart = state.chartMode = true; document.body.classList.add('chart-mode');
+    hintEl.classList.remove('off');
+    orb.tzoom = CHART_ZOOM; kickOrbit();
+    syncLink(); SegLit.retrack();
+  };
+  const exitChart = () => {
+    if (!chart) return;
+    chart = state.chartMode = false; drag = null; document.body.classList.remove('chart-mode', 'orbiting'); release();
+    orb.tyaw = orb.tpitch = 0; orb.tzoom = 1; kickOrbit();
+    SegLit.retrack();
+  };
+
+  document.addEventListener('pointermove', e => {
+    if (modalBusy()) return;
+    if (drag && chart && e.pointerId === drag.id) orbitDrag(e);
+    if (e.pointerType === 'touch' || drag?.moved) return;
+    if (!canProbe() || overSeg(e)) { if (shown) release(); return; }
+    const idx = nearest(e.clientX, e.clientY, HIT_MOUSE);
+    if (idx !== -1) { if (idx !== cur) acquire(idx); return; }
+    if (!shown) return;
+    const c = centerOf(cur);
+    if (locked && c && Math.hypot(e.clientX - c[0], e.clientY - c[1]) < KEEP) return;
+    release();
+  }, { passive: true });
+
+  document.addEventListener('pointerdown', e => {
+    if (modalBusy()) return;
+    const touch = e.pointerType === 'touch', hit = touch ? HIT_TOUCH : HIT_MOUSE;
+    if (chart) {
+      if (e.target.closest?.('#chart-exit')) return;
+      const k = nearest(e.clientX, e.clientY, hit);
+      drag = { id: e.pointerId, lx: e.clientX, ly: e.clientY, sx: e.clientX, sy: e.clientY, moved: false, tap: k === -1 };
+      if (k === -1) return;
+      if (k !== cur) acquire(k);
+      lockOn(false);
+      return armHold(k);
+    }
+    if (overSeg(e) || !canProbe()) { if (shown) release(); return; }
+    const idx = nearest(e.clientX, e.clientY, hit);
+    if (idx === -1) { if (shown) release(); return; }
+    const enter = allHome();
+    if (idx !== cur) acquire(idx);
+    lockOn(touch && !enter);
+    if (enter) enterChart();
+  }, { passive: true });
+
+  const endDrag = e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    cancelHold();
+    const d = drag; drag = null; document.body.classList.remove('orbiting');
+    if (chart && d.tap && !d.moved && e.type === 'pointerup') release();
+  };
+  document.addEventListener('pointerup', endDrag, { passive: true });
+  document.addEventListener('pointercancel', endDrag, { passive: true });
+
+  byId('chart-exit').addEventListener('click', exitChart);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && chart && !modal.open && !e.defaultPrevented) exitChart(); });
+  document.addEventListener('contextmenu', e => { if (chart) e.preventDefault(); });
+
+  document.documentElement.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch' && shown) release(); });
+  window.addEventListener('blur', () => { if (shown) release(); });
+
+  return { release };
+})();
+
+(() => {
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { Shared.screen.w = window.innerWidth; Shared.screen.h = window.innerHeight; }, Shared.DUR_XS);
+  }, { passive: true });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      StarProbe.release();
+      SplashPhase.pauseLoop();
+      CountdownPhase.pauseForHidden();
+      return;
+    }
+    SplashPhase.resumeLoop();
+    CountdownPhase.resumeAfterHidden();
+  });
+})();
+
+document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', StartPhase.init) : StartPhase.init();
+</script>
+</body>
+</html>
